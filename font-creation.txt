@@ -1,0 +1,16 @@
+To make a new font texture:
+- run runnable-hiero.jar (http://web.archive.org/web/20151012082035/https://libgdx.badlogicgames.com/nightlies/runnables/runnable-hiero.jar)
+- select the font you want
+- set from "sample text" to "glyph cache"
+- set font size until the page count reaches 2 (must remain 1) (63 is a relatively compatible size)
+- set padding (bottom right) to 8 each, leave x and y as 0 (please)
+- on the effects list, add "Distance field" and remove "color"
+- set values on the distance field effect: spread to 10 and scale to 15
+
+BE AWARE PROGRAM SHOULD STOP RESPONDING (THATS OKAY)
+
+once it comes back:
+- go to file > save as bmfont file (.fnt)
+- save to UND-J/resources/assets/fonts/
+ 
+go to UNDECIDED.java and change the value of String fontType in the main method to the name you saved it as.

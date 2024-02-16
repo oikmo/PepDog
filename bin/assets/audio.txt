@@ -1,0 +1,5 @@
+sfx.bass=bass
+sfx.click=clickfast
+sfx.footsteps1=bfsl-minifigfoots1
+sfx.footsteps2=bfsl-minifigfoots2
+music.mus0=dontRemindMe
