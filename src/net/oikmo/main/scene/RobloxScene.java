@@ -22,7 +22,7 @@ import net.oikmo.toolbox.rbxl.Roblox;
 public class RobloxScene extends Scene {
 	
 	public void loadRoblox() {
-		Roblox roblox = Parser.loadRBXL("2006Crossroads");
+		Roblox roblox = Parser.loadRBXL("2008ROBLOXHQ");
 
 		List<Object> services = roblox.getItemOrExternalOrDeleteItem();
 		for(Object obj : services) {
@@ -59,7 +59,7 @@ public class RobloxScene extends Scene {
 	@Override
 	public void init() {
 
-		Light sun = new Light(new Vector3f(200,200,100), new Vector3f(1.3f, 1.3f, 1.3f));
+		Light sun = new Light(new Vector3f(20000,20000,10000), new Vector3f(1.3f, 1.3f, 1.3f));
 		this.addLight(sun);
 		
 		new Thread(new Runnable() {
@@ -80,6 +80,8 @@ public class RobloxScene extends Scene {
 		loadRoblox();
 		
 		frame.dispose();
+		
+		this.setLoaded();
 	}
 
 	@Override

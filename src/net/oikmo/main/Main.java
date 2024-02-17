@@ -77,7 +77,7 @@ public class Main {
 		
 		GameSettings.loadValues();
 		AudioMaster.init();
-		textureSponge = Loader.getInstance().loadTexture("logos/lonerBoy");
+		textureSponge = Loader.getInstance().loadTexture("models/base");
 		
 		Loader loader = Loader.getInstance();		
 		MasterRenderer renderer = MasterRenderer.getInstance();
@@ -94,7 +94,6 @@ public class Main {
 		
 		Source music = new Source();
 		int musicUNDECIDED= AudioMaster.loadSound("undecided");
-		int musicDRM = AudioMaster.loadSound("dontRemindMe");
 		music.setLooping(true);
 		music.setVolume(GameSettings.globalVolume);
 		
@@ -182,7 +181,6 @@ public class Main {
 	    		if(isMusicMain) {
 	    			renderer.createShadowMap(camera);
 	    			music.stop();
-	    			music.play(musicDRM);
 	    			isMusicMain = false;
 	    		}
 	    		

@@ -21,15 +21,15 @@ public class PartShader extends ShaderProgram {
 	
 	private static int MAX_LIGHTS = 4;
 	
-	private static final String VERTEX_FILE = "/net/oikmo/engine/renderers/part/entityVertex.glsl";
-	private static final String FRAGMENT_FILE = "/net/oikmo/engine/renderers/part/entityFragment.glsl";
+	private static final String VERTEX_FILE = "/net/oikmo/engine/renderers/part/partVertex.glsl";
+	private static final String FRAGMENT_FILE = "/net/oikmo/engine/renderers/part/partFragment.glsl";
 
 	private int location_transformationMatrix;
 	private int location_projectionMatrix;
 	private int location_viewMatrix;
-	private int location_lightPosition[];
-	private int location_lightColour[];
-	private int location_attenuation[];
+	private int location_lightPosition;
+	private int location_lightColour;
+	private int location_attenuation;
 	private int location_shineDamper;
 	private int location_reflectivity;
 	private int location_useFakeLighting;
@@ -37,6 +37,7 @@ public class PartShader extends ShaderProgram {
 	private int location_numberOfRows;
 	private int location_offset;
 	private int location_plane;
+	private int location_partColour;
 	
 	
 	public PartShader() {
@@ -64,14 +65,10 @@ public class PartShader extends ShaderProgram {
 		location_numberOfRows = super.getUniformLocation("numberOfRows");
 		location_offset = super.getUniformLocation("offset");
 		location_plane = super.getUniformLocation("plane");
-		location_lightPosition = new int[MAX_LIGHTS];
-		location_lightColour = new int[MAX_LIGHTS];
-		location_attenuation = new int[MAX_LIGHTS];
-		for(int i = 0; i < MAX_LIGHTS; i++) {
-			location_lightPosition[i] = super.getUniformLocation("lightPosition["+i+"]");
-			location_lightColour[i] = super.getUniformLocation("lightColour["+i+"]");
-			location_attenuation[i] = super.getUniformLocation("attenuation["+i+"]");
-		}
+		location_lightPosition = super.getUniformLocation("lightPosition");
+		location_lightColour = super.getUniformLocation("lightColour");
+		location_attenuation = super.getUniformLocation("attenuation");
+		location_partColour = super.getUniformLocation("partColour");
 	}
 	
 	public void loadClipPlane(Vector4f plane) {
@@ -88,6 +85,10 @@ public class PartShader extends ShaderProgram {
 	
 	public void loadSkyColour(float r, float g, float b) {
 		super.load3DVector(location_skyColour, new Vector3f(r,g,b));
+	}
+	
+	public void loadPartColour(Vector3f colour) {
+		super.load3DVector(location_partColour, new Vector3f(colour.x/256,colour.y/256,colour.z/256));
 	}
 	
 	public void loadFakeLighting(boolean useFake) {
@@ -143,16 +144,8 @@ public class PartShader extends ShaderProgram {
 	 * @author <i>Oikmo</i>
 	 */
 	public void loadLights(List<Light> lights) {
-		for(int i = 0; i < MAX_LIGHTS; i++) {
-			if(i < lights.size()) {
-				super.load3DVector(location_lightPosition[i], lights.get(i).getPosition());
-				super.load3DVector(location_lightColour[i], lights.get(i).getColour());
-				super.load3DVector(location_attenuation[i], lights.get(i).getAttenuation());
-			} else {
-				super.load3DVector(location_lightPosition[i], new Vector3f(0,0,0));
-				super.load3DVector(location_lightColour[i], new Vector3f(0,0,0));	
-				super.load3DVector(location_attenuation[i], new Vector3f(1,0,0));	
-			}
-		}
+		super.load3DVector(location_lightPosition, lights.get(0).getPosition());
+		super.load3DVector(location_lightColour, lights.get(0).getColour());
+		super.load3DVector(location_attenuation, lights.get(0).getAttenuation());
 	}
 }

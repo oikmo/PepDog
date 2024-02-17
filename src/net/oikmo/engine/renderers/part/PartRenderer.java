@@ -9,14 +9,23 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 
+import net.oikmo.engine.Loader;
 import net.oikmo.engine.Part;
+import net.oikmo.engine.models.CubeModel;
+import net.oikmo.engine.models.CylinderModel;
+import net.oikmo.engine.models.RawModel;
 import net.oikmo.engine.models.TexturedModel;
 import net.oikmo.engine.renderers.MasterRenderer;
 import net.oikmo.engine.textures.ModelTexture;
 import net.oikmo.toolbox.Maths;
+import net.oikmo.toolbox.obj.OBJFileLoader;
 
 public class PartRenderer {	
 	private PartShader shader;
+	
+	public static RawModel cube = Loader.getInstance().loadToVAO(CubeModel.vertices, CubeModel.uv,CubeModel.indices);
+	public static RawModel cylinder = Loader.getInstance().loadToVAO(CylinderModel.vertices, CylinderModel.uv,CylinderModel.indices);
+	public static RawModel sphere = OBJFileLoader.loadOBJ("cylinder");
 	
 	/**
 	 * EntityRenderer Constructor.
@@ -81,5 +90,6 @@ public class PartRenderer {
 		Matrix4f transformationMatrix = Maths.createTransformationMatrix(part.getPosition(), part.getRotation(), part.getScale());
 		shader.loadTransformationMatrix(transformationMatrix);
 		shader.loadOffset(part.getTextureXOffset(), part.getTextureYOffset());
+		shader.loadPartColour(part.getColour());
 	}
 }

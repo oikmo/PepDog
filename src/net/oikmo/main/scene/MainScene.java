@@ -57,9 +57,6 @@ public class MainScene extends Scene {
 				this.addEntity(tree);
 			}
 		}
-		
-		Part part = new Part(new Vector3f(0,0,0), new Vector3f(0,0,0), new Vector3f(10,1,10));
-		this.addPart(part);
 		this.setLoaded();
 	}
 	

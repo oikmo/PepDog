@@ -37,8 +37,6 @@ public class Camera {
 	
 	Player player;
 	
-	Entity entity;
-	
 	/**
 	 * {@code public Camera(Vector3f position, Vector3f rotation, float scale)}<br><br>
 	 * 
@@ -88,18 +86,6 @@ public class Camera {
 	public void update(){
 		
 		if(Main.gameState == GameState.game) {
-			
-			if(entity == null) {
-				entity = new Entity("fern", new Vector3f(player.getPosition()), new Vector3f(0,0,0));
-				entity.setAABB(null);
-				entity.getModel().getTexture().setNumberOfRows(2);
-				entity.setTextureIndex(1);
-				SceneManager.getCurrentScene().addEntity(entity);
-			} else {
-				
-				entity.setRotation(0, player.getRotY(), 0);
-			}
-			
 			calculateZoom();
 			if(Mouse.isButtonDown(1) || this.isFirstPerson()) {
 				calculatePitch();

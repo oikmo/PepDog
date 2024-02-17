@@ -11,6 +11,7 @@ import org.lwjgl.util.vector.Vector3f;
 import net.oikmo.engine.DisplayManager;
 import net.oikmo.engine.Entity;
 import net.oikmo.engine.Loader;
+import net.oikmo.engine.Part;
 import net.oikmo.engine.audio.AudioMaster;
 import net.oikmo.engine.audio.Source;
 import net.oikmo.engine.collision.AABB;
@@ -48,7 +49,7 @@ public class Player extends Entity {
 	private float desiredMoveSpeed;
 	//private final float speedIncreaseMultiplier = 1.5f;
 
-	private final float walkSpeed = 15;
+	private float walkSpeed = 15;
 
 	private boolean grounded = true;
 
@@ -144,6 +145,12 @@ public class Player extends Entity {
 		
 		model.getTexture().setID(camera.isFirstPerson() ? invisibleTexture : visibleTexture);
 		
+		if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+			walkSpeed = 40;
+		} else {
+			walkSpeed = 15;
+		}
+		
 		Vector3f temp1Pos = new Vector3f(getPosition());
 		temp1Pos.y = getPosition().y + this.getAABB().getHalfExtent().y;
 		this.getAABB().getCenter().set(temp1Pos);
@@ -153,28 +160,31 @@ public class Player extends Entity {
 		List<AABB> collisionBoxes = new ArrayList<>();
 
 		if (scene.isLoaded()) {
-			for (Entity e : scene.getEntities()) {
-				if (e != this && e.getAABB() != null) {
+			for (Part e : scene.getParts()) {
+				if (e.getAABB() != null) {
 					collisionBoxes.add(e.getAABB());
 				}
 			}
 		}
+		
+		if(!Keyboard.isKeyDown(Keyboard.KEY_V)) {
+			for (AABB box : collisionBoxes) {
+				Collision data = this.getAABB().intersects(box);
+				if (data.intersecting) {
+					this.getAABB().correctPosition(box, data);
+					Vector3f temp2Pos = new Vector3f(this.getAABB().getCenter());
+					temp2Pos.y = this.getAABB().getCenter().y - this.getAABB().getHalfExtent().y;
 
-		for (AABB box : collisionBoxes) {
-			Collision data = this.getAABB().intersects(box);
-			if (data.intersecting) {
-				this.getAABB().correctPosition(box, data);
-				Vector3f temp2Pos = new Vector3f(this.getAABB().getCenter());
-				temp2Pos.y = this.getAABB().getCenter().y - this.getAABB().getHalfExtent().y;
+					if(this.getAABB().getCenter().y - this.getAABB().getHalfExtent().y >= box.getCenter().y + box.getHalfExtent().y) {
+						grounded = true;
+						upwardsSpeed = 0;
+					}
 
-				if(this.getAABB().getCenter().y - this.getAABB().getHalfExtent().y >= box.getCenter().y + box.getHalfExtent().y) {
-					grounded = true;
-					upwardsSpeed = 0;
+					this.getPosition().set(temp2Pos);
 				}
-
-				this.getPosition().set(temp2Pos);
 			}
 		}
+		
 	}
 
 

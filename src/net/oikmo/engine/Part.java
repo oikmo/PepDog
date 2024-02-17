@@ -5,9 +5,10 @@ import java.text.DecimalFormat;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
-import net.oikmo.engine.models.CubeModel;
-import net.oikmo.engine.models.RawModel;
+import net.oikmo.engine.collision.AABB;
 import net.oikmo.engine.models.TexturedModel;
+import net.oikmo.engine.renderers.part.BrickColor;
+import net.oikmo.engine.renderers.part.PartRenderer;
 import net.oikmo.engine.textures.ModelTexture;
 import net.oikmo.main.Main;
 import net.oikmo.toolbox.rbxl.Item;
@@ -17,21 +18,30 @@ public class Part {
 	public TexturedModel model;
 	private Vector3f position, rotation, scale;
 	private int textureIndex = 0;
+	private Vector3f colour;
+	private AABB aabb;
 	
-	public Part(Vector3f position, Vector3f rotation, Vector3f scale) {
-		RawModel raw = Loader.getInstance().loadToVAO(CubeModel.vertices, CubeModel.indices, CubeModel.uv);
-		this.model = new TexturedModel(raw, new ModelTexture(Main.textureSponge));
+	public Part(Vector3f position, Vector3f rotation, Vector3f scale, Vector3f colour) {
+		this.model = new TexturedModel(PartRenderer.cube, new ModelTexture(Main.textureSponge));
 		
 		this.position = position;
 		this.rotation = rotation;
 		this.scale = scale;
+		this.colour = new Vector3f(colour);
+		
+		Vector3f halfextents = new Vector3f(scale);
+		halfextents.x /= 2;
+		halfextents.y /= 2;
+		halfextents.z /= 2;
+		this.aabb = new AABB(this.position, halfextents);
 	}
 	
 	public static Part createPartFromItem(Item item) {
 		Vector3f position = null;
 		Vector3f rotation = null;
 		Vector3f scale    = null;
-		
+		String name = "";
+		int colour = -1;
 		for(Object prop : item.getProperties().getStringOrProtectedStringOrInt()) {
 			if(prop instanceof PropertyContainer.Bool) {
 				PropertyContainer.Bool property = (PropertyContainer.Bool)prop;
@@ -45,13 +55,17 @@ public class Part {
 				PropertyContainer.Token property = (PropertyContainer.Token)prop;
 				//System.out.println("token " + property.getName() + " " + property.getValue());
 			}
-			else if(prop instanceof PropertyContainer.Int) {
-				PropertyContainer.Int property = (PropertyContainer.Int)prop;
-				//System.out.println("int " + property.getName() + " " + property.getValue());
-			} 
+			
 			else if(prop instanceof PropertyContainer.String) {
 				PropertyContainer.String property = (PropertyContainer.String)prop;
-				//System.out.println("string " + property.getName() + " " + property.getValue());
+				name = property.getValue();
+			} 
+			
+			else if(prop instanceof PropertyContainer.Int) {
+				PropertyContainer.Int property = (PropertyContainer.Int)prop;
+				if(property.getName().contentEquals("BrickColor")) {
+					colour = property.getValue();
+				}
 			} 
 			else if(prop instanceof PropertyContainer.Vector3) {
 				PropertyContainer.Vector3 property = (PropertyContainer.Vector3)prop;
@@ -72,8 +86,13 @@ public class Part {
 				System.out.println(prop.getClass());
 			}
 		}
-		System.out.println(item.getReferent() + " " + rotation.toString());
-		return new Part(position, rotation, scale);
+		//System.out.println(name + " " + BrickColor.getEnumFromValue(colour));
+		//System.out.println(item.getReferent() + " " + rotation.toString());
+		return new Part(position, rotation, scale, BrickColor.getEnumFromValue(colour).getValue());
+	}
+	
+	public AABB getAABB() {
+		return aabb;
 	}
 	
 	public void setPosition(float x, float y, float z) {
@@ -149,5 +168,9 @@ public class Part {
 	
 	public Vector2f getCoords() {
 		return new Vector2f(getPosition().x, getPosition().z);
+	}
+
+	public Vector3f getColour() {
+		return colour;
 	}
 }
