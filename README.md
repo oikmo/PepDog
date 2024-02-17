@@ -5,4 +5,11 @@ This is a OpenGL project which loads the old .rbxl format (or .rbxlx) into somet
 
 The engine itself includes aabb collision.
 
-TODO : SET PLAYER TO SPAWN LOCATION
+TODO : 
+- set player to spawn location
+- change player model to appropiate one
+- add different types of models for the parts
+- colours to the parts
+- aabb collision
+- proper physics
+- lua loading :/
