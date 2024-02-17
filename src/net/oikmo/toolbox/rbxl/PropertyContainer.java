@@ -1357,8 +1357,11 @@ public class PropertyContainer {
 
 		
 
-		//=====================================================================
-
+		//I give all my kudos to that one stack overflow post I found (that was in c++)
+		/**
+                * Returns rotational values from the CFrame matrix
+		* @author stack overflow (my beloved)
+		*/
 		public Vector3f getAngles() {
 			double PI = 4.0 * Math.atan( 1.0 ), RADTODEG = 180.0 / PI;
 			double EPS = 1.0e-6;
