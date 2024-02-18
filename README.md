@@ -9,7 +9,6 @@ TODO :
 - set player to spawn location
 - change player model to appropiate one
 - add different types of models for the parts
-- colours to the parts
 - aabb collision
 - proper physics
 - lua loading :/
