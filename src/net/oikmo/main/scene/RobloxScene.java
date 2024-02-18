@@ -22,7 +22,7 @@ import net.oikmo.toolbox.rbxl.Roblox;
 public class RobloxScene extends Scene {
 	
 	public void loadRoblox() {
-		Roblox roblox = Parser.loadRBXL("2008ROBLOXHQ");
+		Roblox roblox = Parser.loadRBXL("2006Crossroads");
 
 		List<Object> services = roblox.getItemOrExternalOrDeleteItem();
 		for(Object obj : services) {

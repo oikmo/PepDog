@@ -26,5 +26,6 @@
 			<attribute name="javadoc_location" value="jar:platform:/resource/UND-J/lib/jar/javadoc/commons-io-2.15.0-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="lib/jar/kryonet-2.21-all.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
