@@ -56,14 +56,12 @@ public class Player extends Entity {
 	enum MovementState {
 		idle,
 		walking,
-		dashing,
-		sprinting
 	};
 	private MovementState prevState;
 	private MovementState state;
 	
-	Source footstepsSFX, fallingSFX, jumpSFX;
-	int jumping, falling, footsteps;
+	Source footstepsSFX, jumpSFX;
+	int jump, footsteps;
 
 	public Player(TexturedModel model, Vector3f position, Vector3f rotation, float scale) {
 		super(model, position, rotation, scale);
@@ -80,28 +78,19 @@ public class Player extends Entity {
 		this.name = "Player";
 
 		camera = new Camera(this);
-		jumping = AudioMaster.loadSound("jump");
+		jump = AudioMaster.loadSound("swoosh");
 		footsteps = AudioMaster.loadSound("bfsl-minifigfoots1");
-		falling = AudioMaster.loadSound("fallingSFX");
 		footstepsSFX = new Source(0f,0f,0.01f,AL11.AL_LINEAR_DISTANCE_CLAMPED);
 		footstepsSFX.setLooping(true);
 		footstepsSFX.play(footsteps);
 		footstepsSFX.pause();
-		fallingSFX = new Source();
-		fallingSFX.setLooping(true);
-		fallingSFX.play(falling);
-		fallingSFX.pause();
 		jumpSFX = new Source();
-		jumpSFX.setVolume(0.05f);
-
-		this.getAABB().setHalfExtent(0.69f, this.getAABB().getHalfExtent().y, 0.69f);
 	}
-
-	float distanceX = 0;
-	float distanceY = 0;
+	
+	private boolean pause;
 	public void update(Terrain terrain) {
 		camera.update();
-
+		if(pause) { return; }
 		checkInputs();
 
 		if(Keyboard.isKeyDown(Keyboard.KEY_F)) {
@@ -130,10 +119,7 @@ public class Player extends Entity {
 			upwardsSpeed = 0;
 			super.getPosition().y = terrainHeight;
 		}
-
-		fallingSFX.setVolume(GameSettings.globalVolume);
 		footstepsSFX.setVolume(GameSettings.globalVolume);
-		footstepsSFX.setPitch(isSprinting() ? 1.175f : 1);
 
 		if(Main.isMoving() && isGrounded(1f)) {
 			if(!footstepsSFX.isPlaying())
@@ -179,16 +165,19 @@ public class Player extends Entity {
 						grounded = true;
 						upwardsSpeed = 0;
 					}
-
 					this.getPosition().set(temp2Pos);
 				}
 			}
 		}
-		
 	}
-
-
-
+	
+	public boolean isPaused() {
+		return pause;
+	}
+	public void setPaused(boolean pause) {
+		this.pause = pause;
+	}
+	
 	private void checkInputs() {
 		if(Main.currentScreen != null) { if(Main.currentScreen.isLockInput()) { this.currentVertSpeed = 0; this.currentHorzSpeed = 0; return; } }
 
@@ -219,14 +208,12 @@ public class Player extends Entity {
 			desiredMoveSpeed = walkSpeed;
 		} else {
 			state = MovementState.idle;
-			desiredMoveSpeed = walkSpeed;
 		}
 	}
 	private void jump() {
 		if(!isGrounded()) return;
-		jumpSFX.setPitch(1.1f);
-		jumpSFX.setVolume(GameSettings.globalVolume-0.5f);
-		jumpSFX.play(jumping);
+		jumpSFX.setVolume(GameSettings.globalVolume);
+		jumpSFX.play(jump);
 		this.upwardsSpeed = JUMP_POWER;
 	}
 	public String getSpeed() {
@@ -239,9 +226,6 @@ public class Player extends Entity {
 		}
 		return -currentVertSpeed + " " + -currentHorzSpeed;
 	}
-	public boolean isSprinting() {
-		return state == MovementState.sprinting;
-	}
 
 	public void pause() {
 		footstepsSFX.stop();
@@ -250,13 +234,25 @@ public class Player extends Entity {
 	private void applyForce(float vert, float horz) {
 		float distanceVert = vert * DisplayManager.getFrameTimeSeconds();
 		float distanceHorz = horz * DisplayManager.getFrameTimeSeconds();
-		super.setRotation(getRotX(), -camera.getYaw(), getRotZ());
+		float dVertX = 0;
+		float dVertZ = 0;
+		float dHorzX = 0;
+		float dHorzZ = 0;
+		
+		
+		Vector2f input = this.getInput();
+		
+		
+		float yaw = -camera.getYaw();
+		if(input.x != 0 || camera.isFirstPerson()) {
+			super.setRotationLerp(getRotX(), yaw, getRotZ());
+		}
+		
+		dVertX = (float) (distanceVert * Math.sin(Math.toRadians(yaw)));
+		dVertZ = (float) (distanceVert * Math.cos(Math.toRadians(yaw)));
+		dHorzX = (float) (distanceHorz * Math.sin(Math.toRadians(yaw + 90)));
+		dHorzZ = (float) (distanceHorz * Math.cos(Math.toRadians(yaw + 90)));
 
-		float dVertX = (float) (distanceVert * Math.sin(Math.toRadians(super.getRotY())));
-		float dVertZ = (float) (distanceVert * Math.cos(Math.toRadians(super.getRotY())));
-
-		float dHorzX = (float) (distanceHorz * Math.sin(Math.toRadians(super.getRotY() + 90)));
-		float dHorzZ = (float) (distanceHorz * Math.cos(Math.toRadians(super.getRotY() + 90)));
 		super.increasePosition((dHorzX + dVertX), 0, (dHorzZ + dVertZ));
 	}
 	

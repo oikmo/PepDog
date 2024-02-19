@@ -2945,8 +2945,8 @@ public class PropertyContainer {
 		 *     {@link java.lang.String }
 		 *     
 		 */
-		public java.lang.String getValue() {
-			return value;
+		public int getValue() {
+			return Integer.parseInt(value);
 		}
 
 		/**

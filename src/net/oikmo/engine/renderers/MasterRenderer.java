@@ -238,6 +238,7 @@ public class MasterRenderer {
 	
 	public void renderScene(boolean postProcess, Camera camera) {
 		Scene scene = SceneManager.getCurrentScene();
+		if(!scene.isLoaded()) { return; }
 		//System.out.println(scene.getClass().getName());
 		if(postProcess) {
 			fbo.bindFrameBuffer();

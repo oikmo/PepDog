@@ -3,10 +3,8 @@ package net.oikmo.main.scene;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.oikmo.engine.Loader;
 import net.oikmo.engine.scene.Scene;
 import net.oikmo.engine.terrain.Terrain;
-import net.oikmo.engine.textures.TerrainTexture;
 import net.oikmo.engine.textures.TerrainTexturePack;
 import net.oikmo.main.Main;
 import net.oikmo.main.Main.GameState;
@@ -14,7 +12,6 @@ import net.oikmo.main.Main.GameState;
 public class SceneManager {
 	
 	private static enum SceneName {
-		Main,
 		Roblox,
 		Empty
 	}
@@ -24,17 +21,12 @@ public class SceneManager {
 	private static Scene currentScene;
 	
 	private static TerrainTexturePack texturePack;
-	private static TerrainTexture blendMap;
 	
 	private static String seed = "ballsack!";
 	
 	public static void init() {
 		scenes = new HashMap<>();
 		
-		texturePack = new TerrainTexturePack("grass", "mud", "grassFlowers", "path");
-		blendMap = new TerrainTexture(Loader.getInstance().loadTexture("terrain/blendMap"));
-		
-		scenes.put("main", SceneName.Main);
 		scenes.put("roblox", SceneName.Roblox);
 		scenes.put("empty", SceneName.Empty);
 	}
@@ -48,11 +40,8 @@ public class SceneManager {
 		case Empty:
 			currentScene = new EmptyScene();
 			break;
-		case Main:
-			currentScene = new MainScene(seed, texturePack, blendMap);
-			break;
 		case Roblox:
-			currentScene = new RobloxScene(seed, texturePack, blendMap);
+			currentScene = new RobloxScene(seed, texturePack);
 			break;
 		}
 		

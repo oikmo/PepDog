@@ -31,7 +31,7 @@ void main(void) {
 		vec3 unitLightVector = normalize(toLightVector[i]);
 	
 		float nDot1 = dot(unitNormal, unitLightVector);
-		float brightness = max(nDot1,0.0);
+		float brightness = max(nDot1,0.5);
 		
 		vec3 lightDir = -unitLightVector;
 		vec3 reflectedLightDir = reflect(lightDir,unitNormal);

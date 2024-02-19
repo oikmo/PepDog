@@ -55,6 +55,11 @@ public abstract class Scene {
 		loaded = true;
 	}
 	
+	public void setLoaded(boolean load) {
+		loaded = load;
+	}
+	
+	
 	public boolean isLoaded() {
 		return loaded;
 	}

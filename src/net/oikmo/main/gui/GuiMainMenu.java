@@ -21,8 +21,8 @@ public class GuiMainMenu extends GuiScreen {
 	}
 	
 	public void initGui() {
-		float x = (1-0.825f)/2;
-		title = new GuiText("UNDECIDED", 3f, Main.font, new Vector2f(x,0.2f), 1, false, false);
+		float x = (1-0.8f)/2;
+		title = new GuiText("RBXL LOADER", 3f, Main.font, new Vector2f(x,0.2f), 1, false, false);
 		title.setColour(1, 1, 1);
 		buttonList.add(new GuiButton(0, new Vector2f(-0.55f, 0.2f), new Vector2f(0.65f,0.1f), "Play game"));
         buttonList.add(new GuiButton(1, new Vector2f(-0.55f, 0f), new Vector2f(0.65f,0.1f), "Options"));

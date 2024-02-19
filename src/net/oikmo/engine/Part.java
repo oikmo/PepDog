@@ -10,24 +10,61 @@ import net.oikmo.engine.models.TexturedModel;
 import net.oikmo.engine.renderers.part.BrickColor;
 import net.oikmo.engine.renderers.part.PartRenderer;
 import net.oikmo.engine.textures.ModelTexture;
-import net.oikmo.main.Main;
 import net.oikmo.toolbox.rbxl.Item;
 import net.oikmo.toolbox.rbxl.PropertyContainer;
 
 public class Part {
+	
+	public enum ShapeType {
+		
+		Cylinder(0),
+		Block(1),
+		Sphere(2);
+		
+		private final int type;
+		ShapeType(int type) {
+			this.type = type;
+		}
+		
+		public static ShapeType getEnumFromValue(int value) {
+			for(int i = 0; i < values().length; i++) {
+				if(values()[i].getValue() == value) {
+					return values()[i];
+				}
+			}
+			return Block;
+		}
+		
+		public int getValue() {
+			return type;
+		}
+	}
+	
 	public TexturedModel model;
 	private Vector3f position, rotation, scale;
 	private int textureIndex = 0;
 	private Vector3f colour;
 	private AABB aabb;
+	private int shape;
 	
-	public Part(Vector3f position, Vector3f rotation, Vector3f scale, Vector3f colour) {
-		this.model = new TexturedModel(PartRenderer.cube, new ModelTexture(Main.textureSponge));
-		
+	public Part(Vector3f position, Vector3f rotation, Vector3f scale, Vector3f colour, int shape) {
 		this.position = position;
 		this.rotation = rotation;
 		this.scale = scale;
 		this.colour = new Vector3f(colour);
+		this.shape = shape;
+		
+		switch(shape) {
+		case 0:
+			this.model = new TexturedModel(PartRenderer.cylinder, new ModelTexture(PartRenderer.texture));
+			break;
+		case 1:
+			this.model = new TexturedModel(PartRenderer.block, new ModelTexture(PartRenderer.texture));
+			break;
+		case 2:
+			this.model = new TexturedModel(PartRenderer.sphere, new ModelTexture(PartRenderer.texture));
+			break;
+		}
 		
 		Vector3f halfextents = new Vector3f(scale);
 		halfextents.x /= 2;
@@ -42,6 +79,7 @@ public class Part {
 		Vector3f scale    = null;
 		String name = "";
 		int colour = -1;
+		int shape = -1;
 		for(Object prop : item.getProperties().getStringOrProtectedStringOrInt()) {
 			if(prop instanceof PropertyContainer.Bool) {
 				PropertyContainer.Bool property = (PropertyContainer.Bool)prop;
@@ -54,6 +92,9 @@ public class Part {
 			else if(prop instanceof PropertyContainer.Token) {
 				PropertyContainer.Token property = (PropertyContainer.Token)prop;
 				//System.out.println("token " + property.getName() + " " + property.getValue());
+				if(property.getName().contentEquals("shape")) {
+					shape = property.getValue();
+				}
 			}
 			
 			else if(prop instanceof PropertyContainer.String) {
@@ -88,7 +129,7 @@ public class Part {
 		}
 		//System.out.println(name + " " + BrickColor.getEnumFromValue(colour));
 		//System.out.println(item.getReferent() + " " + rotation.toString());
-		return new Part(position, rotation, scale, BrickColor.getEnumFromValue(colour).getValue());
+		return new Part(position, rotation, scale, BrickColor.getEnumFromValue(colour).getValue(), ShapeType.getEnumFromValue(shape).getValue());
 	}
 	
 	public AABB getAABB() {

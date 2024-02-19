@@ -11,6 +11,7 @@ import net.oikmo.engine.collision.AABB;
 import net.oikmo.engine.models.RawModel;
 import net.oikmo.engine.models.TexturedModel;
 import net.oikmo.engine.textures.ModelTexture;
+import net.oikmo.toolbox.Maths;
 import net.oikmo.toolbox.obj.OBJFileLoader;
 
 public class Entity {
@@ -91,6 +92,12 @@ public class Entity {
 		this.rotation.x = dx;
 		this.rotation.y = dy;
 		this.rotation.z = dz;
+	}
+	
+	public void setRotationLerp(float dx, float dy, float dz) {
+		this.rotation.x = Maths.lerp(this.rotation.x, dx, 0.75f * DisplayManager.getFrameTimeSeconds()*10);
+		this.rotation.y = Maths.lerp(this.rotation.y, dy, 0.75f * DisplayManager.getFrameTimeSeconds()*10);
+		this.rotation.z = Maths.lerp(this.rotation.z, dz, 0.75f * DisplayManager.getFrameTimeSeconds()*10);
 	}
 	
 	public void setRotation(Vector3f rotation) {

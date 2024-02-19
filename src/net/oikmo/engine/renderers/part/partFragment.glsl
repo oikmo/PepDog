@@ -29,7 +29,7 @@ void main(void) {
 	vec3 unitLightVector = normalize(toLightVector);
 		
 	float nDot1 = dot(unitNormal, unitLightVector);
-	float brightness = max(nDot1,0.0);
+	float brightness = max(nDot1,0.5);
 	
 	vec3 lightDir = -unitLightVector;
 	vec3 reflectedLightDir = reflect(lightDir,unitNormal);
@@ -46,6 +46,5 @@ void main(void) {
 	if(textureColour.a < 0.5) {
 		discard;
 	}
-	
-	out_Colour = (textureColour) * vec4(partColour,255.0);
+	out_Colour = vec4(totalDiffuse,1.0) * (textureColour * vec4(partColour,255.0)) + vec4(totalSpecular,1.0);
 }

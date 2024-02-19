@@ -1,5 +1,6 @@
 package net.oikmo.main.scene;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -10,7 +11,6 @@ import org.lwjgl.util.vector.Vector3f;
 import net.oikmo.engine.Part;
 import net.oikmo.engine.renderers.MasterRenderer;
 import net.oikmo.engine.scene.Scene;
-import net.oikmo.engine.textures.TerrainTexture;
 import net.oikmo.engine.textures.TerrainTexturePack;
 import net.oikmo.main.GameSettings;
 import net.oikmo.main.entity.Camera;
@@ -21,8 +21,19 @@ import net.oikmo.toolbox.rbxl.Roblox;
 
 public class RobloxScene extends Scene {
 	
-	public void loadRoblox() {
-		Roblox roblox = Parser.loadRBXL("2006Crossroads");
+	
+	public void loadRoblox(String thing) {
+		this.setLoaded(false);
+		boolean load = false;
+		for(String map : maps) {		
+			if(map.contentEquals(thing)) {
+				load = true;
+			}
+		}
+		if(!load) { return; }
+		this.getParts().clear();
+		createFrame();
+		Roblox roblox = Parser.loadRBXL(thing);
 
 		List<Object> services = roblox.getItemOrExternalOrDeleteItem();
 		for(Object obj : services) {
@@ -36,6 +47,8 @@ public class RobloxScene extends Scene {
 				}
 			}
 		}
+		frame.dispose();
+		this.setLoaded();
 	}
 	
 	public void processItem(Item item) {
@@ -51,17 +64,29 @@ public class RobloxScene extends Scene {
 	    }
 	}
 
-	public RobloxScene(String seed, TerrainTexturePack texturePack, TerrainTexture blendMap) {
-		super(seed, texturePack, blendMap);
+	public RobloxScene(String seed, TerrainTexturePack texturePack) {
+		super(seed, texturePack, null);
 	}
 	JFrame frame = null;
 	JLabel text = null;
+	public List<String> maps;
 	@Override
 	public void init() {
-
-		Light sun = new Light(new Vector3f(20000,20000,10000), new Vector3f(1.3f, 1.3f, 1.3f));
+		maps = new ArrayList<>();
+		
+		maps.add("2005StartPlace");
+		maps.add("2006Crossroads");
+		maps.add("2008ROBLOXHQ");
+		maps.add("Colours");
+		maps.add("Shapes");
+		
+		Light sun = new Light(new Vector3f(1,1000,1), new Vector3f(1.3f, 1.3f, 1.3f));
 		this.addLight(sun);
 		
+		loadRoblox("2006Crossroads");
+	}
+
+	private void createFrame() {
 		new Thread(new Runnable() {
 
 			@Override
@@ -75,15 +100,8 @@ public class RobloxScene extends Scene {
 			}
 			
 		}).start();
-		
-		
-		loadRoblox();
-		
-		frame.dispose();
-		
-		this.setLoaded();
 	}
-
+	
 	@Override
 	public void update(Camera camera) {	
 		MasterRenderer.getInstance().renderScene(GameSettings.postProcess, camera);

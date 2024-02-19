@@ -23,9 +23,11 @@ import net.oikmo.toolbox.obj.OBJFileLoader;
 public class PartRenderer {	
 	private PartShader shader;
 	
-	public static RawModel cube = Loader.getInstance().loadToVAO(CubeModel.vertices, CubeModel.uv,CubeModel.indices);
-	public static RawModel cylinder = Loader.getInstance().loadToVAO(CylinderModel.vertices, CylinderModel.uv,CylinderModel.indices);
+	public static RawModel cylinder = OBJFileLoader.loadOBJ("sphere");
+	public static RawModel block =  OBJFileLoader.loadOBJ("cube");
 	public static RawModel sphere = OBJFileLoader.loadOBJ("cylinder");
+	
+	public static int texture;
 	
 	/**
 	 * EntityRenderer Constructor.
@@ -33,6 +35,7 @@ public class PartRenderer {
 	 */
 	public PartRenderer(PartShader shader, Matrix4f projectionMatrix){
 		this.shader = shader;
+		this.texture = Loader.getInstance().loadTexture("models/base");
 		shader.start();
 		shader.loadProjectionMatrix(projectionMatrix);
 		shader.stop();
@@ -72,8 +75,6 @@ public class PartRenderer {
 		shader.loadNumberOfRows(texture.getNumberOfRows());
 		shader.loadShineVariables(texture.getShineDamper(),texture.getReflectivity());
 		shader.loadFakeLighting(texture.isUseFakeLighting());
-		
-		MasterRenderer.disableCulling();
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, model.getTexture().getID());
 	}
