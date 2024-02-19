@@ -171,7 +171,7 @@ public class Main {
 				break;
 	    	case game:
 	    		if(player == null) {
-	    			player = new Player("spartan", new Vector3f(0,0,0),new Vector3f(0,0,0), 0.15f);
+	    			player = new Player("player", new Vector3f(0,0,0),new Vector3f(0,0,0), 1.75f);
 	    			camera = null;
 	    			camera = player.getCamera();
 	    			renderer.createShadowMap(camera);
