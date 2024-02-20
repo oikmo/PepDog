@@ -18,8 +18,6 @@ import net.oikmo.toolbox.Maths;
  */
 public class TerrainShader extends ShaderProgram {
 	
-	private static int MAX_LIGHTS = 4;
-	
 	private static final String VERTEX_FILE = "/net/oikmo/engine/renderers/terrain/terrainVertex.glsl";
 	private static final String FRAGMENT_FILE = "/net/oikmo/engine/renderers/terrain/terrainFragment.glsl";
 

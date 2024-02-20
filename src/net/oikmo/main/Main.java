@@ -82,6 +82,7 @@ public class Main {
 		AudioMaster.init();
 
 		Loader loader = Loader.getInstance();		
+		@SuppressWarnings("unused")
 		MasterRenderer renderer = MasterRenderer.getInstance();
 
 		SceneManager.init();
@@ -108,8 +109,6 @@ public class Main {
 		useMem.setColour(1, 1, 1);
 		allocMem.setColour(1, 1, 1);
 
-		boolean isMusicMain = false;
-
 		JFrame inputWindow = new JFrame();
 		inputWindow.setLocation(0, 105);
 		inputWindow.setSize(200, 100);
@@ -121,11 +120,12 @@ public class Main {
 				RobloxScene scene = ((RobloxScene)SceneManager.getCurrentScene());
 				scene.loadRoblox(e.getActionCommand());
 				inputWindow.setVisible(false);
-			}});
+			}
+		
+		});
+		
 		while(!Display.isCloseRequested()) {
 			handleGUI();
-
-			
 
 			long maxMem = Runtime.getRuntime().maxMemory();
 			long totalMem = Runtime.getRuntime().totalMemory();
@@ -146,13 +146,8 @@ public class Main {
 					player = null;
 					camera = null;
 					camera = new Camera(new Vector3f(0, 25, 0), new Vector3f(0,45,0));
-					renderer.createShadowMap(camera);
 					Mouse.setGrabbed(false);
 					SceneManager.loadScene("empty");
-				}
-				if(!isMusicMain) {
-					renderer.createShadowMap(camera);
-					isMusicMain = true;
 				}
 
 				camera.increaseRotation(0, (15f*DisplayManager.getFrameTimeSeconds()), 0);
@@ -165,17 +160,13 @@ public class Main {
 					player = new Player("player", new Vector3f(0,0,0),new Vector3f(0,0,0), 1.75f);
 					camera = null;
 					camera = player.getCamera();
-					renderer.createShadowMap(camera);
 					SceneManager.getCurrentScene().addEntity(player);	    			
 					SceneManager.loadScene("roblox");
-				}
-				if(isMusicMain) {
-					renderer.createShadowMap(camera);
-					isMusicMain = false;
 				}
 
 				AudioMaster.setListenerData(camera.getPosition().x,camera.getPosition().y,camera.getPosition().z, 0, 0, 0);
 				player.update(getTerrainFromPosition(player.getCoords()));
+				
 				break;
 			case pausemenu:
 				Mouse.setGrabbed(false);

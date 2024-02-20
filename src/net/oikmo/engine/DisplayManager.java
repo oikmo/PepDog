@@ -12,11 +12,9 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.vector.Vector2f;
 
 import net.oikmo.main.Main;
@@ -63,6 +61,7 @@ public class DisplayManager {
 	public static void updateDisplay() {
 		updateFPS();
 		Display.update();
+		Display.sync(60);
 		
 		if (Display.wasResized() &&  (Display.isFullscreen() || !Display.isFullscreen())) { 
 			GL11.glViewport(0, 0, Display.getWidth(), Display.getHeight());

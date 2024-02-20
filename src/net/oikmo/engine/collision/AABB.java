@@ -26,7 +26,7 @@ public class AABB {
 		this.half_extent = new Vector3f(halfExtents);
 	}
 	
-	public Collision intersects(AABB other) {
+	public CollisionPacket intersects(AABB other) {
 		Vector3f dist = Vector3f.sub(other.center, center, new Vector3f());
 		dist.x = (float) Math.abs(dist.x);
 		dist.y = (float) Math.abs(dist.y);
@@ -37,10 +37,10 @@ public class AABB {
         //Logger.log(LogLevel.INFO, temp.toString());
         dist = Vector3f.sub(dist, temp, dist);
 		
-        return new Collision(dist, dist.x < 0 && dist.y < 0 && dist.z < 0);
+        return new CollisionPacket(dist, dist.x < 0 && dist.y < 0 && dist.z < 0);
 	}
 	
-	public void correctPosition(AABB other, Collision data) {
+	public void correctPosition(AABB other, CollisionPacket data) {
 		Vector3f correction = Vector3f.sub(other.center, center, new Vector3f());
 		
 		if (data.distance.x > data.distance.y && data.distance.x > data.distance.z) {

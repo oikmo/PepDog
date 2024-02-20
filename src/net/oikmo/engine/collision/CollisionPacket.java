@@ -7,12 +7,12 @@ import org.lwjgl.util.vector.Vector3f;
  * @author Oikmo
  *
  */
-public class Collision {
+public class CollisionPacket {
 	
 	public Vector3f distance;
 	public boolean intersecting;
 	
-	public Collision(Vector3f distance, boolean intersecting) {
+	public CollisionPacket(Vector3f distance, boolean intersecting) {
 		this.distance = distance;
 		this.intersecting = intersecting;
 	}

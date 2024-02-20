@@ -8,7 +8,6 @@ import net.oikmo.engine.gui.component.GuiSlider;
 import net.oikmo.engine.gui.component.GuiText;
 import net.oikmo.engine.gui.component.button.GuiButton;
 import net.oikmo.engine.gui.font.fontRendering.TextMaster;
-import net.oikmo.engine.renderers.MasterRenderer;
 import net.oikmo.main.GameSettings;
 import net.oikmo.main.Main;
 import net.oikmo.main.Main.GameState;

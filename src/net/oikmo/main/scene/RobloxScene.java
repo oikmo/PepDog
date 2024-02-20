@@ -47,7 +47,7 @@ public class RobloxScene extends Scene {
 				}
 			}
 		}
-		frame.dispose();
+		frame.setVisible(false);
 		this.setLoaded();
 	}
 	

@@ -14,18 +14,18 @@ import net.oikmo.toolbox.rbxl.Item;
 import net.oikmo.toolbox.rbxl.PropertyContainer;
 
 public class Part {
-	
+
 	public enum ShapeType {
-		
+
 		Cylinder(0),
 		Block(1),
 		Sphere(2);
-		
+
 		private final int type;
 		ShapeType(int type) {
 			this.type = type;
 		}
-		
+
 		public static ShapeType getEnumFromValue(int value) {
 			for(int i = 0; i < values().length; i++) {
 				if(values()[i].getValue() == value) {
@@ -34,26 +34,26 @@ public class Part {
 			}
 			return Block;
 		}
-		
+
 		public int getValue() {
 			return type;
 		}
 	}
-	
+
 	public TexturedModel model;
 	private Vector3f position, rotation, scale;
 	private int textureIndex = 0;
 	private Vector3f colour;
 	private AABB aabb;
 	private int shape;
-	
+
 	public Part(Vector3f position, Vector3f rotation, Vector3f scale, Vector3f colour, int shape) {
 		this.position = position;
 		this.rotation = rotation;
 		this.scale = scale;
 		this.colour = new Vector3f(colour);
 		this.shape = shape;
-		
+
 		switch(shape) {
 		case 0:
 			this.model = new TexturedModel(PartRenderer.cylinder, new ModelTexture(PartRenderer.texture));
@@ -65,23 +65,22 @@ public class Part {
 			this.model = new TexturedModel(PartRenderer.sphere, new ModelTexture(PartRenderer.texture));
 			break;
 		}
-		
+
 		Vector3f halfextents = new Vector3f(scale);
 		halfextents.x /= 2;
 		halfextents.y /= 2;
 		halfextents.z /= 2;
 		this.aabb = new AABB(this.position, halfextents);
 	}
-	
+
 	public static Part createPartFromItem(Item item) {
 		Vector3f position = null;
 		Vector3f rotation = null;
 		Vector3f scale    = null;
-		String name = "";
 		int colour = -1;
 		int shape = -1;
 		for(Object prop : item.getProperties().getStringOrProtectedStringOrInt()) {
-			if(prop instanceof PropertyContainer.Bool) {
+			/*if(prop instanceof PropertyContainer.Bool) {
 				PropertyContainer.Bool property = (PropertyContainer.Bool)prop;
 				//System.out.println("bool " + property.getName() + " " + property.isValue());
 			}
@@ -89,19 +88,17 @@ public class Part {
 				PropertyContainer.Float property = (PropertyContainer.Float)prop;
 				//System.out.println("float " + property.getName() + " " + property.getValue());
 			}
-			else if(prop instanceof PropertyContainer.Token) {
+			else
+			else if(prop instanceof PropertyContainer.String) {
+				PropertyContainer.String property = (PropertyContainer.String)prop;
+			}*/
+			if(prop instanceof PropertyContainer.Token) {
 				PropertyContainer.Token property = (PropertyContainer.Token)prop;
 				//System.out.println("token " + property.getName() + " " + property.getValue());
 				if(property.getName().contentEquals("shape")) {
 					shape = property.getValue();
 				}
 			}
-			
-			else if(prop instanceof PropertyContainer.String) {
-				PropertyContainer.String property = (PropertyContainer.String)prop;
-				name = property.getValue();
-			} 
-			
 			else if(prop instanceof PropertyContainer.Int) {
 				PropertyContainer.Int property = (PropertyContainer.Int)prop;
 				if(property.getName().contentEquals("BrickColor")) {
@@ -117,7 +114,7 @@ public class Part {
 			}
 			else if(prop instanceof PropertyContainer.CoordinateFrame) {
 				PropertyContainer.CoordinateFrame property = (PropertyContainer.CoordinateFrame)prop;
-				
+
 				if(property.getName().contentEquals("CFrame")) {
 					position = new Vector3f(property.x(),property.y(),property.z());
 					rotation = new Vector3f(property.getAngles());
@@ -132,81 +129,81 @@ public class Part {
 		return new Part(position, rotation, scale, BrickColor.getEnumFromValue(colour).getValue(), ShapeType.getEnumFromValue(shape).getValue());
 	}
 	
+	public int getShape() {
+		return shape;
+	}
+	
 	public AABB getAABB() {
 		return aabb;
 	}
-	
+
 	public void setPosition(float x, float y, float z) {
 		this.position.x = x;
 		this.position.y = y;
 		this.position.z = z;
 	}
-	
+
 	public void increasePosition(float dx, float dy, float dz) {
 		this.position.x += dx;
 		this.position.y += dy;
 		this.position.z += dz;
 	}
-	
+
 	public void increaseRotation(float dx, float dy, float dz) {
 		this.rotation.x += dx;
 		this.rotation.y += dy;
 		this.rotation.z += dz;
 	}
-	
+
 	public void setRotation(float dx, float dy, float dz) {
 		this.rotation.x = dx;
 		this.rotation.y = dy;
 		this.rotation.z = dz;
 	}
-	
+
 	public void setRotation(Vector3f rotation) {
 		if(rotation == null) { return; }
 		this.rotation = rotation;
 	}
-	
+
 	public Vector3f getRotation() {
 		return this.rotation;
 	}
-	
+
 	public TexturedModel getModel() {
 		return model;
 	}
-	
-	public void setModel(TexturedModel model) {
-		this.model = model;
-	}
-	
+
 	public Vector3f getPosition() {
 		return position;
 	}
-	
+
 	DecimalFormat format = new DecimalFormat("#.#");
-	public String getPrintPosition() {
+	public String toString() {
 		return "X:"+format.format(getPosition().x)+", Y:"+format.format(getPosition().y)+", Z:"+format.format(getPosition().z);
 	}
 	public void setPosition(Vector3f position) {
 		if(position == null) { return; }
 		this.position = position;
 	}
-	
+
 	public Vector3f getScale() {
 		return scale;
 	}
 	public void setScale(Vector3f scale) {
 		this.scale = scale;
 	}
-	
+
 	public float getTextureXOffset(){
 		int column = textureIndex%model.getTexture().getNumberOfRows();
 		return (float)column/(float)model.getTexture().getNumberOfRows();
 	}
-	
+
 	public float getTextureYOffset(){
 		int row = textureIndex/model.getTexture().getNumberOfRows();
 		return (float)row/(float)model.getTexture().getNumberOfRows();
 	}
-	
+
 	public Vector2f getCoords() {
 		return new Vector2f(getPosition().x, getPosition().z);
 	}

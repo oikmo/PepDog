@@ -18,9 +18,6 @@ import net.oikmo.toolbox.Maths;
  * @author <i>Oikmo</i>
  */
 public class PartShader extends ShaderProgram {
-	
-	private static int MAX_LIGHTS = 4;
-	
 	private static final String VERTEX_FILE = "/net/oikmo/engine/renderers/part/partVertex.glsl";
 	private static final String FRAGMENT_FILE = "/net/oikmo/engine/renderers/part/partFragment.glsl";
 
@@ -49,7 +46,6 @@ public class PartShader extends ShaderProgram {
 		super.bindAttribute(0, "position");
 		super.bindAttribute(1, "textureCoords");
 		super.bindAttribute(2, "normal");
-		//super.loadInt(, );
 	}
 	
 	

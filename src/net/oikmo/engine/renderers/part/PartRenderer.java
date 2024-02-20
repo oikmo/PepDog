@@ -11,8 +11,6 @@ import org.lwjgl.util.vector.Matrix4f;
 
 import net.oikmo.engine.Loader;
 import net.oikmo.engine.Part;
-import net.oikmo.engine.models.CubeModel;
-import net.oikmo.engine.models.CylinderModel;
 import net.oikmo.engine.models.RawModel;
 import net.oikmo.engine.models.TexturedModel;
 import net.oikmo.engine.renderers.MasterRenderer;
@@ -35,7 +33,7 @@ public class PartRenderer {
 	 */
 	public PartRenderer(PartShader shader, Matrix4f projectionMatrix){
 		this.shader = shader;
-		this.texture = Loader.getInstance().loadTexture("models/base");
+		texture = Loader.getInstance().loadTexture("models/base");
 		shader.start();
 		shader.loadProjectionMatrix(projectionMatrix);
 		shader.stop();

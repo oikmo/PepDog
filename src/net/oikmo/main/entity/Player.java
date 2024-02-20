@@ -15,7 +15,7 @@ import net.oikmo.engine.Part;
 import net.oikmo.engine.audio.AudioMaster;
 import net.oikmo.engine.audio.Source;
 import net.oikmo.engine.collision.AABB;
-import net.oikmo.engine.collision.Collision;
+import net.oikmo.engine.collision.CollisionPacket;
 import net.oikmo.engine.models.TexturedModel;
 import net.oikmo.engine.scene.Scene;
 import net.oikmo.engine.terrain.Terrain;
@@ -155,7 +155,7 @@ public class Player extends Entity {
 		
 		if(!Keyboard.isKeyDown(Keyboard.KEY_V)) {
 			for (AABB box : collisionBoxes) {
-				Collision data = this.getAABB().intersects(box);
+				CollisionPacket data = this.getAABB().intersects(box);
 				if (data.intersecting) {
 					this.getAABB().correctPosition(box, data);
 					Vector3f temp2Pos = new Vector3f(this.getAABB().getCenter());
@@ -216,17 +216,7 @@ public class Player extends Entity {
 		jumpSFX.play(jump);
 		this.upwardsSpeed = JUMP_POWER;
 	}
-	public String getSpeed() {
-		if(currentVertSpeed == 0) {
-			return currentVertSpeed + " " + -currentHorzSpeed;
-		} else if(currentHorzSpeed == 0) {
-			return -currentVertSpeed + " " + currentHorzSpeed;
-		} else if(currentVertSpeed == 0 && currentHorzSpeed == 0) {
-			return currentVertSpeed + " " + currentHorzSpeed;
-		}
-		return -currentVertSpeed + " " + -currentHorzSpeed;
-	}
-
+	
 	public void pause() {
 		footstepsSFX.stop();
 	}
@@ -239,9 +229,7 @@ public class Player extends Entity {
 		float dHorzX = 0;
 		float dHorzZ = 0;
 		
-		
 		Vector2f input = this.getInput();
-		
 		
 		float yaw = -camera.getYaw();
 		if(input.x != 0 || camera.isFirstPerson()) {

@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
@@ -168,8 +167,8 @@ public class MasterRenderer {
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glClearColor(RED, GREEN, BLUE, 1);
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT|GL11.GL_DEPTH_BUFFER_BIT);
-		GL13.glActiveTexture(GL13.GL_TEXTURE5);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.getShadowMapTexture());
+		//GL13.glActiveTexture(GL13.GL_TEXTURE5);
+		//GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.getShadowMapTexture());
 	}
 	
 	public static void enableCulling() {
@@ -224,7 +223,7 @@ public class MasterRenderer {
 			fbo.bindFrameBuffer();
 		}
 		renderScene(scene.getLights(), camera, scene.getTerrain(), scene.getEntities(), scene.getParts(), new Vector4f(0,0,0,0));
-		this.renderShadowMap(scene.getEntities(), scene.getLights().get(0));
+		//this.renderShadowMap(scene.getEntities(), scene.getLights().get(0));
 		renderWater(scene.getLights(), camera, scene.getTerrain(), scene.getEntities(), scene.getParts(), scene.getWaters(), waterFBO, scene.getWaters().get(0));
 		ParticleMaster.update(camera);
 		ParticleMaster.renderParticles(camera);
@@ -244,7 +243,7 @@ public class MasterRenderer {
 			fbo.bindFrameBuffer();
 		}
 		renderScene(scene.getLights(), camera, scene.getTerrain(), scene.getEntities(), scene.getParts(), new Vector4f(0,0,0,0));
-		this.renderShadowMap(scene.getEntities(), scene.getLights().get(0));
+		//this.renderShadowMap(scene.getEntities(), scene.getLights().get(0));
 		ParticleMaster.update(camera);
 		ParticleMaster.renderParticles(camera);
 		if(postProcess) {
@@ -275,13 +274,6 @@ public class MasterRenderer {
 		partShader.loadSkyColour(RED, GREEN, BLUE);
 		partsRenderer.render(parts);
 		partShader.stop();
-		
-		terrainShader.start();
-		terrainShader.loadSkyColour(RED, GREEN, BLUE);
-		terrainShader.loadLight(lights);
-		terrainShader.loadViewMatrix(camera);
-		terrainRenderer.render(terrains, shadowMapRenderer.getToShadowMapSpaceMatrix());
-		terrainShader.stop();
 		
 		skyboxRenderer.render(camera, projectionMatrix, RED, GREEN, BLUE);
 		terrains.clear();
