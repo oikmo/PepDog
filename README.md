@@ -28,7 +28,6 @@ TODO :
 ## Misc.
 - Q - FlyCam
 - Left Shift - Sprint
-- J - Opens input box to load map via input
 
 ## MAPS TO LOAD
 - 2005StartPlace
@@ -36,5 +35,9 @@ TODO :
 - 2008ROBLOXHQ
 - Colours
 - Shapes
+
+## How to load a map?
+when you run the jar, use a command line e.g cmd/powershell on windows, or terminal on unix.
+then type in ```java -jar ENGINE-<os>.jar <map>```
 
 ![pepsi-dog](https://github.com/oikmo/RBXL-Loader/assets/78755068/29814e11-c557-41cd-81d7-a0afbb9c8f2a)
