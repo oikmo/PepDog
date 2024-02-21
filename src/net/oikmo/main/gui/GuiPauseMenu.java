@@ -43,8 +43,7 @@ public class GuiPauseMenu extends GuiScreen {
 		}
 		if(id == 2) {
 			this.prepareCleanUp();
-			Main.gameState = GameState.mainmenu;
-			Main.currentScreen = new GuiMainMenu();
+			Main.destroyGame();
 		}
 
 	}

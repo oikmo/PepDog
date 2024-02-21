@@ -202,15 +202,10 @@ public class Camera {
 		float theta = angleAroundPlayer;
 		float offsetX = (float) (horizDistance * Math.sin(Math.toRadians(theta)));
 		float offsetZ = (float) (horizDistance * Math.cos(Math.toRadians(theta)));
+		position.y = player.getPosition().y + verticDistance + yOffset;
 		position.x = Maths.lerp(position.x, player.getPosition().x - offsetX, 0.35f);
 		position.z = Maths.lerp(position.z, player.getPosition().z - offsetZ, 0.35f);
-		position.y = player.getPosition().y + verticDistance + yOffset;
-		float heightOfTerrain = Main.getHeightFromPosition(position.x, position.z);
-		if(Main.getTerrainFromPosition(position.x, position.z) != null) {
-			if(position.y <= heightOfTerrain+1) {
-				position.y = heightOfTerrain+1;
-			}
-		}
+		
 		//this.yaw = 180 - (player.getRotY() + angleAroundPlayer);
 		this.yaw = 180 - angleAroundPlayer;
 	}
@@ -222,27 +217,9 @@ public class Camera {
 		return (float) (distanceFromPlayer * Math.sin(Math.toRadians(pitch+2)));
 	}
 	
-	private long lastClick = 150;
-	private long coolDownTime = 150;
-	private boolean zooming = false;
 	private boolean lockIn = false;
 	private void calculateZoom(){
 		if(Main.currentScreen != null) { if(Main.currentScreen.isLockInput()) { return; } }
-		
-		if(Keyboard.isKeyDown(Keyboard.KEY_F)) {
-			long timeNow = System.currentTimeMillis();
-		    long time = timeNow - lastClick;
-		    if (time < 0 || time > coolDownTime) {
-		    	lastClick = timeNow;
-		    	zooming = !zooming;
-		    	if(zooming) {
-					distanceFromPlayer = 0;
-				} else {
-					distanceFromPlayer = 8;
-				}
-		    }
-		} 
-		
 		float zoomLevel = Mouse.getDWheel() * 0.05f;
 		
 		if(!lockIn) {

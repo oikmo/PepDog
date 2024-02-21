@@ -49,10 +49,8 @@ public class GuiOptions extends GuiScreen {
 				case pausemenu:
 					Main.currentScreen = new GuiPauseMenu();
 					break;
-				case mainmenu:
-					Main.currentScreen = new GuiMainMenu();
-					break;
-				default: break;
+			default:
+				break;
 			}
 			
 		}
@@ -60,11 +58,11 @@ public class GuiOptions extends GuiScreen {
 	
 	public void updateScreen() {
 
-		int valueSens = (int)((sensitivity.getValue()/5f)*1500f);
+		int valueSens = (int)((sensitivity.getValue()/5f)*1500f)/2;
 		float valueSenss = (valueSens*5F)/1500f;
 		
+		sensitivity.setText("Sensitivity: " + valueSens);
 		if(GameSettings.sensitivity != valueSenss) {
-			sensitivity.setText("Sensitivity: " + valueSens);
 			GameSettings.sensitivity = valueSenss;
 		}
 		

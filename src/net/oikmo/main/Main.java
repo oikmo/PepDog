@@ -28,7 +28,6 @@ import net.oikmo.engine.terrain.Terrain;
 import net.oikmo.main.entity.Camera;
 import net.oikmo.main.entity.Player;
 import net.oikmo.main.gui.GuiInGame;
-import net.oikmo.main.gui.GuiMainMenu;
 import net.oikmo.main.gui.GuiPauseMenu;
 import net.oikmo.main.scene.RobloxScene;
 import net.oikmo.main.scene.SceneManager;
@@ -62,7 +61,6 @@ public class Main {
 	static Frame frame;
 
 	public enum GameState {
-		mainmenu,
 		game,
 		pausemenu
 	}
@@ -90,8 +88,8 @@ public class Main {
 
 		String fontType = "comic-sans";
 		font = new FontType(loader.loadFontTexture(fontType),fontType);
-		gameState = GameState.mainmenu;
-		currentScreen = new GuiMainMenu();
+		gameState = GameState.game;
+		currentScreen = new GuiInGame();
 
 		Camera camera = new Camera(new Vector3f(0,25,0), new Vector3f(0,45,0));
 
@@ -140,18 +138,6 @@ public class Main {
 			scene.setTextString("scene: " + SceneManager.getCurrentScene().getClass().getSimpleName().replace("Scene","").toLowerCase());
 
 			switch(gameState) {
-			case mainmenu:
-				if(player != null) {
-					SceneManager.getCurrentScene().getEntities().remove(player);
-					player = null;
-					camera = null;
-					camera = new Camera(new Vector3f(0, 25, 0), new Vector3f(0,45,0));
-					Mouse.setGrabbed(false);
-					SceneManager.loadScene("empty");
-				}
-
-				camera.increaseRotation(0, (15f*DisplayManager.getFrameTimeSeconds()), 0);
-				break;
 			case game:
 				if(Keyboard.isKeyDown(Keyboard.KEY_J)) {
 					inputWindow.setVisible(true);
