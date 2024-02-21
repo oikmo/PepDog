@@ -1,6 +1,6 @@
 # PepDog Engine
 
-<img src="https://github.com/oikmo/RBXL-Loader/assets/78755068/29814e11-c557-41cd-81d7-a0afbb9c8f2a" width="240">
+<img src="https://github.com/oikmo/RBXL-Loader/assets/78755068/29814e11-c557-41cd-81d7-a0afbb9c8f2a" width="300">
 
 ### Roblox Clone in LWJGL2
 
