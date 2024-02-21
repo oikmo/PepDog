@@ -40,4 +40,4 @@ TODO :
 when you run the jar, use a command line e.g cmd/powershell on windows, or terminal on unix.
 then type in ```java -jar ENGINE-<os>.jar <map>```
 
-![pepsi-dog](https://github.com/oikmo/RBXL-Loader/assets/78755068/29814e11-c557-41cd-81d7-a0afbb9c8f2a)
+![pepsi-dog](https://github.com/oikmo/RBXL-Loader/assets/78755068/29814e11-c557-41cd-81d7-a0afbb9c8f2a | width=100)
