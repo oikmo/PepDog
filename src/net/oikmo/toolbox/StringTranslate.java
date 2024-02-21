@@ -15,7 +15,7 @@ public class StringTranslate {
 		try {
 			//this.translateTable.load(StringTranslate.class.getResourceAsStream("/lang/en_US.lang"));
 			//System.out.println(new File(UNDECIDED.getUNDECIDEDDir().getAbsolutePath()+"/options.save"));
-			this.translateTable.load(new FileInputStream(Main.getUNDECIDEDDir().getAbsolutePath()+"/options.save"));
+			this.translateTable.load(new FileInputStream(Main.getPEPDOGDir().getAbsolutePath()+"/options.save"));
 			
 		} catch (IOException var2) {
 			var2.printStackTrace();
@@ -30,7 +30,7 @@ public class StringTranslate {
 	public void insertKey(String name, String value) {
 		this.translateTable.setProperty(name, value);
 		try {
-			this.translateTable.store(new FileOutputStream(Main.getUNDECIDEDDir().getAbsolutePath()+"/options.save"), null);
+			this.translateTable.store(new FileOutputStream(Main.getPEPDOGDir().getAbsolutePath()+"/options.save"), null);
 		} catch (IOException e) {
 			Main.error("failed to store key!", e);
 		}

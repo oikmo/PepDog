@@ -130,13 +130,13 @@ public class Camera {
 				position.z += (float) ((speed * speeds) * Math.sin(Math.toRadians(yaw)));
 			}
 			
-			pitch -= Mouse.getDY() * GameSettings.SENSITIVITY*2;
+			pitch -= Mouse.getDY() * GameSettings.sensitivity*2;
 			if(pitch < -maxVerticalTurn){
 				pitch = -maxVerticalTurn;
 			}else if(pitch > maxVerticalTurn){
 				pitch = maxVerticalTurn;
 			}
-			yaw += Mouse.getDX() * GameSettings.SENSITIVITY;
+			yaw += Mouse.getDX() * GameSettings.sensitivity;
 			
 			position.x += (float) -(moveAt * Math.sin(Math.toRadians(yaw)));
 			position.y += (float) (moveAt * Math.sin(Math.toRadians(pitch)));
@@ -271,7 +271,7 @@ public class Camera {
 	
 	int maxVerticalTurn = 80;
 	private void calculatePitch() {
-		float pitchChange = Mouse.getDY() * GameSettings.SENSITIVITY*2;
+		float pitchChange = Mouse.getDY() * GameSettings.sensitivity*2;
 		pitch = Maths.lerp(pitch, pitch - pitchChange, 1f);
 		if(pitch < -maxVerticalTurn){
 			pitch = -maxVerticalTurn;
@@ -281,7 +281,7 @@ public class Camera {
 	}
 	
 	private void calculateAngleAroundPlayer() {
-		float angleChange = Mouse.getDX() * GameSettings.SENSITIVITY;
+		float angleChange = Mouse.getDX() * GameSettings.sensitivity;
 		angleAroundPlayer -= angleChange;
 	}
 }

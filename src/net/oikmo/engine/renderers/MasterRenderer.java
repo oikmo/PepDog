@@ -235,21 +235,13 @@ public class MasterRenderer {
 		TextMaster.render();
 	}
 	
-	public void renderScene(boolean postProcess, Camera camera) {
+	public void renderScene( Camera camera) {
 		Scene scene = SceneManager.getCurrentScene();
 		if(!scene.isLoaded()) { return; }
-		//System.out.println(scene.getClass().getName());
-		if(postProcess) {
-			fbo.bindFrameBuffer();
-		}
 		renderScene(scene.getLights(), camera, scene.getTerrain(), scene.getEntities(), scene.getParts(), new Vector4f(0,0,0,0));
 		//this.renderShadowMap(scene.getEntities(), scene.getLights().get(0));
 		ParticleMaster.update(camera);
 		ParticleMaster.renderParticles(camera);
-		if(postProcess) {
-			fbo.unbindFrameBuffer();
-			PostProcessing.doPostProcessing(fbo.getColourTexture());
-		}
 		guiRenderer.render(guis);
 		TextMaster.render();
 	}

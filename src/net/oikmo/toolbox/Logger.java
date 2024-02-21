@@ -31,7 +31,7 @@ public class Logger {
 	}
 	
 	public static void saveLog() {
-		File saveDirectory =  new File(Main.getUNDECIDEDDir().getPath()+"/logs/");
+		File saveDirectory =  new File(Main.getPEPDOGDir().getPath()+"/logs/");
 		if (!saveDirectory.exists()) {
 	        try {
 	        	saveDirectory.mkdir();

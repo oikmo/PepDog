@@ -56,7 +56,7 @@ public class Main {
 	public static Player player;
 	public static GuiScreen currentScreen;
 
-	public static String gameName = "RBXL LOADER";
+	public static String gameName = "PEPDOG-BLOX";
 	public static String version = "a0.0.1";
 	public static String gameVersion = gameName + " " + version;
 	static Frame frame;
@@ -269,11 +269,7 @@ public class Main {
 					}
 				}
 			}
-		} else {
-
-
-		}
-
+		} else {}
 	}
 
 	public static void sleep(long time) {
@@ -284,9 +280,9 @@ public class Main {
 		return Keyboard.isKeyDown(Keyboard.KEY_W) || Keyboard.isKeyDown(Keyboard.KEY_A) || Keyboard.isKeyDown(Keyboard.KEY_S) || Keyboard.isKeyDown(Keyboard.KEY_D);
 	}
 
-	public static File getUNDECIDEDDir() {
-		File notFoundDir = getAppDir("undecided");
-		return notFoundDir;
+	public static File getPEPDOGDir() {
+		File pepdogDir = getAppDir("pepdog");
+		return pepdogDir;
 	}
 	public static File getAppDir(String name) {
 		String userDir = System.getProperty("user.home", ".");

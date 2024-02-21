@@ -16,7 +16,7 @@ public class GuiOptions extends GuiScreen {
 	
 	private GuiText title;
 	private GuiSlider volume;
-	private GuiButton postProcess;
+	private GuiSlider sensitivity;
 	private GameState state;
 	
 	public GuiOptions(GameState state) {
@@ -34,8 +34,8 @@ public class GuiOptions extends GuiScreen {
 		volume = new GuiSlider(0, GameSettings.globalVolume, new Vector2f(-0.3f,0.3f), new Vector2f(0.65f,0.1f), "Volume");
 		sliderList.add(volume);
 		
-		postProcess = new GuiButton(1, new Vector2f(0f,0f), new Vector2f(0.65f,0.1f), ("Post Process : " +  GameSettings.postProcess));
-		buttonList.add(postProcess);
+		sensitivity = new GuiSlider(1, GameSettings.sensitivity, new Vector2f(0.3f,0.3f), new Vector2f(0.65f,0.1f), "Volume");
+		sliderList.add(sensitivity);
 		
 		buttonList.add(new GuiButton(0, new Vector2f(0f,-0.2f), new Vector2f(0.65f,0.1f), "Back"));
 	}
@@ -56,15 +56,20 @@ public class GuiOptions extends GuiScreen {
 			}
 			
 		}
-		if(id == 1) {
-			GameSettings.postProcess = !GameSettings.postProcess;
-			postProcess.setText("Post Process : " +  GameSettings.postProcess);
-		}
 	}
-
+	
 	public void updateScreen() {
+
+		int valueSens = (int)((sensitivity.getValue()/5f)*1500f);
+		float valueSenss = (valueSens*5F)/1500f;
+		
+		if(GameSettings.sensitivity != valueSenss) {
+			sensitivity.setText("Sensitivity: " + valueSens);
+			GameSettings.sensitivity = valueSenss;
+		}
+		
 		volume.setText("Volume: " + (int)(volume.getValue() * 100) + "%");
-		if(volume.getValue() != GameSettings.globalVolume ) {
+		if(volume.getValue() != GameSettings.globalVolume) {
 			GameSettings.globalVolume = volume.getValue();
 		}
 	}

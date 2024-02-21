@@ -120,7 +120,7 @@ public class DisplayManager {
 		if(sec < 10) { second = "0" + sec; }
 		
 	    String name = day + "-" + month + "-" + year + "_" + hour + "." + minute + "." + second;
-	    File saveDirectory =  new File(Main.getUNDECIDEDDir().getPath()+"/screenshots/");
+	    File saveDirectory =  new File(Main.getPEPDOGDir().getPath()+"/screenshots/");
 	 
 	    if (!saveDirectory.exists()) {
 	        try {

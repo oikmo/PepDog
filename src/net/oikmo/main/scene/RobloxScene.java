@@ -12,7 +12,6 @@ import net.oikmo.engine.Part;
 import net.oikmo.engine.renderers.MasterRenderer;
 import net.oikmo.engine.scene.Scene;
 import net.oikmo.engine.textures.TerrainTexturePack;
-import net.oikmo.main.GameSettings;
 import net.oikmo.main.entity.Camera;
 import net.oikmo.main.entity.Light;
 import net.oikmo.toolbox.rbxl.Item;
@@ -104,7 +103,7 @@ public class RobloxScene extends Scene {
 	
 	@Override
 	public void update(Camera camera) {	
-		MasterRenderer.getInstance().renderScene(GameSettings.postProcess, camera);
+		MasterRenderer.getInstance().renderScene(camera);
 	}
 
 	@Override
