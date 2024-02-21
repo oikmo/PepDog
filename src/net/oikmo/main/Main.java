@@ -1,15 +1,10 @@
 package net.oikmo.main;
 
 import java.awt.Frame;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.swing.JFrame;
-import javax.swing.JTextField;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -22,9 +17,8 @@ import net.oikmo.engine.Loader;
 import net.oikmo.engine.audio.AudioMaster;
 import net.oikmo.engine.gui.GuiScreen;
 import net.oikmo.engine.gui.component.GuiText;
-import net.oikmo.engine.gui.font.fontMeshCreator.FontType;
+import net.oikmo.engine.gui.font.meshcreator.FontType;
 import net.oikmo.engine.renderers.MasterRenderer;
-import net.oikmo.engine.terrain.Terrain;
 import net.oikmo.main.entity.Camera;
 import net.oikmo.main.entity.Player;
 import net.oikmo.main.gui.GuiInGame;
@@ -48,16 +42,15 @@ public class Main {
 	public static int WIDTH = 854;
 	public static int HEIGHT = 480;
 
-	public static Map<String, Terrain> terrainMap = new HashMap<>();
-
 	public static FontType font;
-
+	
 	public static Player player;
 	public static GuiScreen currentScreen;
 
 	public static String gameName = "PEPDOG-BLOX";
-	public static String version = "a0.0.1";
+	public static String version = "a0.0.2";
 	public static String gameVersion = gameName + " " + version;
+	
 	static Frame frame;
 
 	public enum GameState {
@@ -73,14 +66,14 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) throws IOException {		
-		String mapToLoad = "2008ROBLOXHQ";
+		String mapToLoad = "2005StartPlace";
 		if(args.length != 0) {
 			mapToLoad = args[0];
 		}
 		
-		removeHSPIDERR();
+		
 		DisplayManager.createDisplay();
-
+		removeHSPIDERR();
 		GameSettings.loadValues();
 		AudioMaster.init();
 
@@ -140,7 +133,7 @@ public class Main {
 				}
 
 				AudioMaster.setListenerData(camera.getPosition().x,camera.getPosition().y,camera.getPosition().z, 0, 0, 0);
-				player.update(getTerrainFromPosition(player.getCoords()));
+				player.update();
 				
 				break;
 			case pausemenu:
@@ -162,10 +155,17 @@ public class Main {
 		Logger.saveLog();
 		DisplayManager.closeDisplay();
 		frame = null;
-
 		System.exit(0);
-
 	}
+	
+	public static void destroyGameButNoClose() {
+		GameSettings.saveValues();
+		AudioMaster.cleanUp();
+		MasterRenderer.getInstance().cleanUp();
+		Logger.saveLog();
+		DisplayManager.closeDisplay();
+	}
+	
 	private static void removeHSPIDERR() {
 		File path = new File(".");
 		String[] files = path.list();
@@ -175,36 +175,6 @@ public class Main {
 				file.delete();
 			}
 		}
-	}
-
-	public static Terrain getTerrainFromPosition(Vector2f position) { 
-		int gridX = (int) (position.x / Terrain.SIZE);
-		int gridZ = (int) (position.y / Terrain.SIZE);
-		if(position.x < 0) {
-			gridX = (int) (position.x / Terrain.SIZE) - 1;
-		}
-		if(position.y < 0) {
-			gridZ =(int) (position.y/ Terrain.SIZE) - 1;
-		}
-		return terrainMap.get(gridX + " " + gridZ);
-	}	
-	public static Terrain getTerrainFromPosition(float x, float z) { 
-		int gridX = (int) (x / Terrain.SIZE);
-		int gridZ = (int) (z / Terrain.SIZE);
-		if(x < 0) {
-			gridX = (int) (x / Terrain.SIZE) - 1;
-		}
-		if(z < 0) {
-			gridZ =(int) (z/ Terrain.SIZE) - 1;
-		}
-		return terrainMap.get(gridX + " " + gridZ);
-	}
-	public static float getHeightFromPosition(float worldX, float worldZ) {
-		Terrain terrain = getTerrainFromPosition(worldX, worldZ);
-		if(terrain == null) {
-			return 0;
-		}
-		return terrain.getHeightOfTerrain(worldX, worldZ);
 	}
 
 	private static long lastClick = 150;
@@ -294,6 +264,8 @@ public class Main {
 	}
 
 	public static void error(String id, Throwable throwable) {
+		Main.destroyGameButNoClose();
+		frame = new JFrame();
 		frame.setVisible(true);
 		UnexpectedThrowable unexpectedThrowable = new UnexpectedThrowable(id, throwable);
 		frame.removeAll();

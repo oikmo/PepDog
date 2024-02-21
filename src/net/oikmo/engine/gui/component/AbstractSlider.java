@@ -4,9 +4,9 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector2f;
 
 import net.oikmo.engine.DisplayManager;
-import net.oikmo.engine.gui.GuiTexture;
 import net.oikmo.engine.gui.component.button.IButton;
 import net.oikmo.engine.renderers.MasterRenderer;
+import net.oikmo.engine.textures.GuiTexture;
 
 public abstract class AbstractSlider implements IButton {
 	private GuiTexture normal;

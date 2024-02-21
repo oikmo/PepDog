@@ -3,8 +3,8 @@ package net.oikmo.engine.gui.component;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
-import net.oikmo.engine.gui.font.fontMeshCreator.FontType;
-import net.oikmo.engine.gui.font.fontRendering.TextMaster;
+import net.oikmo.engine.gui.font.meshcreator.FontType;
+import net.oikmo.engine.gui.font.renderer.TextMaster;
 import net.oikmo.main.Main;
 
 /**

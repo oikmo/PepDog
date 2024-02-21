@@ -13,7 +13,7 @@ import net.oikmo.engine.Entity;
 import net.oikmo.engine.models.RawModel;
 import net.oikmo.engine.models.TexturedModel;
 import net.oikmo.engine.renderers.MasterRenderer;
-import net.oikmo.toolbox.Maths;
+import net.oikmo.toolbox.Toolbox;
 
 public class ShadowMapEntityRenderer {
 
@@ -84,7 +84,7 @@ public class ShadowMapEntityRenderer {
 	 *            - the entity to be prepared for rendering.
 	 */
 	private void prepareInstance(Entity entity) {
-		Matrix4f modelMatrix = Maths.createTransformationMatrix(entity.getPosition(), entity.getRotX(), entity.getRotY(), entity.getRotZ(), entity.getScale());
+		Matrix4f modelMatrix = Toolbox.createTransformationMatrix(entity.getPosition(), entity.getRotX(), entity.getRotY(), entity.getRotZ(), entity.getScale());
 		Matrix4f mvpMatrix = Matrix4f.mul(projectionViewMatrix, modelMatrix, null);
 		shader.loadMvpMatrix(mvpMatrix);
 	}

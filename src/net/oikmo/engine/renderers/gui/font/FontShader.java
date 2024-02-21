@@ -3,7 +3,7 @@ package net.oikmo.engine.renderers.gui.font;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
-import net.oikmo.engine.shaders.ShaderProgram;
+import net.oikmo.engine.renderers.ShaderProgram;
 
 
 public class FontShader extends ShaderProgram{

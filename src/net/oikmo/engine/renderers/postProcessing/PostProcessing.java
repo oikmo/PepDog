@@ -6,7 +6,6 @@ import org.lwjgl.opengl.GL30;
 
 import net.oikmo.engine.Loader;
 import net.oikmo.engine.models.RawModel;
-import net.oikmo.engine.postProcessing.PixelatorEffect;
 
 public class PostProcessing {
 	

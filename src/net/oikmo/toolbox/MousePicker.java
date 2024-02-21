@@ -7,20 +7,16 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
-import net.oikmo.engine.terrain.Terrain;
-import net.oikmo.main.Main;
 import net.oikmo.main.entity.Camera;
 
 public class MousePicker {
 	
-	private static final int RECURSION_COUNT = 200;
-	private static final float RAY_RANGE = 600;
+	//private static final int RECURSION_COUNT = 200;
+	//private static final float RAY_RANGE = 600;
 	
 	private Vector3f currentRay;
 	
-	private Vector3f currentTerrainPoint;
-	
-	
+	//private Vector3f currentTerrainPoint;
 
 	private Matrix4f projectionMatrix;
 	private Matrix4f viewMatrix;
@@ -28,7 +24,7 @@ public class MousePicker {
 	
 	public MousePicker(Camera camera) {
 		this.camera = camera;
-		this.viewMatrix = Maths.createViewMatrix(camera);
+		this.viewMatrix = Toolbox.createViewMatrix(camera);
 	}
 	
 	public Vector3f getCurrentRay() {
@@ -37,13 +33,13 @@ public class MousePicker {
 	
 	public void update(Matrix4f projectionMatrix) {
 		this.projectionMatrix = projectionMatrix;
-		viewMatrix = Maths.createViewMatrix(camera);
+		viewMatrix = Toolbox.createViewMatrix(camera);
 		currentRay = calculateMouseRay();
-		if (intersectionInRange(0, RAY_RANGE, currentRay)) {
+		/*if (intersectionInRange(0, RAY_RANGE, currentRay)) {
 			currentTerrainPoint = binarySearch(0, 0, RAY_RANGE, currentRay);
 		} else {
 			currentTerrainPoint = null;
-		}
+		}*/
 	}
 	
 	public Vector3f calculateMouseRay() {
@@ -78,7 +74,7 @@ public class MousePicker {
 	
 	//**********************************************************
 	
-		private Vector3f getPointOnRay(Vector3f ray, float distance) {
+		/*private Vector3f getPointOnRay(Vector3f ray, float distance) {
 			Vector3f camPos = camera.getPosition();
 			Vector3f start = new Vector3f(camPos.x, camPos.y, camPos.z);
 			Vector3f scaledRay = new Vector3f(ray.x * distance, ray.y * distance, ray.z * distance);
@@ -128,5 +124,5 @@ public class MousePicker {
 		
 		public Vector3f getCurrentTerrainPoint() {
 			return currentTerrainPoint;
-		}
+		}*/
 }

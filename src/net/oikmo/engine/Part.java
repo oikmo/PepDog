@@ -5,7 +5,6 @@ import java.text.DecimalFormat;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
-import net.oikmo.engine.collision.AABB;
 import net.oikmo.engine.models.TexturedModel;
 import net.oikmo.engine.renderers.part.BrickColor;
 import net.oikmo.engine.renderers.part.PartRenderer;

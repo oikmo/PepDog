@@ -6,7 +6,7 @@ import net.oikmo.engine.Loader;
 import net.oikmo.engine.gui.GuiScreen;
 import net.oikmo.engine.gui.component.GuiText;
 import net.oikmo.engine.gui.component.button.GuiButton;
-import net.oikmo.engine.gui.font.fontRendering.TextMaster;
+import net.oikmo.engine.gui.font.renderer.TextMaster;
 import net.oikmo.main.Main;
 import net.oikmo.main.Main.GameState;
 

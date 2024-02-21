@@ -2,7 +2,7 @@ package net.oikmo.engine.renderers.shadows;
 
 import org.lwjgl.util.vector.Matrix4f;
 
-import net.oikmo.engine.shaders.ShaderProgram;
+import net.oikmo.engine.renderers.ShaderProgram;
 
 public class ShadowShader extends ShaderProgram {
 	

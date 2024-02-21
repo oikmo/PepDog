@@ -3,7 +3,7 @@ package net.oikmo.engine.gui.component.button;
 import org.lwjgl.util.vector.Vector2f;
 
 import net.oikmo.engine.gui.component.GuiText;
-import net.oikmo.engine.gui.font.fontRendering.TextMaster;
+import net.oikmo.engine.gui.font.renderer.TextMaster;
 import net.oikmo.main.Main;
 
 public class GuiButton extends AbstractButton {

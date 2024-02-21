@@ -15,7 +15,7 @@ import net.oikmo.engine.models.RawModel;
 import net.oikmo.engine.models.TexturedModel;
 import net.oikmo.engine.renderers.MasterRenderer;
 import net.oikmo.engine.textures.ModelTexture;
-import net.oikmo.toolbox.Maths;
+import net.oikmo.toolbox.Toolbox;
 import net.oikmo.toolbox.obj.OBJFileLoader;
 
 public class PartRenderer {	
@@ -86,7 +86,7 @@ public class PartRenderer {
 	}
 	
 	private void prepareInstance(Part part) {
-		Matrix4f transformationMatrix = Maths.createTransformationMatrix(part.getPosition(), part.getRotation(), part.getScale());
+		Matrix4f transformationMatrix = Toolbox.createTransformationMatrix(part.getPosition(), part.getRotation(), part.getScale());
 		shader.loadTransformationMatrix(transformationMatrix);
 		shader.loadOffset(part.getTextureXOffset(), part.getTextureYOffset());
 		shader.loadPartColour(part.getColour());

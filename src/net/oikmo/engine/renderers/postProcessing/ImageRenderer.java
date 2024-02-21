@@ -2,8 +2,6 @@ package net.oikmo.engine.renderers.postProcessing;
 
 import org.lwjgl.opengl.GL11;
 
-import net.oikmo.engine.postProcessing.Fbo;
-
 public class ImageRenderer {
 
 	private Fbo fbo;

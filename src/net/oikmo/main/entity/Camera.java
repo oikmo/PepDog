@@ -9,7 +9,7 @@ import net.oikmo.engine.audio.Source;
 import net.oikmo.main.GameSettings;
 import net.oikmo.main.Main;
 import net.oikmo.main.Main.GameState;
-import net.oikmo.toolbox.Maths;
+import net.oikmo.toolbox.Toolbox;
 
 /**
  * Camera class. Allows the player to see the world.
@@ -52,7 +52,7 @@ public class Camera {
 	public Camera(Player player) {
 		this.position = new Vector3f(0,0,0);
 		this.player = player;
-		source = AudioMaster.loadSound("SWITCH3");
+		source = AudioMaster.getSound("SWITCH3");
 		click = new Source();
 	}
 	
@@ -205,8 +205,8 @@ public class Camera {
 		float offsetX = (float) (horizDistance * Math.sin(Math.toRadians(theta)));
 		float offsetZ = (float) (horizDistance * Math.cos(Math.toRadians(theta)));
 		position.y = player.getPosition().y + verticDistance + this.yOffset;
-		position.x = Maths.lerp(position.x, player.getPosition().x - offsetX, 0.35f);
-		position.z = Maths.lerp(position.z, player.getPosition().z - offsetZ, 0.35f);
+		position.x = Toolbox.lerp(position.x, player.getPosition().x - offsetX, 0.35f);
+		position.z = Toolbox.lerp(position.z, player.getPosition().z - offsetZ, 0.35f);
 		
 		//this.yaw = 180 - (player.getRotY() + angleAroundPlayer);
 		this.yaw = 180 - angleAroundPlayer;
@@ -240,7 +240,7 @@ public class Camera {
 			}
 		}
 		
-		distanceFromPlayer = Maths.lerp(distanceFromPlayer, distanceFromPlayer - zoomLevel, 0.1f);
+		distanceFromPlayer = Toolbox.lerp(distanceFromPlayer, distanceFromPlayer - zoomLevel, 0.1f);
 		if(distanceFromPlayer < distanceFromPlayerMin){
 			distanceFromPlayer = distanceFromPlayerMin;
 		} else if(distanceFromPlayer > distanceFromPlayerMax) {
@@ -251,7 +251,7 @@ public class Camera {
 	int maxVerticalTurn = 80;
 	private void calculatePitch() {
 		float pitchChange = Mouse.getDY() * GameSettings.sensitivity*2;
-		pitch = Maths.lerp(pitch, pitch - pitchChange, 1f);
+		pitch = Toolbox.lerp(pitch, pitch - pitchChange, 1f);
 		if(pitch < -maxVerticalTurn){
 			pitch = -maxVerticalTurn;
 		}else if(pitch > maxVerticalTurn){

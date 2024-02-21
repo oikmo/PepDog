@@ -1,8 +1,5 @@
 package net.oikmo.main.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.openal.AL11;
 import org.lwjgl.util.vector.Vector2f;
@@ -11,17 +8,11 @@ import org.lwjgl.util.vector.Vector3f;
 import net.oikmo.engine.DisplayManager;
 import net.oikmo.engine.Entity;
 import net.oikmo.engine.Loader;
-import net.oikmo.engine.Part;
 import net.oikmo.engine.audio.AudioMaster;
 import net.oikmo.engine.audio.Source;
-import net.oikmo.engine.collision.AABB;
-import net.oikmo.engine.collision.CollisionPacket;
 import net.oikmo.engine.models.TexturedModel;
-import net.oikmo.engine.scene.Scene;
-import net.oikmo.engine.terrain.Terrain;
 import net.oikmo.main.GameSettings;
 import net.oikmo.main.Main;
-import net.oikmo.main.scene.SceneManager;
 
 public class Player extends Entity {
 
@@ -75,11 +66,9 @@ public class Player extends Entity {
 	private void init() {
 		this.visibleTexture = this.model.getTexture().getID();
 
-		this.name = "Player";
-
 		camera = new Camera(this);
-		jump = AudioMaster.loadSound("swoosh");
-		footsteps = AudioMaster.loadSound("bfsl-minifigfoots1");
+		jump = AudioMaster.getSound("swoosh");
+		footsteps = AudioMaster.getSound("bfsl-minifigfoots1");
 		footstepsSFX = new Source(0f,0f,0.01f,AL11.AL_LINEAR_DISTANCE_CLAMPED);
 		footstepsSFX.setLooping(true);
 		footstepsSFX.play(footsteps);
@@ -88,7 +77,7 @@ public class Player extends Entity {
 	}
 	
 	private boolean pause;
-	public void update(Terrain terrain) {
+	public void update() {
 		camera.update();
 		if(pause) { return; }
 		checkInputs();
@@ -101,11 +90,7 @@ public class Player extends Entity {
 		
 		footstepsSFX.setPosition(super.getPosition().x, super.getPosition().y, super.getPosition().z);
 		
-		if(terrain != null) {
-			terrainHeight = terrain.getHeightOfTerrain(super.getPosition().x, super.getPosition().z);
-		} else {
-			terrainHeight = 0;
-		}
+		terrainHeight = 0;
 
 		grounded = super.getPosition().y < terrainHeight;
 
@@ -174,7 +159,7 @@ public class Player extends Entity {
 	private void jump() {
 		if(!isGrounded()) return;
 		jumpSFX.setVolume(GameSettings.globalVolume);
-		jumpSFX.play(jump);
+		jumpSFX.play(AudioMaster.getSound("swoosh"));
 		this.upwardsSpeed = JUMP_POWER;
 	}
 	

@@ -7,10 +7,10 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
-import net.oikmo.engine.shaders.ShaderProgram;
+import net.oikmo.engine.renderers.ShaderProgram;
 import net.oikmo.main.entity.Camera;
 import net.oikmo.main.entity.Light;
-import net.oikmo.toolbox.Maths;
+import net.oikmo.toolbox.Toolbox;
 
 /**
  * Static Shader class which loads graphics e.g textureCoords and light entitys on entities.
@@ -130,7 +130,7 @@ public class PartShader extends ShaderProgram {
 	 * @author <i>Oikmo</i>
 	 */
 	public void loadViewMatrix(Camera camera) {
-		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
+		Matrix4f viewMatrix = Toolbox.createViewMatrix(camera);
 		super.loadMatrix(location_viewMatrix, viewMatrix);
 	}
 	

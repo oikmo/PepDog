@@ -9,9 +9,9 @@ import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 
 import net.oikmo.engine.Loader;
-import net.oikmo.engine.gui.GuiTexture;
 import net.oikmo.engine.models.RawModel;
-import net.oikmo.toolbox.Maths;
+import net.oikmo.engine.textures.GuiTexture;
+import net.oikmo.toolbox.Toolbox;
 
 public class GuiRenderer {
 	
@@ -41,7 +41,7 @@ public class GuiRenderer {
 		for(GuiTexture gui : guis) {
 			GL13.glActiveTexture(GL13.GL_TEXTURE0);
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, gui.getTextureID());
-			Matrix4f matrix = Maths.createTransformationMatrix(gui.getPosition(), gui.getScale());
+			Matrix4f matrix = Toolbox.createTransformationMatrix(gui.getPosition(), gui.getScale());
 			shader.loadTransformation(matrix);
 			shader.loadTilingSize(gui.getTilingSize());
 			GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, quad.getVertexCount());

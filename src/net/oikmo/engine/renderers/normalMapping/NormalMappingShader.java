@@ -7,7 +7,7 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
-import net.oikmo.engine.shaders.ShaderProgram;
+import net.oikmo.engine.renderers.ShaderProgram;
 import net.oikmo.main.entity.Light;
 
 public class NormalMappingShader extends ShaderProgram {

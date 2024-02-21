@@ -1,6 +1,6 @@
 package net.oikmo.engine.renderers.postProcessing;
 
-import net.oikmo.engine.shaders.ShaderProgram;
+import net.oikmo.engine.renderers.ShaderProgram;
 
 public class PostProcessingShader extends ShaderProgram {
 

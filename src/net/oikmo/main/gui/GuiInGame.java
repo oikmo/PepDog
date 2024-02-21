@@ -8,9 +8,9 @@ import org.lwjgl.util.vector.Vector2f;
 
 import net.oikmo.engine.Loader;
 import net.oikmo.engine.gui.GuiScreen;
-import net.oikmo.engine.gui.GuiTexture;
 import net.oikmo.engine.gui.component.GuiText;
 import net.oikmo.engine.gui.component.button.GuiButton;
+import net.oikmo.engine.textures.GuiTexture;
 import net.oikmo.main.Main;
 
 public class GuiInGame extends GuiScreen {

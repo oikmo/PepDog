@@ -16,6 +16,8 @@ import de.matthiasmann.twl.utils.PNGDecoder.Format;
 import net.oikmo.engine.models.RawModel;
 import net.oikmo.engine.textures.TextureData;
 import net.oikmo.main.Main;
+import net.oikmo.toolbox.Logger;
+import net.oikmo.toolbox.Logger.LogLevel;
 
 /**
  * Loader class.
@@ -76,6 +78,13 @@ public class Loader {
 		return vaoID;
 	}
 	
+	/**
+	 * Quad maker (a plane)
+	 * 
+	 * @param positions
+	 * @param dimensions
+	 * @return RawModel
+	 */
 	public RawModel loadToVAO(float[] positions, int dimensions) {
 		int vaoID = createVAO();
 		this.storeDataInAttributeList(0, dimensions, positions);
@@ -83,24 +92,15 @@ public class Loader {
 		return new RawModel(vaoID, positions.length / dimensions);
 	}
 	
-	public RawModel loadToVAO(float[] vertices, int[] indices, float[] uv) {
-		int vaoID = createVAO();
-		bindIndicesBuffer(indices);
-		storeDataInAttributeList(0, 3, vertices);
-		storeDataInAttributeList(1, 2, uv);
-		unbindVAO();
-		return new RawModel(vaoID, vertices.length);
-	}
-	
-	public RawModel loadToVAO(float[] positions, float[] textureCoords, int[] indices) {
-		int vaoID = createVAO();
-		bindIndicesBuffer(indices);
-		storeDataInAttributeList(0, 3, positions);
-		storeDataInAttributeList(1, 2, textureCoords);
-		unbindVAO();
-		return new RawModel(vaoID, indices.length);
-	}
-	
+	/**
+	 * Model loading. Used by the OBJFileLoader class, this method takes in the vertices, indices, normals and texture coordinates to return a RawModel
+	 * 
+	 * @param positions
+	 * @param textureCoords
+	 * @param normals
+	 * @param indices
+	 * @return RawModel
+	 */
 	public RawModel loadToVAO(float[] positions, float[] textureCoords, float[] normals, int[] indices) {
 		int vaoID = createVAO();
 		bindIndicesBuffer(indices);
@@ -122,15 +122,30 @@ public class Loader {
 		return new RawModel(vaoID, indices.length);
 	}
 	
+	/**
+	 * Loads textures based on input
+	 * @param name
+	 * @return texture (int)
+	 */
 	public int loadTexture(String name) {
 		return loadTexture("textures/" + name, 0);
 	}
 	
+	/**
+	 * Loads font textures based on input
+	 * @param name
+	 * @return texture (int)
+	 */
 	public int loadFontTexture(String name) {
 		return loadTexture("fonts/" + name, 0);
 	}
 	
-	
+	/**
+	 * 
+	 * @param name
+	 * @param stoopid <- literally does nothing just put 0
+	 * @return
+	 */
 	public int loadTexture(String name, int stoopid) {
 		
 		BufferedImage image = null;
@@ -138,33 +153,30 @@ public class Loader {
 			image = ImageIO.read(Loader.class.getResourceAsStream("/assets/" + name + ".png"));
 		} catch (FileNotFoundException e) {
 			try {
-				String uri = this.getClass().getResource("missingTexture.png").toString().replace("file:/", "");
-				image = ImageIO.read(new FileInputStream(uri));
+				image = ImageIO.read(this.getClass().getResourceAsStream("missingTexture.png"));
 			} catch (FileNotFoundException e1) {
-				e1.printStackTrace();
+				Main.error("No texture of missing texture???", e1);
 			} catch (IOException e1) {
-				e1.printStackTrace();
+				Main.error("missing texture???", e1);
 			}
-			System.err.println("[ERR] Texture name \"" + name + "\" could not be found! Loading placeholder!");
+			Logger.log(LogLevel.ERROR, "Texture name \"" + name + "\" could not be found! Loading placeholder!");
 		} catch (IOException e) {
 			try {
-				String uri = this.getClass().getResource("missingTexture.png").toString().replace("file:/", "");
-				image = ImageIO.read(new FileInputStream(uri));
+				image = ImageIO.read(this.getClass().getResourceAsStream("missingTexture.png"));
 			} catch (FileNotFoundException e1) {
-				e1.printStackTrace();
+				Main.error("No texture of missing texture???", e1);
 			} catch (IOException e1) {
-				e1.printStackTrace();
+				Main.error("missing texture???", e1);
 			}
 			
 		} catch(IllegalArgumentException e) {
-			System.err.println("[ERR] : Texture name \"" + name + "\" could not be found! Loading placeholder!");
+			Logger.log(LogLevel.ERROR, "Texture name \"" + name + "\" could not be found! Loading placeholder!");
 			try {
-				String uri = this.getClass().getResource("missingTexture.png").toString().replace("file:/", "");
-				image = ImageIO.read(new FileInputStream(uri));
+				image = ImageIO.read(this.getClass().getResourceAsStream("missingTexture.png"));
 			} catch (FileNotFoundException e1) {
-				e1.printStackTrace();
+				Main.error("No texture of missing texture???", e1);
 			} catch (IOException e1) {
-				e1.printStackTrace();
+				Main.error("missing texture???", e1);
 			}
 		}
 		
@@ -194,7 +206,7 @@ public class Loader {
 
 		//Setup texture scaling filtering
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
-		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST); //sharp
 
 		//Send texel data to OpenGL
 		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA8, image.getWidth(), image.getHeight(), 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, buffer);
@@ -204,34 +216,12 @@ public class Loader {
 			float amount = Math.min(3, GL11.glGetFloat(EXTTextureFilterAnisotropic.GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT));
 			GL11.glTexParameterf(GL11.GL_TEXTURE_2D, EXTTextureFilterAnisotropic.GL_TEXTURE_MAX_ANISOTROPY_EXT, amount);
 		} else {
-			System.out.println("[WARN] Anisotropic filter will not be enabled since your drivers/card can't support it!");
+			Logger.log(LogLevel.WARNING, "Anisotropic filter will not be enabled since your drivers/card can't support it!");
 		}
 		
 		textures.add(textureID);
 		//Return the texture ID so we can bind it later again
 		return textureID;
-	}
-	
-	public int loadTexture(String fileName, boolean isPixel) {
-		Texture texture = null;
-		
-		try {
-			texture = TextureLoader.getTexture("PNG",Loader.class.getResourceAsStream("assets/textures/" + fileName + ".png"));
-			GL30.glGenerateMipmap(GL11.GL_TEXTURE_2D);
-			if(isPixel) {
-				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
-			}
-			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
-			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
-			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR_MIPMAP_LINEAR);
-			GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL14.GL_TEXTURE_LOD_BIAS, -1); //make mipmap not obvious
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.err.println("Tried to load texture " + fileName + ".png , didn't work");
-			System.exit(-1);
-		}
-		textures.add(texture.getTextureID());
-		return texture.getTextureID();
 	}
 	
 	public int loadCubeMap(String[] textureFiles) {
@@ -266,13 +256,11 @@ public class Loader {
 			in.close();
 		} catch (Exception e) {
 			Main.error("Tried to load texture " + fileName + ", didn't work", e);
-			System.err.println("Tried to load texture " + fileName + ", didn't work");
-			System.exit(-1);
 		}
 		return new TextureData(buffer, width, height);
 	}
 	
-	/* everything from here to there is VAO stuff */
+	/* everything from here to there is vertex arrays stuff */
 	private int createVAO() {
 		int vaoID = GL30.glGenVertexArrays();
 		GL30.glBindVertexArray(vaoID);
@@ -293,7 +281,7 @@ public class Loader {
 		GL30.glBindVertexArray(0);
 	}
 	
-	/* ------- everything from here is Index Buffers shit ------ */
+	/* ------- everything from here is Index Buffers ------ */
 	
 	private void bindIndicesBuffer(int[] indices) {
 		int vboID = GL15.glGenBuffers();
@@ -304,14 +292,22 @@ public class Loader {
 		
 	}
 	
-	//BUFFER CREATION!!!
+	/**
+	 * BUFFER CREATION!!!
+	 * @param data int[]
+	 * @return FloatBuffer
+	 */
 	private IntBuffer storeDataInIntBuffer(int[] data) {
 		IntBuffer buffer = BufferUtils.createIntBuffer(data.length);
 		buffer.put(data);
 		buffer.flip();
 		return buffer;
 	}
-	
+	/**
+	 * BUFFER CREATION!!!
+	 * @param data int[]
+	 * @return FloatBuffer
+	 */
 	private FloatBuffer storeDataInFloatBuffer(float[] data) {
 		FloatBuffer buffer = BufferUtils.createFloatBuffer(data.length);
 		buffer.put(data);
@@ -319,7 +315,9 @@ public class Loader {
 		return buffer;
 	}
 	
-	//clean all that shit
+	/**
+	 * Cleans up all the buffers and data stored on memory
+	 */
 	public void cleanUp() {
 		vaos.forEach(GL30::glDeleteVertexArrays);
 		vbos.forEach(GL15::glDeleteBuffers);

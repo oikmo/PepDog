@@ -12,13 +12,11 @@ import org.lwjgl.util.vector.Vector3f;
 import net.oikmo.engine.DisplayManager;
 import net.oikmo.engine.Loader;
 import net.oikmo.engine.models.RawModel;
-import net.oikmo.engine.water.WaterFrameBuffers;
-import net.oikmo.engine.water.WaterTile;
 import net.oikmo.main.Main;
 import net.oikmo.main.Main.GameState;
 import net.oikmo.main.entity.Camera;
 import net.oikmo.main.entity.Light;
-import net.oikmo.toolbox.Maths;
+import net.oikmo.toolbox.Toolbox;
 
 public class WaterRenderer {
 
@@ -50,7 +48,7 @@ public class WaterRenderer {
 	public void render(List<WaterTile> water, Camera camera, Light sun, Matrix4f projectionMatrix) {
 		prepareRender(camera, sun, projectionMatrix);	
 		for (WaterTile tile : water) {
-			Matrix4f modelMatrix = Maths.createTransformationMatrix(
+			Matrix4f modelMatrix = Toolbox.createTransformationMatrix(
 					new Vector3f(tile.getX(), tile.getHeight(), tile.getZ()), 0, 0, 0,
 					tile.getTileSize());
 			shader.loadModelMatrix(modelMatrix);

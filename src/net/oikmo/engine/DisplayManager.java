@@ -42,11 +42,12 @@ public class DisplayManager {
 		try {
 			//Display.create(new PixelFormat(), attribs);
 			Display.create();
+			Display.setTitle("RBXL Loader Engine");
+			Display.setResizable(true);
 			final ByteBuffer[] windowsFavicon = IconUtils.getFavicon();
 			Display.setIcon(windowsFavicon);
 			Display.setDisplayMode(new DisplayMode(Main.WIDTH, Main.HEIGHT));
-			Display.setTitle("RBXL Loader Engine");
-			Display.setResizable(true);
+			
 			
 			
 			lastFPS = getCurrentTime();
@@ -90,7 +91,6 @@ public class DisplayManager {
 	
 	public static void closeDisplay() {
 		Display.destroy();
-		System.exit(0);
 	}
 	
 	public static void saveScreenshot() {

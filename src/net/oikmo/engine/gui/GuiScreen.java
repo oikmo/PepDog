@@ -7,10 +7,12 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector2f;
 
+import net.oikmo.engine.audio.AudioMaster;
 import net.oikmo.engine.audio.Source;
 import net.oikmo.engine.gui.component.GuiSlider;
 import net.oikmo.engine.gui.component.button.GuiButton;
 import net.oikmo.engine.renderers.MasterRenderer;
+import net.oikmo.engine.textures.GuiTexture;
 import net.oikmo.main.Main;
 
 public class GuiScreen {
@@ -219,7 +221,7 @@ public class GuiScreen {
 			if(!selectedButton.isHovering() && !selectedButton.isHidden()) {
 				Source click = new Source();
 				//click.setVolume(GameSettings.globalVolume+0.05f);
-				click.play(MasterRenderer.getInstance().ui_deselect);
+				click.play(AudioMaster.getSound("menu-deselect"));
 				try {
 					Thread.sleep(500);
 				} catch (InterruptedException e) {
@@ -240,7 +242,7 @@ public class GuiScreen {
 					Source click = new Source();
 					//click.setVolume(GameSettings.globalVolume+0.05f);
 					String button = selectedButton.getDisplayString();
-					click.play(button.contains("Back")||button.contains("Quit") ? MasterRenderer.getInstance().ui_deselect : MasterRenderer.getInstance().ui_enter);
+					click.play(button.contains("Back")||button.contains("Quit") ? AudioMaster.getSound("menu-deselect") : AudioMaster.getSound("menu-enter"));
 					actionPerformed(guibutton);
 				}
 			}
@@ -249,7 +251,7 @@ public class GuiScreen {
 				GuiSlider guibutton = (GuiSlider)sliderList.get(i);
 				if(guibutton.isHovering()) {
 					Source click = new Source();
-					click.play(MasterRenderer.getInstance().ui_select);
+					click.play(AudioMaster.getSound("menu-select"));
 				}
 			}
 		}

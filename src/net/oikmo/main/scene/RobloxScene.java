@@ -11,7 +11,6 @@ import org.lwjgl.util.vector.Vector3f;
 import net.oikmo.engine.Part;
 import net.oikmo.engine.renderers.MasterRenderer;
 import net.oikmo.engine.scene.Scene;
-import net.oikmo.engine.textures.TerrainTexturePack;
 import net.oikmo.main.entity.Camera;
 import net.oikmo.main.entity.Light;
 import net.oikmo.toolbox.rbxl.Item;
@@ -62,10 +61,7 @@ public class RobloxScene extends Scene {
 	        }
 	    }
 	}
-
-	public RobloxScene(String seed, TerrainTexturePack texturePack) {
-		super(seed, texturePack, null);
-	}
+	
 	JFrame frame = null;
 	JLabel text = null;
 	public List<String> maps;
@@ -82,7 +78,7 @@ public class RobloxScene extends Scene {
 		Light sun = new Light(new Vector3f(1,1000,1), new Vector3f(1.3f, 1.3f, 1.3f));
 		this.addLight(sun);
 		
-		loadRoblox("2006Crossroads");
+		loadRoblox("2005StartPlace");
 	}
 
 	private void createFrame() {

@@ -3,9 +3,9 @@ package net.oikmo.engine.renderers.skybox;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
-import net.oikmo.engine.shaders.ShaderProgram;
+import net.oikmo.engine.renderers.ShaderProgram;
 import net.oikmo.main.entity.Camera;
-import net.oikmo.toolbox.Maths;
+import net.oikmo.toolbox.Toolbox;
 
 public class SkyBoxShader extends ShaderProgram {
 
@@ -52,7 +52,7 @@ public class SkyBoxShader extends ShaderProgram {
 	}
 
 	public void loadViewMatrix(Camera camera) {
-		Matrix4f matrix = Maths.createViewMatrix(camera);
+		Matrix4f matrix = Toolbox.createViewMatrix(camera);
 		matrix.m30 = 0;
 		matrix.m31 = 0;
 		matrix.m32 = 0;

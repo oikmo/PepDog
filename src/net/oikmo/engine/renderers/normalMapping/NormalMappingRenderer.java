@@ -17,7 +17,7 @@ import net.oikmo.engine.renderers.MasterRenderer;
 import net.oikmo.engine.textures.ModelTexture;
 import net.oikmo.main.entity.Camera;
 import net.oikmo.main.entity.Light;
-import net.oikmo.toolbox.Maths;
+import net.oikmo.toolbox.Toolbox;
 
 public class NormalMappingRenderer {
 
@@ -80,7 +80,7 @@ public class NormalMappingRenderer {
 	}
 
 	private void prepareInstance(Entity entity) {
-		Matrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(), entity.getRotX(),
+		Matrix4f transformationMatrix = Toolbox.createTransformationMatrix(entity.getPosition(), entity.getRotX(),
 				entity.getRotY(), entity.getRotZ(), entity.getScale());
 		shader.loadTransformationMatrix(transformationMatrix);
 		shader.loadOffset(entity.getTextureXOffset(), entity.getTextureYOffset());
@@ -90,7 +90,7 @@ public class NormalMappingRenderer {
 		shader.loadProjectionMatrix(projectionMatrix);
 		shader.loadClipPlane(clipPlane);
 		shader.loadSkyColour(MasterRenderer.RED, MasterRenderer.GREEN, MasterRenderer.BLUE);
-		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
+		Matrix4f viewMatrix = Toolbox.createViewMatrix(camera);
 		
 		shader.loadLights(lights, viewMatrix);
 		shader.loadViewMatrix(viewMatrix);

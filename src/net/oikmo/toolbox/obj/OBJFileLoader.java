@@ -12,9 +12,26 @@ import org.lwjgl.util.vector.Vector3f;
 import net.oikmo.engine.Loader;
 import net.oikmo.engine.models.RawModel;
 
+/**
+ * Loads OBJ Files.
+ * @author Oikmo
+ */
 public class OBJFileLoader {
-
 	
+	/**
+	 * Loads obj file to RawModel for GPU readability sakes
+	 * 
+	 * In some order it goes like this.
+	 * <ul>
+	 * <li>Loads vertexes (obj prefix "v ")</li>
+	 * <li>Loads texture coordinates (obj prefix "vt ")</li>
+	 * <li>Loads normals (obj prefix "vn ")</li>
+	 * <li>Loads triangles (obj prefix "f ")</li>
+	 * <li>Loads tangents</li>
+	 * </ul>
+	 * @param objFileName
+	 * @return RawModel
+	 */
 	public static RawModel loadOBJ(String objFileName) {
 		InputStreamReader isr = new InputStreamReader(OBJFileLoader.class.getResourceAsStream("/assets/models/" + objFileName + ".obj"));
 		BufferedReader reader = new BufferedReader(isr);
@@ -23,7 +40,6 @@ public class OBJFileLoader {
 		List<Vector2f> textures = new ArrayList<Vector2f>();
 		List<Vector3f> normals = new ArrayList<Vector3f>();
 		List<Integer> indices = new ArrayList<Integer>();
-		float minX=0, minY=0, minZ=0, maxX=0, maxY=0, maxZ=0;
 		try {
 			while (true) {
 				line = reader.readLine();
@@ -34,15 +50,6 @@ public class OBJFileLoader {
 							(float) Float.valueOf(currentLine[3]));
 					Vertex newVertex = new Vertex(vertices.size(), vertex);
 					vertices.add(newVertex);
-					
-					if (vertex.x < minX) minX = vertex.x;
-		            else if (vertex.x > maxX) maxX = vertex.x;
-					
-					if (vertex.y < minY) minY = vertex.y;
-		            else if (vertex.y > maxY) maxY = vertex.y;
-					
-					if (vertex.z < minZ) minZ = vertex.z;
-		            else if (vertex.z > maxZ) maxZ = vertex.z;
 					
 				} else if (line.startsWith("vt ")) {
 					String[] currentLine = line.split(" ");
@@ -85,10 +92,17 @@ public class OBJFileLoader {
 		
 		// ModelData data = new ModelData(verticesArray, texturesArray, normalsArray, tangentsArray, indicesArray, furthest);
 		RawModel model =  Loader.getInstance().loadToVAO(verticesArray, texturesArray, normalsArray, indicesArray);
-		model.setAABB(new PartialAABB(new Vector3f(minX, minY, minZ), new Vector3f(maxX, maxY, maxZ), objFileName));
 		return model;
 	}
 
+	/**
+	 * Calculates tangents (don't ask me what these are)
+	 * 
+	 * @param v0
+	 * @param v1
+	 * @param v2
+	 * @param textures
+	 */
 	private static void calculateTangents(Vertex v0, Vertex v1, Vertex v2,
 			List<Vector2f> textures) {
 		Vector3f delatPos1 = Vector3f.sub(v1.getPosition(), v0.getPosition(), null);
@@ -185,7 +199,7 @@ public class OBJFileLoader {
 
 		}
 	}
-
+	
 	private static void removeUnusedVertices(List<Vertex> vertices) {
 		for (Vertex vertex : vertices) {
 			vertex.averageTangents();

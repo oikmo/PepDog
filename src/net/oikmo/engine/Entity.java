@@ -1,30 +1,21 @@
 package net.oikmo.engine;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
-import net.oikmo.engine.collision.AABB;
-import net.oikmo.engine.models.RawModel;
 import net.oikmo.engine.models.TexturedModel;
 import net.oikmo.engine.textures.ModelTexture;
-import net.oikmo.toolbox.Maths;
+import net.oikmo.toolbox.Toolbox;
 import net.oikmo.toolbox.obj.OBJFileLoader;
 
 public class Entity {
-	public String name = "";
 	public TexturedModel model;
 	Vector3f position;
 	Vector3f rotation;
 	float scale;
 	private int textureIndex = 0;
-	
-	private AABB box;
-	
-	public static List<RawModel> models;
 	
 	public Entity(TexturedModel model, Vector3f position, Vector3f rotation, float scale) {
 		this.model = model;
@@ -61,19 +52,6 @@ public class Entity {
 		this.position = position;
 		this.rotation = rotation;
 		this.scale = scale/2;
-		
-		if(models == null) {
-			models = new ArrayList<>();
-		}
-		
-		if(!models.contains(this.getModel().getRawModel())) {
-			this.getModel().getRawModel().getAABB().getFull().x *= this.scale/2;
-			this.getModel().getRawModel().getAABB().getFull().y *= this.scale/2;
-			this.getModel().getRawModel().getAABB().getFull().z *= this.scale/2;
-			models.add(this.getModel().getRawModel());
-		}	
-		this.box = new AABB(this.getPosition(), this.getModel().getRawModel().getAABB());
-		this.getAABB().getCenter().y += this.getAABB().getHalfExtent().y;
 	}
 	
 	public void increasePosition(float dx, float dy, float dz) {
@@ -95,9 +73,9 @@ public class Entity {
 	}
 	
 	public void setRotationLerp(float dx, float dy, float dz) {
-		this.rotation.x = Maths.lerp(this.rotation.x, dx, 0.75f * DisplayManager.getFrameTimeSeconds()*10);
-		this.rotation.y = Maths.lerp(this.rotation.y, dy, 0.75f * DisplayManager.getFrameTimeSeconds()*10);
-		this.rotation.z = Maths.lerp(this.rotation.z, dz, 0.75f * DisplayManager.getFrameTimeSeconds()*10);
+		this.rotation.x = Toolbox.lerp(this.rotation.x, dx, 0.75f * DisplayManager.getFrameTimeSeconds()*10);
+		this.rotation.y = Toolbox.lerp(this.rotation.y, dy, 0.75f * DisplayManager.getFrameTimeSeconds()*10);
+		this.rotation.z = Toolbox.lerp(this.rotation.z, dz, 0.75f * DisplayManager.getFrameTimeSeconds()*10);
 	}
 	
 	public void setRotation(Vector3f rotation) {
@@ -169,14 +147,6 @@ public class Entity {
 	
 	public Vector2f getCoords() {
 		return new Vector2f(getPosition().x, getPosition().z);
-	}
-	
-	public void setAABB(AABB box) {
-		this.box = box;
-	}
-	
-	public AABB getAABB() {
-		return box;
 	}
 	
 	//public abstract void tick();

@@ -9,7 +9,7 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
 import net.oikmo.engine.gui.component.GuiText;
-import net.oikmo.engine.gui.font.fontMeshCreator.FontType;
+import net.oikmo.engine.gui.font.meshcreator.FontType;
 
 public class FontRenderer {
 

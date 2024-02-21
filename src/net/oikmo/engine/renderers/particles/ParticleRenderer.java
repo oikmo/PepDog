@@ -15,11 +15,9 @@ import org.lwjgl.util.vector.Vector3f;
 
 import net.oikmo.engine.Loader;
 import net.oikmo.engine.models.RawModel;
-import net.oikmo.engine.particles.Particle;
-import net.oikmo.engine.particles.ParticleTexture;
 import net.oikmo.engine.renderers.MasterRenderer;
 import net.oikmo.main.entity.Camera;
-import net.oikmo.toolbox.Maths;
+import net.oikmo.toolbox.Toolbox;
 
 public class ParticleRenderer {
 	
@@ -53,7 +51,7 @@ public class ParticleRenderer {
 	}
 	
 	public void render(Map<ParticleTexture, List<Particle>> particles, Camera camera){
-		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
+		Matrix4f viewMatrix = Toolbox.createViewMatrix(camera);
 		prepare();
 		
 		for(ParticleTexture texture : particles.keySet()) {

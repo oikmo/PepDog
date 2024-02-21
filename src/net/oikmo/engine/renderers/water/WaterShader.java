@@ -2,10 +2,10 @@ package net.oikmo.engine.renderers.water;
 
 import org.lwjgl.util.vector.Matrix4f;
 
-import net.oikmo.engine.shaders.ShaderProgram;
+import net.oikmo.engine.renderers.ShaderProgram;
 import net.oikmo.main.entity.Camera;
 import net.oikmo.main.entity.Light;
-import net.oikmo.toolbox.Maths;
+import net.oikmo.toolbox.Toolbox;
 
 public class WaterShader extends ShaderProgram {
 
@@ -72,7 +72,7 @@ public class WaterShader extends ShaderProgram {
 	}
 	
 	public void loadViewMatrix(Camera camera){
-		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
+		Matrix4f viewMatrix = Toolbox.createViewMatrix(camera);
 		super.loadMatrix(location_viewMatrix, viewMatrix);
 		super.load3DVector(location_cameraPosition, camera.getPosition());
 		

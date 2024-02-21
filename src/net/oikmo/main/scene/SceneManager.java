@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.oikmo.engine.scene.Scene;
-import net.oikmo.engine.terrain.Terrain;
-import net.oikmo.engine.textures.TerrainTexturePack;
 import net.oikmo.main.Main;
 import net.oikmo.main.Main.GameState;
 
@@ -19,10 +17,6 @@ public class SceneManager {
 	private static Map<String, SceneName> scenes;
 	
 	private static Scene currentScene;
-	
-	private static TerrainTexturePack texturePack;
-	
-	private static String seed = "ballsack!";
 	
 	public static void init() {
 		scenes = new HashMap<>();
@@ -41,16 +35,11 @@ public class SceneManager {
 			currentScene = new EmptyScene();
 			break;
 		case Roblox:
-			currentScene = new RobloxScene(seed, texturePack);
+			currentScene = new RobloxScene();
 			break;
 		}
 		
 		currentScene.init();
-		
-		Main.terrainMap.clear();
-		for(Terrain terrain : SceneManager.getCurrentScene().getTerrain()) {
-			Main.terrainMap.put((int)terrain.getGridX() + " " + (int)terrain.getGridZ(), terrain);
-		}
 		
 		if(Main.gameState == GameState.game) {
 			if(!currentScene.getEntities().contains(Main.player)) {

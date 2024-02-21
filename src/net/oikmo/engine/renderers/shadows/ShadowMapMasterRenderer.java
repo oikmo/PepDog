@@ -10,8 +10,6 @@ import org.lwjgl.util.vector.Vector3f;
 
 import net.oikmo.engine.Entity;
 import net.oikmo.engine.models.TexturedModel;
-import net.oikmo.engine.shadows.ShadowBox;
-import net.oikmo.engine.shadows.ShadowFrameBuffer;
 import net.oikmo.main.entity.Camera;
 import net.oikmo.main.entity.Light;
 
