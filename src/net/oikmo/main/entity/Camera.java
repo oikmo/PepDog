@@ -146,8 +146,9 @@ public class Camera {
 			if(Main.gameState == GameState.game) {
 				calculateZoom();
 				if(Mouse.isButtonDown(1) || this.isFirstPerson()) {
-					calculatePitch();
 					calculateAngleAroundPlayer();
+					calculatePitch();
+					
 				}
 				
 				if(this.isFirstPerson()) {
@@ -162,7 +163,9 @@ public class Camera {
 			
 			float horizontalDistance = calculateHorizontalDistance();
 			float verticalDistance = calculateVerticalDistance();
+			
 			calculateCameraPosition(horizontalDistance, verticalDistance);
+			
 		}
 	}
 	
@@ -195,14 +198,13 @@ public class Camera {
 	}
 	
 	private void calculateCameraPosition(float horizDistance, float verticDistance){
-		float yOffset = this.yOffset;
 		
 		// substitute in commented-out RotY lines to make the camera rotate when the player does
 		//float theta = player.getRotY() + angleAroundPlayer;
 		float theta = angleAroundPlayer;
 		float offsetX = (float) (horizDistance * Math.sin(Math.toRadians(theta)));
 		float offsetZ = (float) (horizDistance * Math.cos(Math.toRadians(theta)));
-		position.y = player.getPosition().y + verticDistance + yOffset;
+		position.y = player.getPosition().y + verticDistance + this.yOffset;
 		position.x = Maths.lerp(position.x, player.getPosition().x - offsetX, 0.35f);
 		position.z = Maths.lerp(position.z, player.getPosition().z - offsetZ, 0.35f);
 		
@@ -238,7 +240,7 @@ public class Camera {
 			}
 		}
 		
-		distanceFromPlayer = Maths.lerp(distanceFromPlayer, distanceFromPlayer - zoomLevel, 1f);
+		distanceFromPlayer = Maths.lerp(distanceFromPlayer, distanceFromPlayer - zoomLevel, 0.1f);
 		if(distanceFromPlayer < distanceFromPlayerMin){
 			distanceFromPlayer = distanceFromPlayerMin;
 		} else if(distanceFromPlayer > distanceFromPlayerMax) {

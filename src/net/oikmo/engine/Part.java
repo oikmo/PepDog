@@ -44,7 +44,6 @@ public class Part {
 	private Vector3f position, rotation, scale;
 	private int textureIndex = 0;
 	private Vector3f colour;
-	private AABB aabb;
 	private int shape;
 
 	public Part(Vector3f position, Vector3f rotation, Vector3f scale, Vector3f colour, int shape) {
@@ -65,12 +64,6 @@ public class Part {
 			this.model = new TexturedModel(PartRenderer.sphere, new ModelTexture(PartRenderer.texture));
 			break;
 		}
-
-		Vector3f halfextents = new Vector3f(scale);
-		halfextents.x /= 2;
-		halfextents.y /= 2;
-		halfextents.z /= 2;
-		this.aabb = new AABB(this.position, halfextents);
 	}
 
 	public static Part createPartFromItem(Item item) {
@@ -120,9 +113,6 @@ public class Part {
 					rotation = new Vector3f(property.getAngles());
 				}
 			}
-			else {
-				System.out.println(prop.getClass());
-			}
 		}
 		//System.out.println(name + " " + BrickColor.getEnumFromValue(colour));
 		//System.out.println(item.getReferent() + " " + rotation.toString());
@@ -133,10 +123,6 @@ public class Part {
 		return shape;
 	}
 	
-	public AABB getAABB() {
-		return aabb;
-	}
-
 	public void setPosition(float x, float y, float z) {
 		this.position.x = x;
 		this.position.y = y;

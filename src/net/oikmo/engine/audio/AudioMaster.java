@@ -11,6 +11,7 @@ import org.lwjgl.openal.AL10;
 import org.lwjgl.util.WaveData;
 
 import net.oikmo.main.Main;
+import net.oikmo.toolbox.Maths;
 
 /**
  * Loads sounds, sets listener position
@@ -22,6 +23,17 @@ public class AudioMaster {
 	private static List<Integer> buffers = new ArrayList<>();
 	
 	public static void init() {
+		
+		List<String> audioFiles = null;
+		try {
+			audioFiles = Maths.getResourceFiles("assets/audio/");
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		for(String audio : audioFiles) {
+			System.out.println(audio);
+		}
+		
 		try {
 			AL.create();
 		} catch(LWJGLException e) {

@@ -73,6 +73,11 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) throws IOException {		
+		String mapToLoad = "2008ROBLOXHQ";
+		if(args.length != 0) {
+			mapToLoad = args[0];
+		}
+		
 		removeHSPIDERR();
 		DisplayManager.createDisplay();
 
@@ -106,21 +111,6 @@ public class Main {
 		scene.setColour(1, 1, 1);
 		useMem.setColour(1, 1, 1);
 		allocMem.setColour(1, 1, 1);
-
-		JFrame inputWindow = new JFrame();
-		inputWindow.setLocation(0, 105);
-		inputWindow.setSize(200, 100);
-		JTextField input = new JTextField();
-		inputWindow.add(input);
-		input.addActionListener(new ActionListener(){
-
-			public void actionPerformed(ActionEvent e){
-				RobloxScene scene = ((RobloxScene)SceneManager.getCurrentScene());
-				scene.loadRoblox(e.getActionCommand());
-				inputWindow.setVisible(false);
-			}
-		
-		});
 		
 		while(!Display.isCloseRequested()) {
 			handleGUI();
@@ -139,15 +129,14 @@ public class Main {
 
 			switch(gameState) {
 			case game:
-				if(Keyboard.isKeyDown(Keyboard.KEY_J)) {
-					inputWindow.setVisible(true);
-				}
 				if(player == null) {
 					player = new Player("player", new Vector3f(0,0,0),new Vector3f(0,0,0), 1.75f);
 					camera = null;
 					camera = player.getCamera();
 					SceneManager.getCurrentScene().addEntity(player);	    			
 					SceneManager.loadScene("roblox");
+					RobloxScene scener = ((RobloxScene)SceneManager.getCurrentScene());
+					scener.loadRoblox(mapToLoad);
 				}
 
 				AudioMaster.setListenerData(camera.getPosition().x,camera.getPosition().y,camera.getPosition().z, 0, 0, 0);

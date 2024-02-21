@@ -92,11 +92,6 @@ public class Player extends Entity {
 		camera.update();
 		if(pause) { return; }
 		checkInputs();
-
-		if(Keyboard.isKeyDown(Keyboard.KEY_F)) {
-			this.setPosition(0, 0, 0);
-		}
-
 		applyForce(currentVertSpeed, currentHorzSpeed);
 
 		if(upwardsSpeed > -125) {
@@ -105,8 +100,7 @@ public class Player extends Entity {
 		super.increasePosition(0, upwardsSpeed * DisplayManager.getFrameTimeSeconds(), 0);
 		
 		footstepsSFX.setPosition(super.getPosition().x, super.getPosition().y, super.getPosition().z);
-
-
+		
 		if(terrain != null) {
 			terrainHeight = terrain.getHeightOfTerrain(super.getPosition().x, super.getPosition().z);
 		} else {
@@ -135,39 +129,6 @@ public class Player extends Entity {
 			walkSpeed = 40;
 		} else {
 			walkSpeed = 15;
-		}
-		
-		Vector3f temp1Pos = new Vector3f(getPosition());
-		temp1Pos.y = getPosition().y + this.getAABB().getHalfExtent().y;
-		this.getAABB().getCenter().set(temp1Pos);
-
-		Scene scene = SceneManager.getCurrentScene();
-
-		List<AABB> collisionBoxes = new ArrayList<>();
-
-		if (scene.isLoaded()) {
-			for (Part e : scene.getParts()) {
-				if (e.getAABB() != null) {
-					collisionBoxes.add(e.getAABB());
-				}
-			}
-		}
-		
-		if(!Keyboard.isKeyDown(Keyboard.KEY_V)) {
-			for (AABB box : collisionBoxes) {
-				CollisionPacket data = this.getAABB().intersects(box);
-				if (data.intersecting) {
-					this.getAABB().correctPosition(box, data);
-					Vector3f temp2Pos = new Vector3f(this.getAABB().getCenter());
-					temp2Pos.y = this.getAABB().getCenter().y - this.getAABB().getHalfExtent().y;
-
-					if(this.getAABB().getCenter().y - this.getAABB().getHalfExtent().y >= box.getCenter().y + box.getHalfExtent().y) {
-						grounded = true;
-						upwardsSpeed = 0;
-					}
-					this.getPosition().set(temp2Pos);
-				}
-			}
 		}
 	}
 	
