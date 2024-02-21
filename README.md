@@ -11,3 +11,28 @@ TODO :
 - aabb collision
 - proper physics
 - lua loading :/
+
+# CONTROLS
+## Player:
+- WASD - move
+- SPACE - jump
+- V - noclip (hold)
+- I - Zoom In
+- O - Zoom out
+
+## Fly Cam:
+- WASD - move
+- L.CONTROL - Down
+- SPACE - Up
+
+## Misc.
+- Q - FlyCam
+- Left Shift - Sprint
+- J - Opens input box to load map via input
+
+## MAPS TO LOAD
+- 2005StartPlace
+- 2006Crossroads
+- 2008ROBLOXHQ
+- Colours
+- Shapes
