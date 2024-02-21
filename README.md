@@ -1,4 +1,4 @@
-# Engine
+# PepDog Engine
 ### Roblox Clone in LWJGL2
 
 This is a OpenGL project which loads the old .rbxl format (or .rbxlx) into something displayable.
