@@ -1,7 +1,4 @@
 package net.oikmo.toolbox.error;
-// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) braces deadcode 
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -14,11 +11,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.lwjgl.Sys;
-import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 
 import net.oikmo.main.Main;
-import net.oikmo.toolbox.CanvasLogo;
 
 public class PanelCrashReport extends Panel {
 	private static final long serialVersionUID = 1L;
@@ -26,7 +21,10 @@ public class PanelCrashReport extends Panel {
 	String main = "";
 	
 	public PanelCrashReport(UnexpectedThrowable unexpectedthrowable) {
-
+		this.set(unexpectedthrowable);
+	}
+	
+	public void set(UnexpectedThrowable unexpectedthrowable) {
 		setBackground(new Color(0x2e3444));
 		setLayout(new BorderLayout());
 		StringWriter stringwriter = new StringWriter();
@@ -49,8 +47,6 @@ public class PanelCrashReport extends Panel {
 			} catch(RuntimeException e) {
 				log(1, "OpenGL : [MAY HAVE NOT STARTED SINCE ERROR OCCURED EXACTLY AT START]");
 			}
-			
-			Display.destroy();
 		}
 		catch(Throwable throwable) {
 			log(1, "[failed to get system properties (" + throwable + ")]");
@@ -81,8 +77,8 @@ public class PanelCrashReport extends Panel {
 			log(0, "Unfortunately " + Main.gameName +" has crashed :P");
 			log(0, "----------------------------\n");
 			log(0, Main.gameName + " has stopped running because it encountered a problem. [an error]\n");
-			log(0, "If you wish to report this, please copy this entire text and contact some dude.");
-			log(0, "Descrive what happened for this to happen (cuz you did it :]).");
+			log(0, "If you wish to report this, please copy this entire text and contact us or submit an issue on github.");
+			log(0, "Describe what happened before this occured. (cuz you did it :]).");
 		}
 		
 		log(0, "");
@@ -95,6 +91,7 @@ public class PanelCrashReport extends Panel {
 		add(new CanvasLogo(), "North");
 		add(new CanvasCrashReport(80), "East");
 		add(new CanvasCrashReport(80), "West");
+		add(new CanvasLogo("SHUTUP", 1, (byte)85), "South");
 		add(textarea, "Center");
 	}
 	

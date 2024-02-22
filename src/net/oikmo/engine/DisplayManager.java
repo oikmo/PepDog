@@ -34,7 +34,7 @@ public class DisplayManager {
 	private static long lastFrameTime, lastFPS;
 	private static float delta;
 	/**
-	 * Creates window by size and OPENGL version
+	 * Creates window by size (loads cursor and window icon) and sets OpenGL version.
 	 * 
 	 * @author <i>Oikmo</i>
 	 */
@@ -58,7 +58,14 @@ public class DisplayManager {
 		lastFrameTime = getCurrentTime();
 		lastFPS = getCurrentTime();
 	}
-
+	
+	/**
+	 * Updates the display to show a new frame and calculates the last frame time.
+	 * <br>
+	 * Current capped at <b>60 FPS.</b>
+	 * <br>
+	 * Handles fullscreen and taking screenshots on the press of a key.
+	 */
 	public static void updateDisplay() {
 		updateFPS();
 		Display.update();
@@ -87,14 +94,17 @@ public class DisplayManager {
 		delta = (currentFrameTime - lastFrameTime)/1000f;
 		lastFrameTime = currentFrameTime;		
 	}
-
+	
+	/**
+	 * Destroys the display (not the program)
+	 */
 	public static void closeDisplay() {
 		Display.destroy();
 	}
 	
 	
 	/**
-	 * Captures a frame of the screen (getImage()) and saves it to the appdata screenshots folder.
+	 * Captures a frame of the screen (getImage()) and saves it to the screenshots folder.
 	 * 
 	 * @see getImage()
 	 */
