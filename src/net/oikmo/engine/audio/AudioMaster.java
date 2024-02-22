@@ -13,7 +13,6 @@ import org.lwjgl.openal.AL10;
 import org.lwjgl.util.WaveData;
 
 import net.oikmo.main.Main;
-import net.oikmo.toolbox.Toolbox;
 
 /**
  * Loads sounds, sets listener position. Anything audio.
@@ -36,31 +35,17 @@ public class AudioMaster {
 			Main.error("Could not initalize AudioMaster!", e);
 		}
 		
-		audioRefresh("assets/audio");
-		
 		setListenerData();
 	}
 	
 	/**
-	 * If you really need to, set the audio path to something else.<br>
-	 * This searches the given path and loads it in a HashMap to be used in AudioMaster.getSound().
-	 * @param path
+	 * basically, loads a sound if it isn't in the audio table. if so then return the audio from table instead of reloading it.
+	 * @param name
 	 */
-	public static void audioRefresh(String path) {
-		List<String> audioFiles = null;
-		audio = new HashMap<>(); // not letting you keep data! >:D
-		try {
-			audioFiles = Toolbox.getResourceFiles(path, ".wav");
-		} catch (IOException e) {
-			Main.error("Failed to load audio assets", e);
-		}
-		
-		for(String audio : audioFiles) {
-			AudioMaster.audio.put(audio, AudioMaster.loadSound(audio));
-		}
-	}
-	
 	public static int getSound(String name) {
+		if(audio.get(name) == null) {
+			audio.put(name, loadSound(name));
+		}
 		return audio.get(name);
 	}
 	
@@ -75,7 +60,6 @@ public class AudioMaster {
 	}
 	
 	/**
-	 * 
 	 * Loads wav audio file and returns int for loading.
 	 * 
 	 * @param file
@@ -104,5 +88,4 @@ public class AudioMaster {
 	public static void cleanUp() {
 		AL.destroy();
 	}
-	
 }

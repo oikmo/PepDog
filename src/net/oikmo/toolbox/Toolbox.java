@@ -52,7 +52,7 @@ public class Toolbox {
 		Matrix4f.scale(new Vector3f(scale,scale,scale), matrix, matrix);
 		return matrix;
 	}
-	
+
 	/**
 	 * Creates and returns a transformation matrix so that 3d is real.<br><br>
 	 * 
@@ -210,52 +210,8 @@ public class Toolbox {
 	public static float min(ReadableVector3f vector) {
 		return java.lang.Math.min(vector.getX(), java.lang.Math.min(vector.getY(), vector.getZ()));
 	}
-	
+
 	public static float easeOut(float t) {
-	    return t * (2 - t);
-	}
-	
-	public static List<String> getResourceFiles(String path) throws IOException {
-	    List<String> filenames = new ArrayList<>();
-
-	    try (
-	            InputStream in = Toolbox.getResourceAsStream(path);
-	            BufferedReader br = new BufferedReader(new InputStreamReader(in))) {
-	        String resource;
-
-	        while ((resource = br.readLine()) != null) {
-	            filenames.add(resource);
-	        }
-	    }
-
-	    return filenames;
-	}
-	
-	public static List<String> getResourceFiles(String path, String regex) throws IOException {
-	    List<String> filenames = new ArrayList<>();
-
-	    try (
-	            InputStream in = Toolbox.getResourceAsStream(path);
-	            BufferedReader br = new BufferedReader(new InputStreamReader(in))) {
-	        String resource;
-
-	        while ((resource = br.readLine()) != null) {
-	        	if(resource.contains(regex)) {
-	        		resource = resource.replace(regex, "");
-	        	}
-	            filenames.add(resource);
-	        }
-	    }
-
-	    return filenames;
-	}
-
-	private static InputStream getResourceAsStream(String resource) {
-	    final InputStream in  = getContextClassLoader().getResourceAsStream(resource);
-	    return in == null ? Math.class.getResourceAsStream(resource) : in;
-	}
-
-	private static ClassLoader getContextClassLoader() {
-	    return Thread.currentThread().getContextClassLoader();
+		return t * (2 - t);
 	}
 }
