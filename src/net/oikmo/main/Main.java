@@ -1,10 +1,14 @@
 package net.oikmo.main;
 
 import java.awt.Frame;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 import javax.swing.JFrame;
+import javax.swing.JTextField;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -66,12 +70,19 @@ public class Main {
 	 * @author <i>Oikmo</i>
 	 * @param args
 	 */
-	public static void main(String[] args) throws IOException {		
-		String mapToLoad = "2005StartPlace";
-		if(args.length != 0) {
-			mapToLoad = args[0];
+	public static void main(String[] args) throws IOException, URISyntaxException {
+		//System.setProperty("java.library.path",new File("natives").getAbsolutePath());
+		String mapToLoad = null;
+		if(args.length > 0) {
+			mapToLoad = args[0].trim();
 		}
-		Logger.log(LogLevel.INFO, "Selected: " + mapToLoad);
+		if(mapToLoad == null) {
+			mapToLoad = "2005StartPlace";
+			Logger.log(LogLevel.INFO, "No map was chosen! Selecting: " + mapToLoad);
+		} else {
+			Logger.log(LogLevel.INFO, "Selected: " + mapToLoad);
+		}
+		
 		
 		DisplayManager.createDisplay();
 		removeHSPIDERR();
@@ -106,9 +117,21 @@ public class Main {
 		useMem.setColour(1, 1, 1);
 		allocMem.setColour(1, 1, 1);
 		
+		JFrame inputWindow = new JFrame();
+		inputWindow.setLocation(0, 105);
+		inputWindow.setSize(200, 100);
+		JTextField input = new JTextField();
+		inputWindow.add(input);
+		input.addActionListener(new ActionListener(){
+
+			public void actionPerformed(ActionEvent e){
+				RobloxScene scene = ((RobloxScene)SceneManager.getCurrentScene());
+				scene.loadRoblox(e.getActionCommand());
+				inputWindow.setVisible(false);
+			}});
 		while(!Display.isCloseRequested()) {
 			handleGUI();
-
+			
 			long maxMem = Runtime.getRuntime().maxMemory();
 			long totalMem = Runtime.getRuntime().totalMemory();
 			long freeMem = Runtime.getRuntime().freeMemory();
@@ -131,6 +154,11 @@ public class Main {
 					SceneManager.loadScene("roblox");
 					RobloxScene scener = ((RobloxScene)SceneManager.getCurrentScene());
 					scener.loadRoblox(mapToLoad);
+					
+				}
+				
+				if(Keyboard.isKeyDown(Keyboard.KEY_J)) {
+					inputWindow.setVisible(true);
 				}
 
 				AudioMaster.setListenerData(camera.getPosition().x,camera.getPosition().y,camera.getPosition().z, 0, 0, 0);

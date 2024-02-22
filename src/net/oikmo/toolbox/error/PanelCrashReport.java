@@ -95,7 +95,6 @@ public class PanelCrashReport extends Panel {
 		add(new CanvasLogo(), "North");
 		add(new CanvasCrashReport(80), "East");
 		add(new CanvasCrashReport(80), "West");
-		add(new CanvasLogo("loner", 1, (byte)85), "South");
 		add(textarea, "Center");
 	}
 	
