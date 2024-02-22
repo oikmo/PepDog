@@ -8,10 +8,6 @@
 
 Engine which aims to implement as much features as the original Roblox 2006-2010 client. (OPENGL)
 
-## How to load a map?
-when you run the jar, use a command line e.g cmd/powershell on windows, or terminal on unix.
-then type in ```java -jar ENGINE-<os>.jar <map>```
-
 # CONTROLS
 ## Player:
 - WASD - move
@@ -28,6 +24,7 @@ then type in ```java -jar ENGINE-<os>.jar <map>```
 ## Misc.
 - Q - FlyCam
 - Left Shift - Sprint
+- J - Switch maps via input box (must match map name and also like limited use??)
 
 ## MAPS TO LOAD
 - 2005StartPlace
