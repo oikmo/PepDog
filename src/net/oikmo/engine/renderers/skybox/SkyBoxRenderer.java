@@ -68,18 +68,17 @@ public class SkyBoxRenderer {
 	
 	public SkyBoxRenderer(String skyboxDayName, String skyboxNightName, Matrix4f projectionMatrix) {
 		cube = Loader.getInstance().loadToVAO(VERTICES, 3);
-		Logger.log(LogLevel.INFO, "==================");
 		for(int i = 0; i < TEXTURE_FILES.length; i++) {
 			DAY_TEXTURE_FILES[i] = skyboxDayName + "_" +TEXTURE_FILES[i];
-			Logger.log(LogLevel.INFO, DAY_TEXTURE_FILES[i]);
 		}
-		Logger.log(LogLevel.INFO, "==================");
+		
 		dayTexture = Loader.getInstance().loadCubeMap(DAY_TEXTURE_FILES);
 		shader = new SkyBoxShader();
 		shader.start();
 		shader.connectTextureUnits();
 		shader.loadProjectionMatrix(projectionMatrix);
 		shader.stop();
+		Logger.log(LogLevel.INFO, "Loaded!");
 	}
 	
 	public void render(Camera camera,  Matrix4f projectionMatrix, float r, float g, float b) {

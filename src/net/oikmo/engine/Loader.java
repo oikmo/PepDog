@@ -1,15 +1,28 @@
 package net.oikmo.engine;
 
-import java.awt.image.*;
-import java.io.*;
-import java.nio.*;
-import java.util.*;
+import java.awt.image.BufferedImage;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.ByteBuffer;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 
-import org.lwjgl.*;
-import org.lwjgl.opengl.*;
-import org.newdawn.slick.opengl.*;
+import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.EXTTextureFilterAnisotropic;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
+import org.lwjgl.opengl.GL13;
+import org.lwjgl.opengl.GL14;
+import org.lwjgl.opengl.GL15;
+import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL30;
+import org.lwjgl.opengl.GL33;
+import org.lwjgl.opengl.GLContext;
 
 import de.matthiasmann.twl.utils.PNGDecoder;
 import de.matthiasmann.twl.utils.PNGDecoder.Format;
@@ -144,7 +157,7 @@ public class Loader {
 	 * 
 	 * @param name
 	 * @param stoopid <- literally does nothing just put 0
-	 * @return
+	 * @return texture (int)
 	 */
 	public int loadTexture(String name, int stoopid) {
 		
