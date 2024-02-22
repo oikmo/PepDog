@@ -26,6 +26,7 @@ import net.oikmo.main.gui.GuiPauseMenu;
 import net.oikmo.main.scene.RobloxScene;
 import net.oikmo.main.scene.SceneManager;
 import net.oikmo.toolbox.Logger;
+import net.oikmo.toolbox.Logger.LogLevel;
 import net.oikmo.toolbox.error.PanelCrashReport;
 import net.oikmo.toolbox.error.UnexpectedThrowable;
 import net.oikmo.toolbox.os.EnumOS;
@@ -70,7 +71,7 @@ public class Main {
 		if(args.length != 0) {
 			mapToLoad = args[0];
 		}
-		
+		Logger.log(LogLevel.INFO, "Selected: " + mapToLoad);
 		
 		DisplayManager.createDisplay();
 		removeHSPIDERR();
