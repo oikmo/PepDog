@@ -58,7 +58,6 @@ public class DisplayManager {
 		lastFrameTime = getCurrentTime();
 		lastFPS = getCurrentTime();
 	}
-	
 	/**
 	 * Updates the display to show a new frame and calculates the last frame time.
 	 * <br>
@@ -94,15 +93,12 @@ public class DisplayManager {
 		delta = (currentFrameTime - lastFrameTime)/1000f;
 		lastFrameTime = currentFrameTime;		
 	}
-	
 	/**
 	 * Destroys the display (not the program)
 	 */
 	public static void closeDisplay() {
 		Display.destroy();
-	}
-	
-	
+	}	
 	/**
 	 * Captures a frame of the screen (getImage()) and saves it to the screenshots folder.
 	 * 
@@ -206,10 +202,20 @@ public class DisplayManager {
 		return destination;
 	}
 
-
+	/**
+	 * Returns delta time
+	 * @return deltaTim
+	 */
 	public static float getFrameTimeSeconds() {
 		return delta;
 	}
+	/**
+	 * Converts mouse coordinates from (pixels) screen to window (float).
+	 * <br>
+	 * -1f to 1f
+	 * 
+	 * @return
+	 */
 	public static Vector2f getNormalisedMouseCoords() {
 		float normalisedX = -1.0f + 2.0f * (float) Mouse.getX() / (float) Display.getWidth();
 		float normalisedY = 1.0f - 2.0f * (float) Mouse.getY() / (float) Display.getHeight();
