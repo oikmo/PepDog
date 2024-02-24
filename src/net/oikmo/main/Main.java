@@ -36,13 +36,11 @@ import net.oikmo.toolbox.os.EnumOS;
 import net.oikmo.toolbox.os.EnumOSMappingHelper;
 
 /**
- * <b><i>Main class. Starts the engine. Plays the game.</i></b>
+ * <i>Main class. Starts the engine. Plays the game.</i>
  * 
  * @author <i>Oikmo</i>
  */
 public class Main {
-	static boolean doLoadingScreens = false;
-
 	public static int WIDTH = 854;
 	public static int HEIGHT = 480;
 
@@ -56,7 +54,12 @@ public class Main {
 	public static String gameVersion = gameName + " " + version;
 	
 	static Frame frame;
-
+	
+	/**
+	 * Game state as to allow switching between paused or not paused
+	 * 
+	 * @author Oikmo
+	 */
 	public enum GameState {
 		game,
 		pausemenu
@@ -128,14 +131,15 @@ public class Main {
 			inputWindow.setSize(200, 100);
 			JTextField input = new JTextField();
 			inputWindow.add(input);
+			
 			input.addActionListener(new ActionListener(){
 
 				public void actionPerformed(ActionEvent e){
 					RobloxScene scene = ((RobloxScene)SceneManager.getCurrentScene());
 					scene.loadRoblox(e.getActionCommand());
 					inputWindow.setVisible(false);
-				}});
-			
+				}
+			});
 			
 			while(!Display.isCloseRequested()) {
 				handleGUI();
@@ -157,7 +161,7 @@ public class Main {
 				switch(gameState) {
 				case game:
 					if(player == null) {
-						player = new Player("player", new Vector3f(0,0,0),new Vector3f(0,0,0), 1.75f);
+						player = new Player(new Vector3f(0,0,0),new Vector3f(0,0,0), 1.75f);
 						camera = null;
 						camera = player.getCamera();
 						SceneManager.getCurrentScene().addEntity(player);	    			
@@ -188,24 +192,35 @@ public class Main {
 			Main.error("Runtime Error", e);
 		}
 	}
-
+	
+	/**
+	 * Cleans up and saves config before closing display and finally on {@code System.exit(0)}
+	 */
 	public static void destroyGame() {
 		GameSettings.saveValues();
 		AudioMaster.cleanUp();
 		MasterRenderer.getInstance().cleanUp();
 		Logger.saveLog();
 		DisplayManager.closeDisplay();
-		frame = null;
 		System.exit(0);
 	}
 	
+	/**
+	 * Same as destroyGame() but instead doesn't close on {@code System.exit(0)}
+	 * @see Main#destroyGame()
+	 */
 	public static void destroyGameButNoClose() {
 		GameSettings.saveValues();
 		AudioMaster.cleanUp();
 		Logger.saveLog();
+		MasterRenderer.getInstance().cleanUp();
 		DisplayManager.closeDisplay();
 	}
 	
+	/**
+	 * Searches the directory where the program is being ran 
+	 * then removes any file following "hs_err_pid"
+	 */
 	private static void removeHSPIDERR() {
 		File path = new File(".");
 		String[] files = path.list();
@@ -220,7 +235,7 @@ public class Main {
 	private static long lastClick = 150;
 	private static long coolDownTime = 150;
 	/**
-	 * Switches from one GUI to another.
+	 * Switches GUI based on the current {@code Main.GameState} state 
 	 */
 	private static void handleGUI() {
 		if(currentScreen != null) { 
@@ -256,11 +271,19 @@ public class Main {
 			}
 		}
 	}
-
+	
+	/**
+	 * Returns true if one of the WASD keys is pressed.
+	 * @return boolean
+	 */
 	public static boolean isMoving() {
 		return Keyboard.isKeyDown(Keyboard.KEY_W) || Keyboard.isKeyDown(Keyboard.KEY_A) || Keyboard.isKeyDown(Keyboard.KEY_S) || Keyboard.isKeyDown(Keyboard.KEY_D);
 	}
-
+	
+	/**
+	 * Retrieves data directory of .pepdog/ using {@code Main.getAppDir(String)}
+	 * @return Directory (File)
+	 */
 	public static File getPEPDOGDir() {
 		File pepdogDir = getAppDir("pepdog");
 		return pepdogDir;
@@ -308,13 +331,13 @@ public class Main {
 	 * <br>
 	 * OS' it tries to find.
 	 * <ul>
-	 * <li>Windows (win, {@code EnumOS.windows})</li>
-	 * <li>Linux (linux, {@code EnumOS.linux})</li>
-	 * <li>Unix (unix, {@code EnumOS.linux})</li>
-	 * <li>Mac (mac, {@code EnumOS.linux})</li>
-	 * <li>Solaris (solaris, {@code EnumOS.solaris})</li>
-	 * <li>Sunos (sunos, {@code EnumOS.unknown})</li>
-	 * <li>If it can find one ( {@code EnumOS.unknown})</li>
+	 * <li>Windows (win,  {@code {@link EnumOS#windows})</li>
+	 * <li>Linux (linux, {@code {@link EnumOS#linux})</li>
+	 * <li>Unix (unix, {@code {@link EnumOS#linux})</li>
+	 * <li>Mac (mac, {@code {@link EnumOS#macos})</li>
+	 * <li>Solaris (solaris, {@code {@link EnumOS#solaris})</li>
+	 * <li>Sunos (sunos, {@code {@link EnumOS#unknown})</li>
+	 * <li>If it can find one ({@code {@link EnumOS#unknown})</li>
 	 * </ul>
 	 * @return {@code EnumOS}
 	 */
@@ -327,8 +350,8 @@ public class Main {
 	/**
 	 * Creates a frame with the error log embedded inside.
 	 * 
-	 * @param id
-	 * @param throwable
+	 * @param id (String)
+	 * @param throwable (Throwable)
 	 */
 	public static void error(String id, Throwable throwable) {
 		Main.destroyGameButNoClose();

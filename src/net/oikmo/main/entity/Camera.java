@@ -32,9 +32,7 @@ public class Camera {
 	Player player;
 	
 	/**
-	 * {@code public Camera(Vector3f position, Vector3f rotation, float scale)}<br><br>
-	 * 
-	 * Camera constructor. Basically creates the camera with the right variables.
+	 * Camera constructor. Sets position and rotation.
 	 * 
 	 * @param position
 	 * @param rotation
@@ -49,24 +47,44 @@ public class Camera {
 	private int source;
 	private Source click;
 	
+	/**
+	 * Camera constructor. Sets player and enables click noise when {@link #calculateZoom()} is used
+	 * @param player
+	 */
 	public Camera(Player player) {
 		this.position = new Vector3f(0,0,0);
 		this.player = player;
 		source = AudioMaster.getSound("SWITCH3");
 		click = new Source();
 	}
-	
+	/**
+	 * Moves camera based on given values.
+	 * @param dx
+	 * @param dy
+	 * @param dz
+	 */
 	public void increasePosition(float dx, float dy, float dz) {
 		this.position.x += dx;
 		this.position.y += dy;
 		this.position.z += dz;
 	}
+	/**
+	 * Rotates the camera based on given values.
+	 * @param dx
+	 * @param dy
+	 * @param dz
+	 */
 	public void increaseRotation(float dx, float dy, float dz) {
 		this.pitch += dx;
 		this.yaw += dy;
 		this.roll += dz;
 	}
-	
+	/**
+	 * Sets the rotation of the camera based on given values.
+	 * @param dx
+	 * @param dy
+	 * @param dz
+	 */
 	public void setRotation(float dx, float dy, float dz) {
 		this.pitch = dx;
 		this.yaw = dy;
@@ -79,8 +97,8 @@ public class Camera {
 	private boolean flyCam = false;
 	private boolean lockInCam;
 	/**
-	 * {@code public void move()}<br><br>
-	 * Moves the camera in which direction the player is facing [will be removed soon or reused for debug]
+	 * Moves the camera in which direction the player is facing (when moving).<br>
+	 * Fly cam function within else, just do lock on player.
 	 */
 	public void update(){
 		if(!lockInCam) {
@@ -168,25 +186,38 @@ public class Camera {
 			
 		}
 	}
-	
+	/**
+	 * How far the camera is from the player.
+	 * @return distanceFromPlayer (float)
+	 */
 	public float getDistanceFromPlayer() {
 		return distanceFromPlayer;
 	}
+	/**
+	 * Uses the {@link #getDistanceFromPlayer()} function to check if the camera is close enough to be first person perspective.
+	 * @return firstPerson (boolean)
+	 */
 	public boolean isFirstPerson() {
 		return distanceFromPlayer < 1;
 	}
-	
+	/**
+	 * Turns the camera upside down. Used in {@link MasterRenderer#renderSceneWater()}
+	 */
 	public void invertPitch(){
 		if(!flyCam) {
 			this.pitch = -pitch;
 		}
 		
 	}
-
+	
+	/**
+	 * Returns position of the camera.
+	 * @return
+	 */
 	public Vector3f getPosition() {
 		return position;
 	}
-
+	
 	public float getPitch() {
 		return pitch;
 	}
@@ -197,6 +228,12 @@ public class Camera {
 		return roll;
 	}
 	
+	/**
+	 * Calculates the position of the camera using the player's position and by using {@link #calculateHorizontalDistance()} and {@link #calculateVerticalDistance()}
+	 * <br>Uses pythagoreas maths to calulcate position ;-;
+	 * @param horizDistance (float)
+	 * @param verticDistance (float)
+	 */
 	private void calculateCameraPosition(float horizDistance, float verticDistance){
 		
 		// substitute in commented-out RotY lines to make the camera rotate when the player does
@@ -212,14 +249,28 @@ public class Camera {
 		this.yaw = 180 - angleAroundPlayer;
 	}
 	
+	/**
+	 * returns the vertical distance from the player using {@link #getDistanceFromPlayer()} and {@link #getPitch()}
+	 * @return horizontalDist (float)
+	 */
 	private float calculateHorizontalDistance(){
 		return (float) (distanceFromPlayer * Math.cos(Math.toRadians(pitch+2)));
 	}
+	/**
+	 * returns the horrizontal distance from the player using {@link #getDistanceFromPlayer()} and {@link #getPitch()}
+	 * @return verticalDist (float)
+	 */
 	private float calculateVerticalDistance(){
 		return (float) (distanceFromPlayer * Math.sin(Math.toRadians(pitch+2)));
 	}
 	
+	/**
+	 * looksmaxxing
+	 */
 	private boolean lockIn = false;
+	/**
+	 * Calculates the scroll wheel or I/O keys to factor in how far the camera is using {@link #distanceFromPlayer}
+	 */
 	private void calculateZoom(){
 		if(Main.currentScreen != null) { if(Main.currentScreen.isLockInput()) { return; } }
 		float zoomLevel = Mouse.getDWheel() * 0.05f;
@@ -248,7 +299,10 @@ public class Camera {
 		}
 	}
 	
-	int maxVerticalTurn = 80;
+	int maxVerticalTurn = 80; // max angle
+	/**
+	 * Limits the player's angles when looking up and down.
+	 */
 	private void calculatePitch() {
 		float pitchChange = Mouse.getDY() * GameSettings.sensitivity*2;
 		pitch = Toolbox.lerp(pitch, pitch - pitchChange, 1f);
@@ -258,7 +312,9 @@ public class Camera {
 			pitch = maxVerticalTurn;
 		}
 	}
-	
+	/**
+	 * Basically converts the X difference in the mouse to X axis.
+	 */
 	private void calculateAngleAroundPlayer() {
 		float angleChange = Mouse.getDX() * GameSettings.sensitivity;
 		angleAroundPlayer -= angleChange;

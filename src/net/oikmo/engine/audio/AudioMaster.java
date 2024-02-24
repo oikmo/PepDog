@@ -39,7 +39,7 @@ public class AudioMaster {
 	}
 	
 	/**
-	 * basically, loads a sound if it isn't in the audio table. if so then return the audio from table instead of reloading it.
+	 * Basically, loads a sound if it isn't in the audio table. if so then return the audio from table instead of reloading it.
 	 * @param name
 	 */
 	public static int getSound(String name) {
@@ -49,11 +49,25 @@ public class AudioMaster {
 		return audio.get(name);
 	}
 	
+	/**
+	 * Sets the data of listener to nil.
+	 * <br> The data that is set are Position of listener and Velocity of listener.
+	 */
 	public static void setListenerData() {
 		AL10.alListener3f(AL10.AL_POSITION, 0, 0, 0);
 		AL10.alListener3f(AL10.AL_VELOCITY, 0, 0, 0);
 	}
-	
+	/**
+	 * Sets the data of listener.
+	 * <br> The data that is set are Position of listener and Velocity of listener.
+	 * 
+	 * @param posX (float)
+	 * @param posY (float)
+	 * @param posZ (float)
+	 * @param velX (float)
+	 * @param velY (float)
+	 * @param velZ (float)
+	 */
 	public static void setListenerData(float posX, float posY, float posZ, float velX, float velY, float velZ) {
 		AL10.alListener3f(AL10.AL_POSITION, posX, posY, posZ);
 		AL10.alListener3f(AL10.AL_VELOCITY, velX, velY, velZ);
@@ -62,14 +76,14 @@ public class AudioMaster {
 	/**
 	 * Loads wav audio file and returns int for loading.
 	 * 
-	 * @param file
-	 * @return Audio (int)
+	 * @param audioName (String)
+	 * @return soundbyte (int)
 	 */
-	private static int loadSound(String file) {
+	private static int loadSound(String audioName) {
 		int buffer = AL10.alGenBuffers();
 		buffers.add(buffer);
 		ClassLoader load = AudioMaster.class.getClassLoader();
-		String path = "assets/audio/" + file + ".wav";
+		String path = "assets/audio/" + audioName + ".wav";
 		byte[] stream = null;
 		try {
 			stream = IOUtils.toByteArray(load.getResourceAsStream(path));
