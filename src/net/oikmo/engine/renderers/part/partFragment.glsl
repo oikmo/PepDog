@@ -15,6 +15,7 @@ uniform float shineDamper;
 uniform float reflectivity;
 uniform vec3 skyColour;
 uniform vec3 partColour;
+uniform float alphaValue;
 
 void main(void) {
 	
@@ -41,10 +42,11 @@ void main(void) {
 	totalDiffuse = (totalDiffuse + brightness * lightColour)/attFactor;
 	totalSpecular = (totalSpecular + dampedFactor * reflectivity * lightColour);
 	totalDiffuse = max(totalDiffuse, 0.1);
-	
 	vec4 textureColour = texture(modelTexture,pass_textureCoords);
-	if(textureColour.a < 0.5) {
-		discard;
-	}
-	out_Colour = vec4(totalDiffuse,1.0) * (textureColour * vec4(partColour,255.0)) + vec4(totalSpecular,1.0);
+	
+	out_Colour = vec4(totalDiffuse,1.0) * (textureColour * vec4(partColour,1.0)) + vec4(totalSpecular,1.0);
+	out_Colour.w = alphaValue;
+	if(alphaValue < 0.1) {
+    	discard;
+    }
 }

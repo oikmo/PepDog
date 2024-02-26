@@ -36,13 +36,13 @@ import net.oikmo.toolbox.os.EnumOS;
 import net.oikmo.toolbox.os.EnumOSMappingHelper;
 
 /**
- * <i>Main class. Starts the engine. Plays the game.</i>
+ * Main class. Starts the engine. Plays the game.
  * 
- * @author <i>Oikmo</i>
+ * @author Oikmo
  */
 public class Main {
-	public static int WIDTH = 854;
-	public static int HEIGHT = 480;
+	public static int WIDTH = 800; //854
+	public static int HEIGHT = 600; //480
 
 	public static FontType font;
 	
@@ -70,21 +70,13 @@ public class Main {
 	 * Main method where the game starts.
 	 * Handles initialisation of renderers and scenes and main game loop.
 	 * 
-	 * @author <i>Oikmo</i>
+	 * @author Oikmo
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		try {
-			String mapToLoad = null;
-			if(args.length > 0) {
-				mapToLoad = args[0].trim();
-			}
-			if(mapToLoad == null) {
-				mapToLoad = "2005StartPlace";
-				Logger.log(LogLevel.INFO, "No map was chosen! Selecting: " + mapToLoad);
-			} else {
-				Logger.log(LogLevel.INFO, "Selected: " + mapToLoad);
-			}
+			String mapToLoad = "SwordFightonTheHeightsIV";
+			Logger.log(LogLevel.INFO, "Selected: " + mapToLoad);
 			
 			DisplayManager.createDisplay();
 			removeHSPIDERR();
@@ -94,9 +86,6 @@ public class Main {
 				Main.error("Could not load values from options", e);
 			}
 			AudioMaster.init();
-			
-			Throwable throwe = new Throwable("AAAAAAAAAAAAAAAAAAAAAAAA");
-			Main.error("aaaa", throwe);
 			
 			Loader loader = Loader.getInstance();		
 			@SuppressWarnings("unused")
@@ -110,7 +99,8 @@ public class Main {
 			gameState = GameState.game;
 			currentScreen = new GuiInGame();
 
-			Camera camera = new Camera(new Vector3f(0,25,0), new Vector3f(0,45,0));
+			player = new Player(new Vector3f(0,0,0),new Vector3f(0,0,0), 1.75f);
+			
 
 			GuiText version = new GuiText(gameVersion, 0.8f, font, new Vector2f(0,0), 1, false, false);
 			GuiText fps = new GuiText(Integer.toString(DisplayManager.getFPSCount()), 0.8f, font, new Vector2f(0,0.0175f), 1, false, false);
@@ -141,10 +131,13 @@ public class Main {
 				}
 			});
 			
+			SceneManager.loadScene("roblox");
+			RobloxScene scener = ((RobloxScene)SceneManager.getCurrentScene());
+			scener.loadRoblox(mapToLoad);
+			Camera camera = new Camera(scener.getRandomSpawn(), player.getRotation());
+			
 			while(!Display.isCloseRequested()) {
 				handleGUI();
-				
-				
 				
 				long maxMem = Runtime.getRuntime().maxMemory();
 				long totalMem = Runtime.getRuntime().totalMemory();
@@ -157,25 +150,20 @@ public class Main {
 				fps.setTextString("fps: " + Integer.toString(DisplayManager.getFPSCount()));
 				state.setTextString("gameState: " + gameState.toString());
 				scene.setTextString("scene: " + SceneManager.getCurrentScene().getClass().getSimpleName().replace("Scene","").toLowerCase());
-
+				
 				switch(gameState) {
 				case game:
-					if(player == null) {
-						player = new Player(new Vector3f(0,0,0),new Vector3f(0,0,0), 1.75f);
-						camera = null;
-						camera = player.getCamera();
-						SceneManager.getCurrentScene().addEntity(player);	    			
-						SceneManager.loadScene("roblox");
-						RobloxScene scener = ((RobloxScene)SceneManager.getCurrentScene());
-						scener.loadRoblox(mapToLoad);
-					}
 					
 					if(Keyboard.isKeyDown(Keyboard.KEY_J)) {
 						inputWindow.setVisible(true);
 					}
 
 					AudioMaster.setListenerData(camera.getPosition().x,camera.getPosition().y,camera.getPosition().z, 0, 0, 0);
-					player.update();
+					if(camera != player.getCamera()) {
+						camera.flyCam();
+					} else {
+						player.update();
+					}
 					
 					break;
 				case pausemenu:

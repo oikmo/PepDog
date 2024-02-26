@@ -24,8 +24,4 @@ public class EmptyScene extends Scene {
 	public void update(Camera camera) {
 		MasterRenderer.getInstance().renderScene(camera);
 	}
-
-	@Override
-	public void update() {}
-
 }

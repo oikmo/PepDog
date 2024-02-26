@@ -42,6 +42,7 @@ public class Camera {
 		this.position = position;
 		this.pitch = rotation.x;
 		this.roll = rotation.z;
+		flyCam = true;
 	}
 	
 	private int source;
@@ -186,6 +187,55 @@ public class Camera {
 			
 		}
 	}
+	
+	public void flyCam() {
+		if(!Mouse.isGrabbed()) {
+			if(Main.gameState == GameState.game) {
+				Mouse.setGrabbed(true);
+			} 
+		}
+		
+		if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+			speeds = 6;
+		} else {
+			speeds = 2;
+		}
+		
+		if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
+			position.y += speed * speeds;
+		} else if(Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
+			position.y -= speed * speeds;
+		}
+		
+		if(Keyboard.isKeyDown(Keyboard.KEY_W)) {
+			moveAt = -speed * speeds;
+		} else if(Keyboard.isKeyDown(Keyboard.KEY_S)) {
+			moveAt = speed * speeds;
+		} else {
+			moveAt = 0;
+		}
+		
+		if(Keyboard.isKeyDown(Keyboard.KEY_A)) {
+			position.x += (float) -((speed * speeds) * Math.cos(Math.toRadians(yaw)));
+			position.z -= (float) ((speed * speeds) * Math.sin(Math.toRadians(yaw)));
+		} else if(Keyboard.isKeyDown(Keyboard.KEY_D)) {
+			position.x -= (float) -((speed * speeds) * Math.cos(Math.toRadians(yaw)));
+			position.z += (float) ((speed * speeds) * Math.sin(Math.toRadians(yaw)));
+		}
+		
+		pitch -= Mouse.getDY() * GameSettings.sensitivity*2;
+		if(pitch < -maxVerticalTurn){
+			pitch = -maxVerticalTurn;
+		}else if(pitch > maxVerticalTurn){
+			pitch = maxVerticalTurn;
+		}
+		yaw += Mouse.getDX() * GameSettings.sensitivity;
+		
+		position.x += (float) -(moveAt * Math.sin(Math.toRadians(yaw)));
+		position.y += (float) (moveAt * Math.sin(Math.toRadians(pitch)));
+		position.z += (float) (moveAt * Math.cos(Math.toRadians(yaw)));
+	}
+	
 	/**
 	 * How far the camera is from the player.
 	 * @return distanceFromPlayer (float)
@@ -241,9 +291,9 @@ public class Camera {
 		float theta = angleAroundPlayer;
 		float offsetX = (float) (horizDistance * Math.sin(Math.toRadians(theta)));
 		float offsetZ = (float) (horizDistance * Math.cos(Math.toRadians(theta)));
-		position.y = player.getPosition().y + verticDistance + this.yOffset;
-		position.x = Toolbox.lerp(position.x, player.getPosition().x - offsetX, 0.35f);
-		position.z = Toolbox.lerp(position.z, player.getPosition().z - offsetZ, 0.35f);
+		position.y = player.getPosition().y + verticDistance ;
+		position.x = player.getPosition().x - offsetX;
+		position.z = player.getPosition().z - offsetZ;
 		
 		//this.yaw = 180 - (player.getRotY() + angleAroundPlayer);
 		this.yaw = 180 - angleAroundPlayer;
@@ -261,7 +311,7 @@ public class Camera {
 	 * @return verticalDist (float)
 	 */
 	private float calculateVerticalDistance(){
-		return (float) (distanceFromPlayer * Math.sin(Math.toRadians(pitch+2)));
+		return (float) (distanceFromPlayer * Math.sin(Math.toRadians(pitch+2)))+ this.yOffset;
 	}
 	
 	/**

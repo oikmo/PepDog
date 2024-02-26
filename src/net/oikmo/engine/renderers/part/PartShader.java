@@ -35,7 +35,7 @@ public class PartShader extends ShaderProgram {
 	private int location_offset;
 	private int location_plane;
 	private int location_partColour;
-	
+	private int location_transparency;
 	
 	public PartShader() {
 		super(VERTEX_FILE, FRAGMENT_FILE);
@@ -65,6 +65,7 @@ public class PartShader extends ShaderProgram {
 		location_lightColour = super.getUniformLocation("lightColour");
 		location_attenuation = super.getUniformLocation("attenuation");
 		location_partColour = super.getUniformLocation("partColour");
+		location_transparency = super.getUniformLocation("alphaValue");
 	}
 	
 	public void loadClipPlane(Vector4f plane) {
@@ -143,5 +144,9 @@ public class PartShader extends ShaderProgram {
 		super.load3DVector(location_lightPosition, lights.get(0).getPosition());
 		super.load3DVector(location_lightColour, lights.get(0).getColour());
 		super.load3DVector(location_attenuation, lights.get(0).getAttenuation());
+	}
+	
+	public void loadTransparency(float transparency) {
+		super.loadFloat(location_transparency, transparency);
 	}
 }

@@ -56,9 +56,15 @@ public class PartRenderer {
 			List<Part> batch = parts.get(model);
 			for(Part part : batch) {
 				prepareInstance(part);
-				//System.out.println(model.getRawModel() + " " + model.getRawModel().getVertexCount());
+				if(part.getTransparency() != 1f) {
+					GL11.glEnable(GL11.GL_BLEND);
+					GL11.glEnable(GL11.GL_POLYGON_STIPPLE);
+					GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+				}
+				
 				GL11.glDrawElements(GL11.GL_TRIANGLES, model.getRawModel().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
 			}
+			
 			unbindTextureModel();
 		}
 	}
@@ -90,5 +96,7 @@ public class PartRenderer {
 		shader.loadTransformationMatrix(transformationMatrix);
 		shader.loadOffset(part.getTextureXOffset(), part.getTextureYOffset());
 		shader.loadPartColour(part.getColour());
+		shader.loadTransparency(part.getTransparency());
+		
 	}
 }

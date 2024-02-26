@@ -25,12 +25,17 @@ public class SceneManager {
 		scenes.put("empty", SceneName.Empty);
 	}
 	
-	public static void loadScene(String input) {
+	/**
+	 * Loads scene from HashMap using string.<br>
+	 * When the scene is loaded, it tries to insert the player from {@link Main}
+	 * @param scene
+	 */
+	public static void loadScene(String scene) {
 		if(currentScene != null) {
 			currentScene.cleanUp();
 		}
 		
-		switch(scenes.get(input)){
+		switch(scenes.get(scene)){
 		case Empty:
 			currentScene = new EmptyScene();
 			break;
@@ -49,6 +54,10 @@ public class SceneManager {
 		
 	}
 	
+	/**
+	 * Returns currently loaded Scene.
+	 * @return {@link Scene}
+	 */
 	public static Scene getCurrentScene() {
 		return currentScene;
 	}

@@ -74,12 +74,15 @@ public class DisplayManager {
 			try {
 
 				if(Display.isFullscreen()) {
+					GL11.glViewport(0, 0, Main.WIDTH, Main.HEIGHT);
 					Display.setDisplayMode(new DisplayMode(Main.WIDTH, Main.HEIGHT));
 					Display.setFullscreen(false);
+					
 				} else {
 					Display.setDisplayModeAndFullscreen(Display.getDesktopDisplayMode());
+					GL11.glViewport(0, 0, Display.getDesktopDisplayMode().getWidth(), Display.getDesktopDisplayMode().getHeight());
 				}
-				GL11.glViewport(0, 0, Display.getWidth(), Display.getHeight());
+				
 			} catch(LWJGLException e) {
 				Main.error("LWJGLException", e);
 			}

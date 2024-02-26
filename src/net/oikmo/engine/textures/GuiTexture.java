@@ -3,6 +3,8 @@ package net.oikmo.engine.textures;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector2f;
 
+import net.oikmo.toolbox.Toolbox;
+
 public class GuiTexture {
 	
 	private int textureID;
@@ -19,8 +21,7 @@ public class GuiTexture {
 		float scaleY =  (scale.y / Display.getHeight()) * offset;
 		
 		this.scale = new Vector2f(scaleX, scaleY);
-		//Vector2f pos = Maths.getNormalizedDeviceCoords(position, scale);
-		this.position =  position;
+		this.position = position;
 		
 	}
 	
@@ -39,17 +40,34 @@ public class GuiTexture {
 	public void setPosition(Vector2f position) {
 		this.position = position;
 	}
+	
+	public void setPositionRelativeToScreen(int x, int y) {
+		this.position = Toolbox.getNormalizedDeviceCoords(position, scale);
+	}
 
 	public Vector2f getScale() {
 		return scale;
 	}
 
-	public void setScaleP(Vector2f scale) {
+	public void setScaleRelativeToScreen(Vector2f scale) {
 		float offset = Display.getWidth() - Display.getHeight();
 		float scaleX =  (scale.x / Display.getWidth()) * offset;
 		float scaleY =  (scale.y / Display.getHeight()) * offset;
 		
 		this.scale = new Vector2f(scaleX, scaleY);
+	}
+	
+	public void setPositionToTopLeft(int xOffset, int yOffset) {
+		position = new Vector2f(-1+getScale().x+xOffset,1-getScale().y+yOffset);
+	}
+	public void setPositionToBottomLeft(int xOffset, int yOffset) {
+		position = new Vector2f(-1+getScale().x+xOffset,1+getScale().y+yOffset);
+	}
+	public void setPositionToTopRight(int xOffset, int yOffset) {
+		position = new Vector2f(1+getScale().x+xOffset,1-getScale().y+yOffset);
+	}
+	public void setPositionToBottomRight(int xOffset, int yOffset) {
+		position = new Vector2f(1+getScale().x+xOffset,1+getScale().y+yOffset);
 	}
 	
 	public void setScale(Vector2f scale) {

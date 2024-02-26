@@ -23,12 +23,10 @@ public class GuiPauseMenu extends GuiScreen {
 	public void initGui() {
 		title = new GuiText("Paused...", 1.5f, Main.font, new Vector2f(0,0.05f), 1, true, false);
 		title.setColour(1, 1, 1);
-		buttonList.add(new GuiButton(0, new Vector2f(0f,0.2f), new Vector2f(0.65f,0.1f), "Back to game"));
-		buttonList.add(new GuiButton(1, new Vector2f(0f,0f), new Vector2f(0.65f,0.1f), "Options"));
-		buttonList.add(new GuiButton(2, new Vector2f(0f,-0.2f), new Vector2f(0.65f,0.1f), "Quit game"));
+		buttonList.add(new GuiButton(0, new Vector2f(0f, 0.2f), new Vector2f(0.65f,0.15f), "Back to game"));
+		buttonList.add(new GuiButton(1, new Vector2f(0f,    0f), new Vector2f(0.7f,0.15f),   "Options"));
+		buttonList.add(new GuiButton(2, new Vector2f(0f,-0.2f), new Vector2f(0.7f,0.15f),  "Quit game"));
 	}
-
-	
 
 	public void actionPerformed(GuiButton button) {
 		int id = button.getControlID();

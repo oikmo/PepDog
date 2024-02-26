@@ -24,8 +24,6 @@ import net.oikmo.engine.renderers.gui.GuiShader;
 import net.oikmo.engine.renderers.part.PartRenderer;
 import net.oikmo.engine.renderers.part.PartShader;
 import net.oikmo.engine.renderers.particles.ParticleMaster;
-import net.oikmo.engine.renderers.postProcessing.Fbo;
-import net.oikmo.engine.renderers.postProcessing.PostProcessing;
 import net.oikmo.engine.renderers.shadows.ShadowMapMasterRenderer;
 import net.oikmo.engine.renderers.skybox.SkyBoxRenderer;
 import net.oikmo.engine.renderers.water.WaterFrameBuffers;
@@ -37,6 +35,11 @@ import net.oikmo.main.entity.Camera;
 import net.oikmo.main.entity.Light;
 import net.oikmo.main.scene.SceneManager;
 
+/**
+ * Handles all of the rendering.
+ * 
+ * @author Oikmo
+ */
 public class MasterRenderer {
 
 	private Matrix4f projectionMatrix;
@@ -72,7 +75,7 @@ public class MasterRenderer {
 	public static float FOV = 60;
 
 	public static final float NEAR_PLANE = 0.1f;
-	public static final float FAR_PLANE = 1000f;
+	public static final float FAR_PLANE = 100000f;
 
 	private float aspectRatio = (float) Display.getWidth() / (float) Display.getHeight();
 
@@ -80,15 +83,15 @@ public class MasterRenderer {
 	private Map<TexturedModel, List<Part>> parts = new HashMap<TexturedModel, List<Part>>();
 	private List<GuiTexture> guis = new ArrayList<GuiTexture>();
 
-	public static int WIDTH = 854;
-	public static int HEIGHT = 480;
-
-	private Fbo fbo;
 	private WaterFrameBuffers waterFBO;
 
-
 	private static MasterRenderer instance;
-
+	
+	/**
+	 * Returns current instance.<br>
+	 * If the renderer hasn't been initialised then it initialises itself before returning.
+	 * @return {@link MasterRenderer}
+	 */
 	public static MasterRenderer getInstance() {
 		if(instance ==  null) {
 			instance = new MasterRenderer();
@@ -111,8 +114,6 @@ public class MasterRenderer {
 
 		ui_smallbutton = loader.loadTexture("ui/small/ui_button");
 		ui_smallhover = loader.loadTexture("ui/small/ui_button_hover");
-		PostProcessing.init();
-		fbo = new Fbo(WIDTH, HEIGHT, Fbo.DEPTH_RENDER_BUFFER);
 		waterFBO = new WaterFrameBuffers();
 
 		ParticleMaster.init(projectionMatrix);
@@ -123,7 +124,13 @@ public class MasterRenderer {
 		shadowMapRenderer = new ShadowMapMasterRenderer(camera);
 	}
 
-	public void setColours(float r, float g, float b) {
+	/**
+	 * Sets sky colour to given values.
+	 * @param r (float)
+	 * @param g (float)
+	 * @param b (float)
+	 */
+	public void setSkyColour(float r, float g, float b) {
 		RED = r;
 		GREEN = g;
 		BLUE = b;
@@ -134,7 +141,6 @@ public class MasterRenderer {
 		GREEN = NIGHTGREEN;
 		BLUE = NIGHTBLUE;
 	}
-
 	public void setDayColours() {
 		RED = DAYRED;
 		GREEN = DAYGREEN;
@@ -154,15 +160,21 @@ public class MasterRenderer {
 		//GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.getShadowMapTexture());
 	}
 
+	/**
+	 * Removes back face of triangle from renderer.
+	 */
 	public static void enableCulling() {
 		GL11.glEnable(GL11.GL_CULL_FACE);
 		GL11.glCullFace(GL11.GL_BACK);
 	}
-
+	
+	/**
+	 * Doesn't remove back face of triangle from renderer.
+	 */
 	public static void disableCulling() {
 		GL11.glDisable(GL11.GL_CULL_FACE);
 	}
-
+	
 	public void renderScene(List<Light> lights, Camera camera, List<Entity> entities, List<Part> parts, Vector4f clipPlane) {
 		for(Entity entity : entities) {
 			processEntity(entity);
@@ -172,7 +184,18 @@ public class MasterRenderer {
 		}
 		render(lights,camera, clipPlane);
 	}
-
+	
+	/**
+	 * Renders the scene with water.
+	 *  
+	 * @param lights (List[Light])
+	 * @param camera (List[Light])
+	 * @param entities (List[{@link Entity}])
+	 * @param parts (List[{@link Part}])
+	 * @param waters (List[{@link WaterTile}])
+	 * @param fbos ({@link WaterFrameBuffers})
+	 * @param water
+	 */
 	public void renderWater(List<Light> lights, Camera camera, List<Entity> entities,List<Part> parts,  List<WaterTile> waters,WaterFrameBuffers fbos, WaterTile water) {
 		if(waterRenderer == null) {
 			waterRenderer = new WaterRenderer(projectionMatrix, fbos);
@@ -198,18 +221,11 @@ public class MasterRenderer {
 
 	public void renderSceneWater(boolean postProcess, Camera camera) {
 		Scene scene = SceneManager.getCurrentScene();
-		if(postProcess) {
-			fbo.bindFrameBuffer();
-		}
 		renderScene(scene.getLights(), camera, scene.getEntities(), scene.getParts(), new Vector4f(0,0,0,0));
 		//this.renderShadowMap(scene.getEntities(), scene.getLights().get(0));
 		renderWater(scene.getLights(), camera, scene.getEntities(), scene.getParts(), scene.getWaters(), waterFBO, scene.getWaters().get(0));
 		ParticleMaster.update(camera);
 		ParticleMaster.renderParticles(camera);
-		if(postProcess) {
-			fbo.unbindFrameBuffer();
-			PostProcessing.doPostProcessing(fbo.getColourTexture());
-		}
 		guiRenderer.render(guis);
 		TextMaster.render();
 	}
@@ -238,6 +254,7 @@ public class MasterRenderer {
 		entityRenderer.render(entities);
 		entityShader.stop();
 
+		skyboxRenderer.render(camera, projectionMatrix, RED, GREEN, BLUE);
 		partShader.start();
 		partShader.loadClipPlane(clipPlane);
 		partShader.loadLights(lights);
@@ -246,7 +263,7 @@ public class MasterRenderer {
 		partsRenderer.render(parts);
 		partShader.stop();
 
-		skyboxRenderer.render(camera, projectionMatrix, RED, GREEN, BLUE);
+		
 		entities.clear();
 		parts.clear();
 	}
@@ -293,7 +310,7 @@ public class MasterRenderer {
 
 	public void cleanUp() {
 		entityShader.cleanUp();
-		PostProcessing.cleanUp();
+//		/PostProcessing.cleanUp();
 		Loader.getInstance().cleanUp();
 		ParticleMaster.cleanUp();
 		TextMaster.cleanUp();

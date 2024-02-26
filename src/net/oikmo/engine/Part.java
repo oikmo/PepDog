@@ -44,47 +44,65 @@ public class Part {
 	private int textureIndex = 0;
 	private Vector3f colour;
 	private int shape;
+	private float transparency;
 
-	public Part(Vector3f position, Vector3f rotation, Vector3f scale, Vector3f colour, int shape) {
+	public Part(Vector3f position, Vector3f rotation, Vector3f scale, Vector3f colour, int shape, float transparency) {
 		this.position = position;
 		this.rotation = rotation;
 		this.scale = scale;
 		this.colour = new Vector3f(colour);
 		this.shape = shape;
 
+		this.transparency = transparency;
+
+		ModelTexture texture = new ModelTexture(PartRenderer.texture);
+		if(transparency != 1f) { 
+			texture.setHasTransparency(true);
+		}
+		
 		switch(shape) {
 		case 0:
-			this.model = new TexturedModel(PartRenderer.cylinder, new ModelTexture(PartRenderer.texture));
+			this.model = new TexturedModel(PartRenderer.cylinder, texture);
 			break;
 		case 1:
-			this.model = new TexturedModel(PartRenderer.block, new ModelTexture(PartRenderer.texture));
+			this.model = new TexturedModel(PartRenderer.block, texture);
 			break;
 		case 2:
-			this.model = new TexturedModel(PartRenderer.sphere, new ModelTexture(PartRenderer.texture));
+			this.model = new TexturedModel(PartRenderer.sphere, texture);
 			break;
 		}
+	}
+
+	public float getTransparency() {
+		return this.transparency;
 	}
 
 	public static Part createPartFromItem(Item item) {
 		Vector3f position = null;
 		Vector3f rotation = null;
-		Vector3f scale    = null;
+		Vector3f scale = null;
+		float transparency = 1;
 		int colour = -1;
 		int shape = -1;
+		String name = "";
+
 		for(Object prop : item.getProperties().getStringOrProtectedStringOrInt()) {
 			/*if(prop instanceof PropertyContainer.Bool) {
 				PropertyContainer.Bool property = (PropertyContainer.Bool)prop;
 				//System.out.println("bool " + property.getName() + " " + property.isValue());
-			}
-			else if(prop instanceof PropertyContainer.Float) {
+			}*/
+			if(prop instanceof PropertyContainer.Float) {
 				PropertyContainer.Float property = (PropertyContainer.Float)prop;
-				//System.out.println("float " + property.getName() + " " + property.getValue());
+				if(property.getName().toLowerCase().contentEquals("transparency")) {
+					transparency = 1-property.getValue();
+					//System.out.println(transparency);
+				}
 			}
-			else
 			else if(prop instanceof PropertyContainer.String) {
 				PropertyContainer.String property = (PropertyContainer.String)prop;
-			}*/
-			if(prop instanceof PropertyContainer.Token) {
+				name = property.getValue();
+			}
+			else if(prop instanceof PropertyContainer.Token) {
 				PropertyContainer.Token property = (PropertyContainer.Token)prop;
 				//System.out.println("token " + property.getName() + " " + property.getValue());
 				if(property.getName().contentEquals("shape")) {
@@ -115,13 +133,13 @@ public class Part {
 		}
 		//System.out.println(name + " " + BrickColor.getEnumFromValue(colour));
 		//System.out.println(item.getReferent() + " " + rotation.toString());
-		return new Part(position, rotation, scale, BrickColor.getEnumFromValue(colour).getValue(), ShapeType.getEnumFromValue(shape).getValue());
+		return new Part(position, rotation, scale, BrickColor.getEnumFromValue(colour).getValue(), ShapeType.getEnumFromValue(shape).getValue(), transparency);
 	}
-	
+
 	public int getShape() {
 		return shape;
 	}
-	
+
 	public void setPosition(float x, float y, float z) {
 		this.position.x = x;
 		this.position.y = y;
