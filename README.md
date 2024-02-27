@@ -27,11 +27,13 @@ Engine which aims to implement as much features as the original Roblox 2006-2010
 - J - Switch maps via input box (must match map name and also like limited use??)
 
 ## MAPS TO LOAD
+- 2005PirateShip
 - 2005StartPlace
 - 2006Crossroads
 - 2008ROBLOXHQ
-- Colours
-- Shapes
+- 2008SwordFightonTheHeightsIV
+- TESTColours
+- TESTShapes
 
 TODO : 
 - set player to spawn location

@@ -54,8 +54,10 @@ public class RobloxScene extends Scene {
 			}
 		}
 		frame.setVisible(false);
-		System.out.println("MAIN:" + transparent.size());
-		this.getParts().addAll(transparent);
+		if(transparent.size() != 0) {
+			this.getParts().addAll(transparent.size()+1, transparent);
+		}
+		
 		this.setLoaded();
 	}
 	
@@ -71,7 +73,6 @@ public class RobloxScene extends Scene {
 	    	Part part = Part.createPartFromItem(item);
 	    	if(part.getTransparency() != 1f) {
 	    		this.transparent.add(part);
-	    		System.out.println("LOOP: " + transparent.size());
 	    	} else {
 	    		this.addPart(Part.createPartFromItem(item));
 	 	        if(item.getClazz().contentEquals("SpawnLocation")) {
@@ -94,12 +95,13 @@ public class RobloxScene extends Scene {
 		maps = new ArrayList<>();
 		spawns = new ArrayList<>();
 		transparent = new ArrayList<>();
+		maps.add("2005PirateShip");
 		maps.add("2005StartPlace");
 		maps.add("2006Crossroads");
 		maps.add("2008ROBLOXHQ");
-		maps.add("SwordFightonTheHeightsIV");
-		maps.add("Colours");
-		maps.add("Shapes");
+		maps.add("2008SwordFightonTheHeightsIV");
+		maps.add("TESTColours");
+		maps.add("TESTShapes");
 		
 		Light sun = new Light(new Vector3f(1,1000,1), new Vector3f(1.3f, 1.3f, 1.3f));
 		this.addLight(sun);
@@ -127,10 +129,16 @@ public class RobloxScene extends Scene {
 	}
 	
 	public Vector3f getRandomSpawn() {
-		Collections.shuffle(spawns);
-		int partNum = ThreadLocalRandom.current().nextInt(0, spawns.size());
-		Part part = spawns.get(partNum);
-		return new Vector3f(part.getPosition().x,part.getPosition().y+3f,part.getPosition().z);
+		if(spawns.size() != 0) { 
+			Collections.shuffle(spawns);
+			int partNum = ThreadLocalRandom.current().nextInt(0, spawns.size());
+			Part part = spawns.get(partNum);
+			return new Vector3f(part.getPosition().x,part.getPosition().y+3f,part.getPosition().z);
+		} else {
+			return new Vector3f(0,0,0);
+		}
+		
+		
 	}
 	
 	@Override

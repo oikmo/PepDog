@@ -75,7 +75,7 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		try {
-			String mapToLoad = "SwordFightonTheHeightsIV";
+			String mapToLoad = "2008SwordFightonTheHeightsIV";
 			Logger.log(LogLevel.INFO, "Selected: " + mapToLoad);
 			
 			DisplayManager.createDisplay();

@@ -81,7 +81,7 @@ public class Part {
 		Vector3f position = null;
 		Vector3f rotation = null;
 		Vector3f scale = null;
-		float transparency = 1;
+		float transparency = 0;
 		int colour = -1;
 		int shape = -1;
 		String name = "";
