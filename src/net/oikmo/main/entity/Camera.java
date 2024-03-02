@@ -6,6 +6,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 import net.oikmo.engine.audio.AudioMaster;
 import net.oikmo.engine.audio.Source;
+import net.oikmo.engine.renderers.MasterRenderer;
 import net.oikmo.main.GameSettings;
 import net.oikmo.main.Main;
 import net.oikmo.main.Main.GameState;

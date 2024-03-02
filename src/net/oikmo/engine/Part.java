@@ -38,8 +38,8 @@ public class Part {
 			return type;
 		}
 	}
-
-	public TexturedModel model;
+	
+	private TexturedModel model;
 	private Vector3f position, rotation, scale;
 	private int textureIndex = 0;
 	private Vector3f colour;
@@ -52,14 +52,14 @@ public class Part {
 		this.scale = scale;
 		this.colour = new Vector3f(colour);
 		this.shape = shape;
-
+		
 		this.transparency = transparency;
 
 		ModelTexture texture = new ModelTexture(PartRenderer.texture);
 		if(transparency != 1f) { 
 			texture.setHasTransparency(true);
 		}
-		
+
 		switch(shape) {
 		case 0:
 			this.model = new TexturedModel(PartRenderer.cylinder, texture);

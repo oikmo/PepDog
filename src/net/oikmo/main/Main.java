@@ -123,7 +123,6 @@ public class Main {
 			inputWindow.add(input);
 			
 			input.addActionListener(new ActionListener(){
-
 				public void actionPerformed(ActionEvent e){
 					RobloxScene scene = ((RobloxScene)SceneManager.getCurrentScene());
 					scene.loadRoblox(e.getActionCommand());
@@ -342,7 +341,7 @@ public class Main {
 	 * @param throwable (Throwable)
 	 */
 	public static void error(String id, Throwable throwable) {
-		Main.destroyGameButNoClose();
+		//Main.destroyGameButNoClose();
 		if(frame == null) {
 			frame = new JFrame();
 		}

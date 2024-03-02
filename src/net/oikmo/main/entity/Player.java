@@ -12,6 +12,7 @@ import net.oikmo.engine.audio.AudioMaster;
 import net.oikmo.engine.audio.Source;
 import net.oikmo.main.GameSettings;
 import net.oikmo.main.Main;
+import net.oikmo.main.gui.GuiPauseMenu;
 
 /**
  * How the user interacts with the world.

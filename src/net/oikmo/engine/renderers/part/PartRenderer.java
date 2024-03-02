@@ -59,10 +59,7 @@ public class PartRenderer {
 				if(part.getTransparency() != 1f) {
 					GL11.glEnable(GL11.GL_BLEND);
 					GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-				} else {
-					GL11.glDisable(GL11.GL_BLEND);
 				}
-				
 				GL11.glDrawElements(GL11.GL_TRIANGLES, model.getRawModel().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
 			}
 			

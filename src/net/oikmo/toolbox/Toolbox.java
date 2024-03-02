@@ -1,7 +1,9 @@
 package net.oikmo.toolbox;
 
 import org.lwjgl.opengl.Display;
+import org.lwjgl.util.vector.Matrix3f;
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.ReadableVector3f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
@@ -206,5 +208,44 @@ public class Toolbox {
 
 	public static float easeOut(float t) {
 		return t * (2 - t);
+	}
+
+	public static Quaternion EulerAnglesToQuaternion(Vector3f rotation) {
+		Quaternion q = new Quaternion();
+		double yaw = rotation.z;
+		double pitch = rotation.y;
+		double roll = rotation.x;
+		double qx = Math.sin(roll/2) * Math.cos(pitch/2) * Math.cos(yaw/2) - Math.cos(roll/2) * Math.sin(pitch/2) * Math.sin(yaw/2);
+		double qy = Math.cos(roll/2) * Math.sin(pitch/2) * Math.cos(yaw/2) + Math.sin(roll/2) * Math.cos(pitch/2) * Math.sin(yaw/2);
+		double qz = Math.cos(roll/2) * Math.cos(pitch/2) * Math.sin(yaw/2) - Math.sin(roll/2) * Math.sin(pitch/2) * Math.cos(yaw/2);
+		double qw = Math.cos(roll/2) * Math.cos(pitch/2) * Math.cos(yaw/2) + Math.sin(roll/2) * Math.sin(pitch/2) * Math.sin(yaw/2);
+		
+		q.x = (float) qx;
+		q.y = (float) qy;
+		q.z = (float) qz;
+		q.w = (float) qw;
+		return q;
+	}
+	static double RADTODEG = 180.0 / Math.PI;
+	public static Vector3f MatrixToEulerEngles(Matrix3f matrix) {
+		
+		double EPS = 1.0e-6;
+		double X, Y, Z;
+		
+		Y = Math.asin(matrix.m02);                       // Unique angle in [-pi/2,pi/2]
+
+		if (Math.abs(Math.abs(matrix.m02) - 1.0) < EPS) { // Yuk! Gimbal lock. Infinite choice of X and Z
+			X = Math.atan2(matrix.m21, matrix.m11);          // One choice amongst many
+			Z = 0.0;
+		} else {                                   // Unique solutions in (-pi,pi]
+			X = Math.atan2(-matrix.m12, matrix.m22);         // atan2 gives correct quadrant and unique solutions
+			Z = Math.atan2(-matrix.m01, matrix.m00);
+		}
+
+		X *= RADTODEG;   
+		Y *= RADTODEG;   
+		Z *= RADTODEG;
+
+		return new Vector3f((float)X,(float)Y,(float)Z);
 	}
 }
