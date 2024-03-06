@@ -38,6 +38,5 @@ Engine which aims to implement as much features as the original Roblox 2006-2010
 TODO : 
 - set player to spawn location
 - add different types of models for the parts
-- aabb collision
-- proper physics
+- proper physics (and collision)
 - lua loading :/
