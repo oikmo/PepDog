@@ -1,5 +1,7 @@
 package net.oikmo.toolbox;
 
+import javax.vecmath.Quat4f;
+
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Matrix3f;
 import org.lwjgl.util.vector.Matrix4f;
@@ -210,8 +212,8 @@ public class Toolbox {
 		return t * (2 - t);
 	}
 
-	public static Quaternion EulerAnglesToQuaternion(Vector3f rotation) {
-		Quaternion q = new Quaternion();
+	public static Quat4f EulerAnglesToQuaternion(Vector3f rotation) {
+		Quat4f q = new Quat4f();
 		double yaw = rotation.z;
 		double pitch = rotation.y;
 		double roll = rotation.x;
@@ -219,19 +221,36 @@ public class Toolbox {
 		double qy = Math.cos(roll/2) * Math.sin(pitch/2) * Math.cos(yaw/2) + Math.sin(roll/2) * Math.cos(pitch/2) * Math.sin(yaw/2);
 		double qz = Math.cos(roll/2) * Math.cos(pitch/2) * Math.sin(yaw/2) - Math.sin(roll/2) * Math.sin(pitch/2) * Math.cos(yaw/2);
 		double qw = Math.cos(roll/2) * Math.cos(pitch/2) * Math.cos(yaw/2) + Math.sin(roll/2) * Math.sin(pitch/2) * Math.sin(yaw/2);
-		
+
 		q.x = (float) qx;
 		q.y = (float) qy;
 		q.z = (float) qz;
 		q.w = (float) qw;
 		return q;
 	}
+	public static Vector3f QuaternionToEulerAngles(Quat4f q) {
+		double t0 = +2.0 * (q.w * q.x + q.y * q.z);
+		double t1 = +1.0 - 2.0 * (q.x * q.x + q.y * q.y);
+		double  X = Math.toDegrees(Math.atan2(t0, t1));
+
+		double t2 = +2.0 * (q.w * q.y - q.z * q.x);
+		t2 = t2 > 1.0f ? 1.0f : t2;
+		t2 = t2 < -1.0f ? -1.0f : t2;
+		double Y = Math.toDegrees(Math.asin(t2));
+		
+		double t3 = +2.0 * (q.w * q.z + q.x * q.y);
+		double t4 = +1.0 - 2.0 * (q.y * q.y + q.z * q.z);
+		double Z = Math.toDegrees(Math.atan2(t3, t4));
+		
+		return new Vector3f((float)X,(float)Y,(float)Z);
+	}
+
 	static double RADTODEG = 180.0 / Math.PI;
 	public static Vector3f MatrixToEulerEngles(Matrix3f matrix) {
-		
+
 		double EPS = 1.0e-6;
 		double X, Y, Z;
-		
+
 		Y = Math.asin(matrix.m02);                       // Unique angle in [-pi/2,pi/2]
 
 		if (Math.abs(Math.abs(matrix.m02) - 1.0) < EPS) { // Yuk! Gimbal lock. Infinite choice of X and Z

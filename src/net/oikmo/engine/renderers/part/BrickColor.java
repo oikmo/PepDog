@@ -4,7 +4,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 public enum BrickColor {
 	
-	Black(26, new Vector3f(27,42,52)),
+	Black  (26, new Vector3f(27,42,52)),
 	BrightRed(21, new Vector3f(196,40,27)),
 	BrightYellow(24, new Vector3f(245,205,47)),
 	CoolYellow(226, new Vector3f(253, 234, 140)),

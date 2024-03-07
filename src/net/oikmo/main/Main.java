@@ -94,6 +94,8 @@ public class Main {
 			SceneManager.init();
 			SceneManager.loadScene("empty");
 			
+			PhysicsSystem.init();
+			
 			String fontType = "comic-sans";
 			font = new FontType(loader.loadFontTexture(fontType),fontType);
 			gameState = GameState.game;
@@ -163,7 +165,7 @@ public class Main {
 					} else {
 						player.update();
 					}
-					
+					PhysicsSystem.update();
 					break;
 				case pausemenu:
 					Mouse.setGrabbed(false);

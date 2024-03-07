@@ -55,6 +55,7 @@ public class PartRenderer {
 			prepareTexturedModel(model);
 			List<Part> batch = parts.get(model);
 			for(Part part : batch) {
+				part.update();
 				prepareInstance(part);
 				if(part.getTransparency() != 1f) {
 					GL11.glEnable(GL11.GL_BLEND);

@@ -29,5 +29,11 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/jar/kryonet-2.21-all.jar"/>
+	<classpathentry kind="lib" path="lib/jar/jbullet.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/PepDog/lib/jar/javadoc/jbullet-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/jar/vecmath.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

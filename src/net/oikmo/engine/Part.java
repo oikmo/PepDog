@@ -2,13 +2,25 @@ package net.oikmo.engine;
 
 import java.text.DecimalFormat;
 
+import javax.vecmath.Quat4f;
+
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
+
+import com.bulletphysics.collision.shapes.BoxShape;
+import com.bulletphysics.collision.shapes.CollisionShape;
+import com.bulletphysics.dynamics.RigidBody;
+import com.bulletphysics.dynamics.RigidBodyConstructionInfo;
+import com.bulletphysics.linearmath.DefaultMotionState;
+import com.bulletphysics.linearmath.Transform;
 
 import net.oikmo.engine.models.TexturedModel;
 import net.oikmo.engine.renderers.part.BrickColor;
 import net.oikmo.engine.renderers.part.PartRenderer;
 import net.oikmo.engine.textures.ModelTexture;
+import net.oikmo.main.PhysicsSystem;
+import net.oikmo.toolbox.Maths;
+import net.oikmo.toolbox.Toolbox;
 import net.oikmo.toolbox.rbxl.Item;
 import net.oikmo.toolbox.rbxl.PropertyContainer;
 
@@ -45,7 +57,11 @@ public class Part {
 	private Vector3f colour;
 	private int shape;
 	private float transparency;
-
+	private RigidBody body;
+	private Transform transform;
+	
+	float mass = 1f;
+	private boolean loaded = false;
 	public Part(Vector3f position, Vector3f rotation, Vector3f scale, Vector3f colour, int shape, float transparency) {
 		this.position = position;
 		this.rotation = rotation;
@@ -54,7 +70,19 @@ public class Part {
 		this.shape = shape;
 		
 		this.transparency = transparency;
-
+		
+		CollisionShape colShape = new BoxShape(Maths.lwjglToVM(getScale()));
+		javax.vecmath.Vector3f localInertia = new javax.vecmath.Vector3f(0, 0, 0);
+		colShape.calculateLocalInertia(mass, localInertia);
+		transform = new Transform();
+		transform.origin.set(getPosition().x, getPosition().y, getPosition().z);
+		transform.setRotation(Toolbox.EulerAnglesToQuaternion(getRotation()));
+		DefaultMotionState motionState = new DefaultMotionState(transform);
+		RigidBodyConstructionInfo rbInfo = new RigidBodyConstructionInfo(mass, motionState, colShape, localInertia);
+		this.body = new RigidBody(rbInfo);
+		PhysicsSystem.getWorld().addRigidBody(body);
+		loaded = true;
+		
 		ModelTexture texture = new ModelTexture(PartRenderer.texture);
 		if(transparency != 1f) { 
 			texture.setHasTransparency(true);
@@ -84,7 +112,7 @@ public class Part {
 		float transparency = 0;
 		int colour = -1;
 		int shape = -1;
-		String name = "";
+		//String name = "";
 
 		for(Object prop : item.getProperties().getStringOrProtectedStringOrInt()) {
 			/*if(prop instanceof PropertyContainer.Bool) {
@@ -99,8 +127,8 @@ public class Part {
 				}
 			}
 			else if(prop instanceof PropertyContainer.String) {
-				PropertyContainer.String property = (PropertyContainer.String)prop;
-				name = property.getValue();
+				//PropertyContainer.String property = (PropertyContainer.String)prop;
+				//name = property.getValue();
 			}
 			else if(prop instanceof PropertyContainer.Token) {
 				PropertyContainer.Token property = (PropertyContainer.Token)prop;
@@ -134,6 +162,19 @@ public class Part {
 		//System.out.println(name + " " + BrickColor.getEnumFromValue(colour));
 		//System.out.println(item.getReferent() + " " + rotation.toString());
 		return new Part(position, rotation, scale, BrickColor.getEnumFromValue(colour).getValue(), ShapeType.getEnumFromValue(shape).getValue(), transparency);
+	}
+	
+	private Quat4f quat = new Quat4f();
+	public void update() {
+		if(loaded) {
+			body.getMotionState().getWorldTransform(transform);
+			transform.getRotation(quat);
+			position.x = transform.origin.x;
+			position.y = transform.origin.y;
+			position.z = transform.origin.z;
+			rotation = Toolbox.QuaternionToEulerAngles(quat);
+		}
+		
 	}
 
 	public int getShape() {
