@@ -189,7 +189,7 @@ public class PropertyContainer {
 		 * Gets the value of the value property.
 		 * 
 		 */
-		public boolean isValue() {
+		public boolean getValue() {
 			return value;
 		}
 
