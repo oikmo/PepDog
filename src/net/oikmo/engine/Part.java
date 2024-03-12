@@ -128,7 +128,7 @@ public class Part {
 		
 		switch(form) {
 		case 2:
-			transform.setRotation(Toolbox.get_quaternion_from_euler(getRotation()));
+			transform.setRotation(Toolbox.EulerAnglesToQuaternion(getRotation()));
 			PhysicsSystem.getWorld().addRigidBody(body);
 			break;
 		}
@@ -210,7 +210,7 @@ public class Part {
 			position.y = transform.origin.y;
 			position.z = transform.origin.z;
 			if(form == 2) {
-				rotation = Toolbox.euler_from_quaternion(quat);
+				rotation = Toolbox.QuaternionToEulerAngles(quat);
 			}
 			
 		}
