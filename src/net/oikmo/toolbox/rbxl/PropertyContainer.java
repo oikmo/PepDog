@@ -12,6 +12,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.vecmath.Matrix3f;
+import javax.vecmath.Quat4f;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -1383,6 +1385,26 @@ public class PropertyContainer {
 			Z *= RADTODEG;
 
 			return new Vector3f((float)X,(float)Y,(float)Z);
+		}
+		
+		public Matrix3f getRotation() {
+			Matrix3f m = new Matrix3f();
+			m.m00 = getR00().getValue().getValue();
+			m.m01 = getR01().getValue().getValue();
+			m.m02 = getR02().getValue().getValue();
+			m.m10 = getR10().getValue().getValue();
+			m.m11 = getR11().getValue().getValue();
+			m.m12 = getR12().getValue().getValue();
+			m.m20 = getR20().getValue().getValue();
+			m.m21 = getR21().getValue().getValue();
+			m.m22 = getR22().getValue().getValue();
+			return m;
+		}
+		
+		public Quat4f getQuaternion() {
+			Quat4f q = new Quat4f();
+			q.set(getRotation());
+			return q;
 		}
 
 		public java.lang.String toString() {

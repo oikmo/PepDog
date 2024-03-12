@@ -13,6 +13,13 @@ public class GuiButton extends AbstractButton {
     private Vector2f position;
     GuiText text;
 	
+    /**
+     * 
+     * @param controlID
+     * @param position
+     * @param scale
+     * @param text
+     */
 	public GuiButton(int controlID, Vector2f position, Vector2f scale, String text) {
 		super(position, scale);
 		this.controlID = controlID;
@@ -24,6 +31,26 @@ public class GuiButton extends AbstractButton {
 		this.text.setColour(1, 1, 1);
 		show();
 	} 
+	
+	/**
+     * 
+     * @param controlID
+     * @param position
+     * @param scale
+     * @param text
+     * @param fontSize
+     */
+	public GuiButton(int controlID, Vector2f position, Vector2f scale, String text, float fontSize) {
+		super(position, scale);
+		this.controlID = controlID;
+		this.position = position;
+		this.scale = scale;
+		float x = Math.abs((1+position.x)/2);
+		float y = Math.abs((1-position.y)/2);
+		this.text = new GuiText(text, fontSize, Main.font, new Vector2f(x,y), 1, false, true);
+		this.text.setColour(1, 1, 1);
+		show();
+	}
 	
 	public void setText(String text) {
 		if(this.text.getTextString().contentEquals(text)) { return; }

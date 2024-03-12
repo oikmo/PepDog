@@ -103,13 +103,18 @@ public class Main {
 
 			player = new Player(new Vector3f(0,0,0),new Vector3f(0,0,0), 1.75f);
 			
-
-			GuiText version = new GuiText(gameVersion, 0.8f, font, new Vector2f(0,0), 1, false, false);
-			GuiText fps = new GuiText(Integer.toString(DisplayManager.getFPSCount()), 0.8f, font, new Vector2f(0,0.0175f), 1, false, false);
-			GuiText state = new GuiText(gameState.toString(), 0.8f, font, new Vector2f(0,0.035f), 1, false, false);
-			GuiText scene = new GuiText(SceneManager.getCurrentScene().getClass().getSimpleName().replace("Scene",""), 0.8f, font, new Vector2f(0,0.0525f), 1, false, false);
-			GuiText useMem = new GuiText("Used memory:", 0.8f, font, new Vector2f(0,0.07f), 1, false, false);
-			GuiText allocMem = new GuiText("Allocated memory:", 0.8f, font, new Vector2f(0,0.0875f), 1, false, false);
+			float balls = 0.1f;
+			GuiText version = new GuiText(gameVersion, 0.8f, font, new Vector2f(0, balls), 1, false, false);
+			balls += 0.0175f;
+			GuiText fps = new GuiText(Integer.toString(DisplayManager.getFPSCount()), 0.8f, font, new Vector2f(0, balls), 1, false, false);
+			balls += 0.0175f;
+			GuiText state = new GuiText(gameState.toString(), 0.8f, font, new Vector2f(0, balls), 1, false, false);
+			balls += 0.0175f;
+			GuiText scene = new GuiText(SceneManager.getCurrentScene().getClass().getSimpleName().replace("Scene",""), 0.8f, font, new Vector2f(0, balls), 1, false, false);
+			balls += 0.0175f;
+			GuiText useMem = new GuiText("Used memory:", 0.8f, font, new Vector2f(0, balls), 1, false, false);
+			balls += 0.0175f;
+			GuiText allocMem = new GuiText("Allocated memory:", 0.8f, font, new Vector2f(0, balls), 1, false, false);
 
 			version.setColour(1, 1, 1);
 			fps.setColour(1, 1, 1);

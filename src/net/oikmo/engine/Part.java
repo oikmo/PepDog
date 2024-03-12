@@ -50,7 +50,6 @@ public class Part {
 			return type;
 		}
 	}
-	
 	public enum FormType {
 
 		Symmetric(0),
@@ -80,22 +79,21 @@ public class Part {
 	private Vector3f position, rotation, scale;
 	private int textureIndex = 0;
 	private Vector3f colour;
-	private int shape;
+	private ShapeType shape;
 	private float transparency;
 	private RigidBody body;
 	private Transform transform;
-	private int form;
+	private FormType form;
 	
 	float mass = 1f;
 	private boolean loaded = false;
-	public Part(Vector3f position, Vector3f rotation, Vector3f scale, Vector3f colour, int shape, int form, float transparency) {
+	public Part(Vector3f position, Quat4f rotation, Vector3f scale, Vector3f colour, ShapeType shape, FormType form, float transparency) {
 		this.position = position;
-		this.rotation = rotation;
 		this.scale = scale;
 		this.colour = new Vector3f(colour);
 		this.shape = shape;
-		this.form = form;
-		
+		this.form = FormType.Symmetric;
+		this.rotation = Maths.QuaternionToEulerAngles(rotation);
 		this.transparency = transparency;
 		
 		CollisionShape colShape = new BoxShape(Maths.lwjglToVM(getScale()));
@@ -103,10 +101,12 @@ public class Part {
 		colShape.calculateLocalInertia(mass, localInertia);
 		transform = new Transform();
 		transform.origin.set(getPosition().x, getPosition().y, getPosition().z);
+		transform.setRotation(rotation);
 		
 		DefaultMotionState motionState = new DefaultMotionState(transform);
 		RigidBodyConstructionInfo rbInfo = new RigidBodyConstructionInfo(mass, motionState, colShape, localInertia);
 		this.body = new RigidBody(rbInfo);
+		PhysicsSystem.getWorld().addRigidBody(body);
 		loaded = true;
 		
 		ModelTexture texture = new ModelTexture(PartRenderer.texture);
@@ -115,21 +115,14 @@ public class Part {
 		}
 
 		switch(shape) {
-		case 0:
+		case Cylinder:
 			this.model = new TexturedModel(PartRenderer.cylinder, texture);
 			break;
-		case 1:
+		case Block:
 			this.model = new TexturedModel(PartRenderer.block, texture);
 			break;
-		case 2:
+		case Sphere:
 			this.model = new TexturedModel(PartRenderer.sphere, texture);
-			break;
-		}
-		
-		switch(form) {
-		case 2:
-			transform.setRotation(Toolbox.EulerAnglesToQuaternion(getRotation()));
-			PhysicsSystem.getWorld().addRigidBody(body);
 			break;
 		}
 	}
@@ -140,7 +133,7 @@ public class Part {
 
 	public static Part createPartFromItem(Item item) {
 		Vector3f position = null;
-		Vector3f rotation = null;
+		Quat4f rotation = null;
 		Vector3f scale = null;
 		float transparency = 0;
 		int colour = -1;
@@ -192,13 +185,13 @@ public class Part {
 
 				if(property.getName().contentEquals("CFrame")) {
 					position = new Vector3f(property.x(),property.y(),property.z());
-					rotation = new Vector3f(property.getAngles());
+					rotation = new Quat4f(property.getQuaternion());
 				}
 			}
 		}
 		//System.out.println(name + " " + BrickColor.getEnumFromValue(colour));
 		//System.out.println(item.getReferent() + " " + rotation.toString());
-		return new Part(position, rotation, scale, BrickColor.getEnumFromValue(colour).getValue(), ShapeType.getEnumFromValue(shape).getValue(), FormType.getEnumFromValue(form).getValue(), transparency);
+		return new Part(position, rotation, scale, BrickColor.getEnumFromValue(colour).getValue(), ShapeType.getEnumFromValue(shape), FormType.getEnumFromValue(form), transparency);
 	}
 	
 	private Quat4f quat = new Quat4f();
@@ -209,15 +202,12 @@ public class Part {
 			position.x = transform.origin.x;
 			position.y = transform.origin.y;
 			position.z = transform.origin.z;
-			if(form == 2) {
-				rotation = Toolbox.QuaternionToEulerAngles(quat);
-			}
-			
+			rotation = Maths.QuaternionToEulerAngles(quat);
 		}
 		
 	}
 
-	public int getShape() {
+	public ShapeType getShape() {
 		return shape;
 	}
 

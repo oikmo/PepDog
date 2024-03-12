@@ -71,21 +71,7 @@ public class DisplayManager {
 		Display.sync(60);
 
 		if(Keyboard.isKeyDown(Keyboard.KEY_F11)) {
-			try {
-
-				if(Display.isFullscreen()) {
-					GL11.glViewport(0, 0, Main.WIDTH, Main.HEIGHT);
-					Display.setDisplayMode(new DisplayMode(Main.WIDTH, Main.HEIGHT));
-					Display.setFullscreen(false);
-					
-				} else {
-					Display.setDisplayModeAndFullscreen(Display.getDesktopDisplayMode());
-					GL11.glViewport(0, 0, Display.getDesktopDisplayMode().getWidth(), Display.getDesktopDisplayMode().getHeight());
-				}
-				
-			} catch(LWJGLException e) {
-				Main.error("LWJGLException", e);
-			}
+			setFullscreen();
 		}
 
 		if(Keyboard.isKeyDown(Keyboard.KEY_F2)) {
@@ -96,6 +82,24 @@ public class DisplayManager {
 		delta = (currentFrameTime - lastFrameTime)/1000f;
 		lastFrameTime = currentFrameTime;		
 	}
+	
+	public static void setFullscreen() {
+		try {
+			if(Display.isFullscreen()) {
+				GL11.glViewport(0, 0, Main.WIDTH, Main.HEIGHT);
+				Display.setDisplayMode(new DisplayMode(Main.WIDTH, Main.HEIGHT));
+				Display.setFullscreen(false);
+				
+			} else {
+				Display.setDisplayModeAndFullscreen(Display.getDesktopDisplayMode());
+				GL11.glViewport(0, 0, Display.getDesktopDisplayMode().getWidth(), Display.getDesktopDisplayMode().getHeight());
+			}
+			
+		} catch(LWJGLException e) {
+			Main.error("LWJGLException", e);
+		}
+	}
+	
 	/**
 	 * Destroys the display (not the program)
 	 */

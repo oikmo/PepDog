@@ -190,51 +190,68 @@ public class Camera {
 	}
 	
 	public void flyCam() {
-		if(!Mouse.isGrabbed()) {
-			if(Main.gameState == GameState.game) {
-				Mouse.setGrabbed(true);
-			} 
-		}
-		
-		if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-			speeds = 6;
+		if(!lockInCam) {
+			if(Keyboard.isKeyDown(Keyboard.KEY_Q)) {
+				flyCam = !flyCam;
+				lockInCam = true;
+			}
 		} else {
-			speeds = 2;
+			if(!Keyboard.isKeyDown(Keyboard.KEY_Q)) {
+				lockInCam = false;
+			}
 		}
 		
-		if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
-			position.y += speed * speeds;
-		} else if(Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
-			position.y -= speed * speeds;
-		}
-		
-		if(Keyboard.isKeyDown(Keyboard.KEY_W)) {
-			moveAt = -speed * speeds;
-		} else if(Keyboard.isKeyDown(Keyboard.KEY_S)) {
-			moveAt = speed * speeds;
+		if(flyCam) {
+			if(!Mouse.isGrabbed()) {
+				if(Main.gameState == GameState.game) {
+					Mouse.setGrabbed(true);
+				} 
+			}
+			
+			if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+				speeds = 6;
+			} else {
+				speeds = 2;
+			}
+			
+			if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
+				position.y += speed * speeds;
+			} else if(Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
+				position.y -= speed * speeds;
+			}
+			
+			if(Keyboard.isKeyDown(Keyboard.KEY_W)) {
+				moveAt = -speed * speeds;
+			} else if(Keyboard.isKeyDown(Keyboard.KEY_S)) {
+				moveAt = speed * speeds;
+			} else {
+				moveAt = 0;
+			}
+			
+			if(Keyboard.isKeyDown(Keyboard.KEY_A)) {
+				position.x += (float) -((speed * speeds) * Math.cos(Math.toRadians(yaw)));
+				position.z -= (float) ((speed * speeds) * Math.sin(Math.toRadians(yaw)));
+			} else if(Keyboard.isKeyDown(Keyboard.KEY_D)) {
+				position.x -= (float) -((speed * speeds) * Math.cos(Math.toRadians(yaw)));
+				position.z += (float) ((speed * speeds) * Math.sin(Math.toRadians(yaw)));
+			}
+			
+			pitch -= Mouse.getDY() * GameSettings.sensitivity*2;
+			if(pitch < -maxVerticalTurn){
+				pitch = -maxVerticalTurn;
+			}else if(pitch > maxVerticalTurn){
+				pitch = maxVerticalTurn;
+			}
+			yaw += Mouse.getDX() * GameSettings.sensitivity;
+			
+			position.x += (float) -(moveAt * Math.sin(Math.toRadians(yaw)));
+			position.y += (float) (moveAt * Math.sin(Math.toRadians(pitch)));
+			position.z += (float) (moveAt * Math.cos(Math.toRadians(yaw)));
 		} else {
-			moveAt = 0;
+			if(Mouse.isGrabbed()) {
+				Mouse.setGrabbed(false);
+			}
 		}
-		
-		if(Keyboard.isKeyDown(Keyboard.KEY_A)) {
-			position.x += (float) -((speed * speeds) * Math.cos(Math.toRadians(yaw)));
-			position.z -= (float) ((speed * speeds) * Math.sin(Math.toRadians(yaw)));
-		} else if(Keyboard.isKeyDown(Keyboard.KEY_D)) {
-			position.x -= (float) -((speed * speeds) * Math.cos(Math.toRadians(yaw)));
-			position.z += (float) ((speed * speeds) * Math.sin(Math.toRadians(yaw)));
-		}
-		
-		pitch -= Mouse.getDY() * GameSettings.sensitivity*2;
-		if(pitch < -maxVerticalTurn){
-			pitch = -maxVerticalTurn;
-		}else if(pitch > maxVerticalTurn){
-			pitch = maxVerticalTurn;
-		}
-		yaw += Mouse.getDX() * GameSettings.sensitivity;
-		
-		position.x += (float) -(moveAt * Math.sin(Math.toRadians(yaw)));
-		position.y += (float) (moveAt * Math.sin(Math.toRadians(pitch)));
-		position.z += (float) (moveAt * Math.cos(Math.toRadians(yaw)));
 	}
 	
 	/**
