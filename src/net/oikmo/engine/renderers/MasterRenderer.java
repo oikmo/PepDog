@@ -333,8 +333,13 @@ public class MasterRenderer {
 
 	public void updateProjectionMatrix(float fov) {
 		if(FOV == fov) { return; }
-		MasterRenderer.FOV = fov;
-
+		if(fov == -1) {
+			fov = FOV;
+		} else {
+			MasterRenderer.FOV = fov;
+		}
+		
+		aspectRatio = (float) Display.getWidth() / (float) Display.getHeight();
 		float y_scale = (float) ((1f / Math.tan(Math.toRadians(FOV / 2f))));
 		float x_scale = y_scale / aspectRatio;
 
