@@ -6,6 +6,7 @@ import java.util.Map;
 import net.oikmo.engine.scene.Scene;
 import net.oikmo.main.Main;
 import net.oikmo.main.Main.GameState;
+import net.oikmo.main.entity.Camera;
 
 public class SceneManager {
 	
@@ -52,6 +53,10 @@ public class SceneManager {
 			}
 		}
 		
+	}
+	
+	public static void update(Camera camera) {
+		getCurrentScene().update(camera);
 	}
 	
 	/**

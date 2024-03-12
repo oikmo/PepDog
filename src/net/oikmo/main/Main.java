@@ -172,7 +172,7 @@ public class Main {
 					player.pause();
 					break;
 				}
-				SceneManager.getCurrentScene().update(camera);
+				SceneManager.update(camera);
 
 				DisplayManager.updateDisplay();
 			}
