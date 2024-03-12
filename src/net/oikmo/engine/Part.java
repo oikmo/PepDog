@@ -51,6 +51,31 @@ public class Part {
 		}
 	}
 	
+	public enum FormType {
+
+		Symmetric(0),
+		Brick(1),
+		Plate(2);
+
+		private final int type;
+		FormType(int type) {
+			this.type = type;
+		}
+
+		public static FormType getEnumFromValue(int value) {
+			for(int i = 0; i < values().length; i++) {
+				if(values()[i].getValue() == value) {
+					return values()[i];
+				}
+			}
+			return Brick;
+		}
+
+		public int getValue() {
+			return type;
+		}
+	}
+	
 	private TexturedModel model;
 	private Vector3f position, rotation, scale;
 	private int textureIndex = 0;
@@ -59,32 +84,30 @@ public class Part {
 	private float transparency;
 	private RigidBody body;
 	private Transform transform;
+	private int form;
 	
 	float mass = 1f;
 	private boolean loaded = false;
-	public Part(Vector3f position, Vector3f rotation, Vector3f scale, Vector3f colour, int shape, float transparency, boolean anchored) {
+	public Part(Vector3f position, Vector3f rotation, Vector3f scale, Vector3f colour, int shape, int form, float transparency) {
 		this.position = position;
 		this.rotation = rotation;
 		this.scale = scale;
 		this.colour = new Vector3f(colour);
 		this.shape = shape;
+		this.form = form;
 		
 		this.transparency = transparency;
 		
-		if(!anchored) {
-			CollisionShape colShape = new BoxShape(Maths.lwjglToVM(getScale()));
-			javax.vecmath.Vector3f localInertia = new javax.vecmath.Vector3f(0, 0, 0);
-			colShape.calculateLocalInertia(mass, localInertia);
-			transform = new Transform();
-			transform.origin.set(getPosition().x, getPosition().y, getPosition().z);
-			transform.setRotation(Maths.EulerAnglesToQuaternion(getRotation()));
-			DefaultMotionState motionState = new DefaultMotionState(transform);
-			RigidBodyConstructionInfo rbInfo = new RigidBodyConstructionInfo(mass, motionState, colShape, localInertia);
-			this.body = new RigidBody(rbInfo);
-			PhysicsSystem.getWorld().addRigidBody(body);
-			loaded = true;
-		}
+		CollisionShape colShape = new BoxShape(Maths.lwjglToVM(getScale()));
+		javax.vecmath.Vector3f localInertia = new javax.vecmath.Vector3f(0, 0, 0);
+		colShape.calculateLocalInertia(mass, localInertia);
+		transform = new Transform();
+		transform.origin.set(getPosition().x, getPosition().y, getPosition().z);
 		
+		DefaultMotionState motionState = new DefaultMotionState(transform);
+		RigidBodyConstructionInfo rbInfo = new RigidBodyConstructionInfo(mass, motionState, colShape, localInertia);
+		this.body = new RigidBody(rbInfo);
+		loaded = true;
 		
 		ModelTexture texture = new ModelTexture(PartRenderer.texture);
 		if(transparency != 1f) { 
@@ -102,6 +125,13 @@ public class Part {
 			this.model = new TexturedModel(PartRenderer.sphere, texture);
 			break;
 		}
+		
+		switch(form) {
+		case 2:
+			transform.setRotation(Toolbox.get_quaternion_from_euler(getRotation()));
+			PhysicsSystem.getWorld().addRigidBody(body);
+			break;
+		}
 	}
 
 	public float getTransparency() {
@@ -112,23 +142,18 @@ public class Part {
 		Vector3f position = null;
 		Vector3f rotation = null;
 		Vector3f scale = null;
-		String name = "";
 		float transparency = 0;
 		int colour = -1;
 		int shape = -1;
-		boolean anchored = true;
+		int form = 1;
 		//String name = "";
 
 		for(Object prop : item.getProperties().getStringOrProtectedStringOrInt()) {
-			if(prop instanceof PropertyContainer.Bool) {
+			/*if(prop instanceof PropertyContainer.Bool) {
 				PropertyContainer.Bool property = (PropertyContainer.Bool)prop;
-				
-				if(property.getName().toLowerCase().contentEquals("anchored")) {
-					anchored = property.getValue();
-					System.out.println(property.getValue());
-				}
-			}
-			else if(prop instanceof PropertyContainer.Float) {
+				//System.out.println("bool " + property.getName() + " " + property.isValue());
+			}*/
+			if(prop instanceof PropertyContainer.Float) {
 				PropertyContainer.Float property = (PropertyContainer.Float)prop;
 				if(property.getName().toLowerCase().contentEquals("transparency")) {
 					transparency = 1-property.getValue();
@@ -136,14 +161,17 @@ public class Part {
 				}
 			}
 			else if(prop instanceof PropertyContainer.String) {
-				PropertyContainer.String property = (PropertyContainer.String)prop;
-				name = property.getValue();
+				//PropertyContainer.String property = (PropertyContainer.String)prop;
+				//name = property.getValue();
 			}
 			else if(prop instanceof PropertyContainer.Token) {
 				PropertyContainer.Token property = (PropertyContainer.Token)prop;
 				//System.out.println("token " + property.getName() + " " + property.getValue());
 				if(property.getName().contentEquals("shape")) {
 					shape = property.getValue();
+				}
+				if(property.getName().toLowerCase().contentEquals("formfactor")) {
+					form = property.getValue();
 				}
 			}
 			else if(prop instanceof PropertyContainer.Int) {
@@ -170,7 +198,7 @@ public class Part {
 		}
 		//System.out.println(name + " " + BrickColor.getEnumFromValue(colour));
 		//System.out.println(item.getReferent() + " " + rotation.toString());
-		return new Part(position, rotation, scale, BrickColor.getEnumFromValue(colour).getValue(), ShapeType.getEnumFromValue(shape).getValue(), transparency, anchored);
+		return new Part(position, rotation, scale, BrickColor.getEnumFromValue(colour).getValue(), ShapeType.getEnumFromValue(shape).getValue(), FormType.getEnumFromValue(form).getValue(), transparency);
 	}
 	
 	private Quat4f quat = new Quat4f();
@@ -181,7 +209,10 @@ public class Part {
 			position.x = transform.origin.x;
 			position.y = transform.origin.y;
 			position.z = transform.origin.z;
-			rotation = Maths.QuaternionToEulerAngles(quat);
+			if(form == 2) {
+				rotation = Toolbox.euler_from_quaternion(quat);
+			}
+			
 		}
 		
 	}

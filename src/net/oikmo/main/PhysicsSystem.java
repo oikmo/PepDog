@@ -15,6 +15,7 @@ import com.bulletphysics.linearmath.Transform;
 import com.bulletphysics.util.ObjectArrayList;
 
 import net.oikmo.engine.DisplayManager;
+import net.oikmo.main.scene.SceneManager;
 
 public class PhysicsSystem {
 	
@@ -48,6 +49,9 @@ public class PhysicsSystem {
 	}
 	
 	public static void update() {
-		world.stepSimulation(DisplayManager.getFrameTimeSeconds());
+		if(SceneManager.getCurrentScene().isLoaded()){
+			world.stepSimulation(DisplayManager.getFrameTimeSeconds());
+		}
+		
 	}
 }
