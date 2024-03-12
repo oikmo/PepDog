@@ -1,11 +1,7 @@
 package net.oikmo.toolbox;
 
-import javax.vecmath.Quat4f;
-
 import org.lwjgl.opengl.Display;
-import org.lwjgl.util.vector.Matrix3f;
 import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.ReadableVector3f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;

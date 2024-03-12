@@ -27,8 +27,15 @@ public class Maths {
 		return new Vector3f((float)X,(float)Y,(float)Z);
 	}
 	
-	//x, y, z
-	private static Quat4f EulerAnglesToQuaternion(Vector3f e) {
+	/**
+	 * 
+	 * Converts Euler Angles (Vector3f) to Quaternion
+	 * 
+	 * @param e [Vector3f]
+	 * @return Quaternion [Quat4f]
+	 */
+	@Deprecated
+	public static Quat4f EulerAnglesToQuaternion(Vector3f e) {
 		float roll = e.x;
 		float pitch = e.y;
 		float yaw = e.z;
