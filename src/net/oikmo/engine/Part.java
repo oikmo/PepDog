@@ -37,9 +37,9 @@ public class Part {
 	 */
 	public enum ShapeType {
 
-		Cylinder(0),
+		Cylinder(2),
 		Block(1),
-		Sphere(2);
+		Sphere(0);
 
 		private final int type;
 		ShapeType(int type) {
@@ -85,7 +85,7 @@ public class Part {
 		this.scale = scale;
 		this.colour = new Vector3f(colour);
 		this.shape = shape;
-		this.rotation = Maths.QuaternionToEulerAngles(rotation);
+		this.rotation = Maths.test(rotation);
 		this.transparency = transparency;
 		
 		mass = scale.lengthSquared();
@@ -100,16 +100,16 @@ public class Part {
 		switch(shape) {
 		case Cylinder:
 			colShape = new CylinderShape(new javax.vecmath.Vector3f(scale.x/2,scale.y/2,scale.z/2));
-			this.model = new TexturedModel(PartRenderer.sphere, texture);
+			this.model = new TexturedModel(PartRenderer.cylinder, texture);
 			break;
 		case Block:
 			colShape = new BoxShape(new javax.vecmath.Vector3f(scale.x/2,scale.y/2,scale.z/2));
 			this.model = new TexturedModel(PartRenderer.block, texture);
 			break;
 		case Sphere:
-			float total = (scale.x + scale.y + scale.z) / 3;
+			float total = ((scale.x + scale.y + scale.z) / 3) / 2;
 			colShape = new SphereShape(total);
-			this.model = new TexturedModel(PartRenderer.cylinder, texture);
+			this.model = new TexturedModel(PartRenderer.sphere, texture);
 			break;
 		}
 		
@@ -233,7 +233,7 @@ public class Part {
 			position.x = transform.origin.x;
 			position.y = transform.origin.y;
 			position.z = transform.origin.z;
-			rotation = Maths.QuaternionToEulerAngles(quat);
+			rotation = Maths.test(quat);
 		}
 		
 	}

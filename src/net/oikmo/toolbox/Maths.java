@@ -1,8 +1,8 @@
 package net.oikmo.toolbox;
 
+import javax.vecmath.Matrix3f;
 import javax.vecmath.Quat4f;
 
-import org.lwjgl.util.vector.Matrix3f;
 import org.lwjgl.util.vector.Vector3f;
 
 public class Maths {
@@ -15,7 +15,7 @@ public class Maths {
 	public static javax.vecmath.Vector3f lwjglToVM(org.lwjgl.util.vector.Vector3f vector) {
 		return new javax.vecmath.Vector3f(vector.x,vector.y,vector.z);
 	}
-
+	
 	/**
 	 * Converts Quaternion rotations to Euler Angles
 	 * @param q
@@ -47,7 +47,7 @@ public class Maths {
 	 * @return Quaternion [Quat4f]
 	 */
 	@Deprecated
-	public static Quat4f EulerAnglesToQuaternion(Vector3f e) {
+	public static Quat4f ToQuaternion(Vector3f e) {
 		float roll = e.x;
 		float pitch = e.y;
 		float yaw = e.z;
@@ -63,7 +63,18 @@ public class Maths {
 
 		return q;
 	}
-
+	
+	public static Vector3f test(Quat4f q) {
+		Vector3f v = new Vector3f();
+		
+		Matrix3f m = new Matrix3f();
+		m.set(q);
+		
+		v = Maths.MatrixToEulerEngles(m);
+		
+		return v;
+	}
+	
 	static double RADTODEG = 180.0 / Math.PI;
 	/**
 	 * Converts rotational Matrix ({@linkplain javax.vecmath.Matrix3f}) to Euler Angles
@@ -75,9 +86,9 @@ public class Maths {
 		double EPS = 1.0e-6;
 		double X, Y, Z;
 
-		Y = Math.asin(matrix.m02);                       // Unique angle in [-pi/2,pi/2]
+		Y = FastMath.asin(matrix.m02);                       // Unique angle in [-pi/2,pi/2]
 
-		if (Math.abs(FastMath.abs(matrix.m02) - 1.0) < EPS) { // Yuk! Gimbal lock. Infinite choice of X and Z
+		if (FastMath.abs((float)(FastMath.abs(matrix.m02) - 1.0)) < EPS) { // Yuk! Gimbal lock. Infinite choice of X and Z
 			X = FastMath.atan2(matrix.m21, matrix.m11);          // One choice amongst many
 			Z = 0.0;
 		} else {                                   // Unique solutions in (-pi,pi]
