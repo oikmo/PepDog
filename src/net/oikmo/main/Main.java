@@ -75,7 +75,7 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		try {
-			String mapToLoad = "2008SwordFightonTheHeightsIV";
+			String mapToLoad = "2006Crossroads";
 			Logger.log(LogLevel.INFO, "Selected: " + mapToLoad);
 			
 			DisplayManager.createDisplay();
@@ -95,6 +95,7 @@ public class Main {
 			SceneManager.loadScene("empty");
 			
 			PhysicsSystem.init();
+			Camera camera = new Camera(new Vector3f(), new Vector3f());
 			
 			String fontType = "comic-sans";
 			font = new FontType(loader.loadFontTexture(fontType),fontType);
@@ -140,7 +141,7 @@ public class Main {
 			SceneManager.loadScene("roblox");
 			RobloxScene scener = ((RobloxScene)SceneManager.getCurrentScene());
 			scener.loadRoblox(mapToLoad);
-			Camera camera = new Camera(scener.getRandomSpawn(), player.getRotation());
+			camera.setPosition(scener.getRandomSpawn());
 			
 			while(!Display.isCloseRequested()) {
 				handleGUI();

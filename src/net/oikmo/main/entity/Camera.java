@@ -4,12 +4,15 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector3f;
 
+import net.oikmo.engine.Part;
+import net.oikmo.engine.Part.ShapeType;
 import net.oikmo.engine.audio.AudioMaster;
 import net.oikmo.engine.audio.Source;
 import net.oikmo.engine.renderers.MasterRenderer;
 import net.oikmo.main.GameSettings;
 import net.oikmo.main.Main;
 import net.oikmo.main.Main.GameState;
+import net.oikmo.main.scene.SceneManager;
 import net.oikmo.toolbox.Toolbox;
 
 /**
@@ -91,6 +94,14 @@ public class Camera {
 		this.pitch = dx;
 		this.yaw = dy;
 		this.roll = dz;
+	}
+	
+	/**
+	 * Sets position to given 3D Vector
+	 * @param vector
+	 */
+	public void setPosition(Vector3f v) {
+		this.position = v;
 	}
 
 	private float speeds = 0f;
@@ -189,7 +200,24 @@ public class Camera {
 		}
 	}
 	
+	boolean lockInBalls = false;
+	/**
+	 * Fly cam (will most likely be temporary)
+	 */
 	public void flyCam() {
+		if(!lockInBalls) {
+			if(Keyboard.isKeyDown(Keyboard.KEY_E)) {
+				Part part = new Part(new Vector3f(getPosition()), 2, ShapeType.Sphere);
+				SceneManager.getCurrentScene().addPart(part);
+				lockInBalls = true;
+			}
+		} else {
+			if(!Keyboard.isKeyDown(Keyboard.KEY_E)) {
+				lockInBalls = false;
+			}
+		}
+		
+		
 		if(!lockInCam) {
 			if(Keyboard.isKeyDown(Keyboard.KEY_Q)) {
 				flyCam = !flyCam;

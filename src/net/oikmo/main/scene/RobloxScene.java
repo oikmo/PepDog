@@ -71,7 +71,7 @@ public class RobloxScene extends Scene {
 		}
 	    if (item.getClazz().contentEquals("Part") || item.getClazz().contentEquals("SpawnLocation")) {
 	    	Part part = Part.createPartFromItem(item);
-	    	if(part.getTransparency() != 1f) {
+	    	if(part.getTransparency() != 1f && !item.getClazz().contentEquals("SpawnLocation")) {
 	    		this.transparent.add(part);
 	    	} else {
 	    		this.addPart(Part.createPartFromItem(item));

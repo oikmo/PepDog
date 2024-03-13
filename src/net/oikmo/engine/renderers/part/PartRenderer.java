@@ -21,9 +21,9 @@ import net.oikmo.toolbox.obj.OBJFileLoader;
 public class PartRenderer {	
 	private PartShader shader;
 	
-	public static RawModel cylinder = OBJFileLoader.loadOBJ("sphere");
+	public static RawModel cylinder = OBJFileLoader.loadOBJ("cylinder");
 	public static RawModel block =  OBJFileLoader.loadOBJ("cube");
-	public static RawModel sphere = OBJFileLoader.loadOBJ("cylinder");
+	public static RawModel sphere = OBJFileLoader.loadOBJ("sphere");
 	
 	public static int texture;
 	
@@ -68,6 +68,11 @@ public class PartRenderer {
 		}
 	}
 	
+	/**
+	 * Does exactly as it says.<br>
+	 * Loads VAO into GPU and assigns texture.
+	 * @param model
+	 */
 	private void prepareTexturedModel(TexturedModel model) {
 		//GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);
 		GL30.glBindVertexArray(model.getRawModel().getVaoID());
@@ -82,6 +87,9 @@ public class PartRenderer {
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, model.getTexture().getID());
 	}
 	
+	/**
+	 * Guess.
+	 */
 	private void unbindTextureModel() {
 		MasterRenderer.enableCulling();
 		GL20.glDisableVertexAttribArray(0);
@@ -90,10 +98,13 @@ public class PartRenderer {
 		GL30.glBindVertexArray(0);
 	}
 	
+	/**
+	 * Creates the actual visuals to be displayed on screen.
+	 * @param part {@link Part}
+	 */
 	private void prepareInstance(Part part) {
 		Matrix4f transformationMatrix = Toolbox.createTransformationMatrix(part.getPosition(), part.getRotation(), part.getScale());
 		shader.loadTransformationMatrix(transformationMatrix);
-		shader.loadOffset(part.getTextureXOffset(), part.getTextureYOffset());
 		shader.loadPartColour(part.getColour());
 		shader.loadTransparency(part.getTransparency());
 		

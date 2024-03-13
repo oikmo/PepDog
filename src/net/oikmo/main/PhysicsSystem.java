@@ -17,10 +17,18 @@ import com.bulletphysics.util.ObjectArrayList;
 import net.oikmo.engine.DisplayManager;
 import net.oikmo.main.scene.SceneManager;
 
+/**
+ * Handles physics (bullet)
+ * @author Oikmo
+ *
+ */
 public class PhysicsSystem {
 	
 	private static DiscreteDynamicsWorld world;
 	
+	/**
+	 * Creates the physics system such as Collision Configuration, Constraint Resolvers etc
+	 */
 	public static void init() {
 		CollisionConfiguration collisionConfig = new DefaultCollisionConfiguration();
 		CollisionDispatcher dispatcher = new CollisionDispatcher(collisionConfig);
@@ -30,9 +38,9 @@ public class PhysicsSystem {
 		AxisSweep3 overlappingPairCache = new AxisSweep3(worldAabbMin, worldAabbMax, maxProxies);
 		SequentialImpulseConstraintSolver solver = new SequentialImpulseConstraintSolver();
 		world = new DiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfig);
-		world.setGravity(new Vector3f(0, -10, 0));
-		CollisionShape groundShape = new BoxShape(new Vector3f(10000.f, 1.f, 10000.f));
+		world.setGravity(new Vector3f(0, -50, 0));
 		
+		/**CollisionShape groundShape = new BoxShape(new Vector3f(10000.f, 10.f, 10000.f));
 		ObjectArrayList<CollisionShape> shapes = new ObjectArrayList<>();
 		shapes.add(groundShape);
 		Transform groundTransform = new Transform();
@@ -41,17 +49,21 @@ public class PhysicsSystem {
 		CollisionObject obj = new CollisionObject();
 		obj.setCollisionShape(groundShape);
 		obj.setWorldTransform(groundTransform);
-		world.addCollisionObject(obj);
+		world.addCollisionObject(obj);*/
 	}
 	
+	/**
+	 * Returns the physics world.
+	 * @return DiscreteDynamicsWorld
+	 */
 	public static DiscreteDynamicsWorld getWorld() {
 		return world;
 	}
 	
+	/**
+	 * Steps the world simulation using deltatime from {@link DisplayManager#getFrameTimeSeconds()}
+	 */
 	public static void update() {
-		if(SceneManager.getCurrentScene().isLoaded()){
-			world.stepSimulation(DisplayManager.getFrameTimeSeconds());
-		}
-		
+		world.stepSimulation(DisplayManager.getFrameTimeSeconds());
 	}
 }

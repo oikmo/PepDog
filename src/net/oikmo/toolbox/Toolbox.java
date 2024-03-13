@@ -2,7 +2,6 @@ package net.oikmo.toolbox;
 
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.ReadableVector3f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -120,40 +119,23 @@ public class Toolbox {
 		return start + (amount)* (end - start);
 	}
 
-	public static Vector3f lerp(Vector3f start, Vector3f end, float amount) {
-		float x = start.x + amount * (end.x - start.x);
-		float y = start.y + amount * (end.y - start.y);
-		float z = start.z + amount * (end.z - start.z);
-		return new Vector3f(x,y,z);
-	}
-
-	public static float barryCentric(Vector3f p1, Vector3f p2, Vector3f p3, Vector2f pos) {
-		float det = (p2.z - p3.z) * (p1.x - p3.x) + (p3.x - p2.x) * (p1.z - p3.z);
-		float l1 = ((p2.z - p3.z) * (pos.x - p3.x) + (p3.x - p2.x) * (pos.y - p3.z)) / det;
-		float l2 = ((p3.z - p1.z) * (pos.x - p3.x) + (p1.x - p3.x) * (pos.y - p3.z)) / det;
-		float l3 = 1.0f - l1 - l2;
-		return l1 * p1.y + l2 * p2.y + l3 * p3.y;
-	}
-
-	public static boolean cooldown(long lastClick, long coolDownTime) {
-		boolean result = false;
-		long timeNow = System.currentTimeMillis();
-		long time = timeNow - lastClick;
-		if (time < 0 || time > coolDownTime) {
-			lastClick = timeNow;
-			result = true;
-			// Trigger associated action
-		}
-		return result;
-	} 
-
-	public static Vector2f getNormalizedDeviceCoords(Vector2f position, Vector2f scale)
-	{
+	/**
+	 * Returns Window size as OpenGL coordinates.
+	 * @param position
+	 * @param scale
+	 * @return {@link Vector3f}
+	 */
+	public static Vector2f getNormalizedDeviceCoords(Vector2f position, Vector2f scale) {
 		float x =  (((2f * position.x + scale.x) / Display.getWidth()) - 1f);
 		float y = ((((2f * position.y +  scale.y) /Display.getHeight()) - 1f) * -1f);
 		return new Vector2f(x, y);
 	}
 
+	/**
+	 * Converts string to long via taking each character of the string and converting it into a number. Then that number is added to string to be parsed to {@link Long#valueOf(String)}
+	 * @param name
+	 * @return {@link Long}
+	 */
 	public static long getSeedFromName(String name) {
 		String finalString = "";
 		for(int i = 0; i < name.length(); i++) {
@@ -164,47 +146,27 @@ public class Toolbox {
 
 		return Long.valueOf(finalString);
 	}
-
+	
+	/**
+	 * Clamps given value to given range.
+	 * @param value
+	 * @param min
+	 * @param max
+	 * @return {@link Double}
+	 */
 	public static double clamp(double value, double min, double max) {
 		return Math.max(min, Math.min(max, value));
 	}   
 
+	/**
+	 * fast sqaure root
+	 * @param d
+	 * @return {@link Double}
+	 */
 	public static double sqrt(double d) {
 		double sqrt = Double.longBitsToDouble( ( ( Double.doubleToLongBits( d )-(1l<<52) )>>1 ) + ( 1l<<61 ) );
 		double better = (sqrt + d/sqrt)/2.0;
 		double evenbetter = (better + d/better)/2.0;
 		return evenbetter;
-	}
-
-	public static double square(double d) {		
-		return d*d;
-	}
-
-	public static ReadableVector3f max(ReadableVector3f a, ReadableVector3f b) {
-		return new Vector3f(
-				Math.max(a.getX(), b.getX()),
-				Math.max(a.getY(), b.getY()),
-				Math.max(a.getZ(), b.getZ())
-				);
-	}
-
-	public static float max(ReadableVector3f vector) {
-		return Math.max(vector.getX(), Math.max(vector.getY(), vector.getZ()));
-	}
-
-	public static ReadableVector3f min(ReadableVector3f a, ReadableVector3f b) {
-		return new Vector3f(
-				Math.min(a.getX(), b.getX()),
-				Math.min(a.getY(), b.getY()),
-				Math.min(a.getZ(), b.getZ())
-				);
-	}
-
-	public static float min(ReadableVector3f vector) {
-		return java.lang.Math.min(vector.getX(), java.lang.Math.min(vector.getY(), vector.getZ()));
-	}
-
-	public static float easeOut(float t) {
-		return t * (2 - t);
 	}
 }
