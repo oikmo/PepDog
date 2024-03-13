@@ -22,6 +22,7 @@ Engine which aims to implement as much features as the original Roblox 2006-2010
 - SPACE - Up
 
 ## Misc.
+- E - Spawn bawls
 - Q - FlyCam
 - Left Shift - Sprint
 - J - Switch maps via input box (must match map name and also like limited use??)
@@ -36,8 +37,9 @@ Engine which aims to implement as much features as the original Roblox 2006-2010
 - TESTShapes
 
 TODO : 
-- set player to spawn location
-- add different types of models for the parts
-- aabb collision
-- proper physics
+- ~~set player to spawn location~~
+- ~~add different types of models for the parts~~
+- ~~proper physics~~
+- studio??
+- ~~multiplayer??~~ no :]
 - lua loading :/
