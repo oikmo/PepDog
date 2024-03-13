@@ -2,11 +2,9 @@
 
 <img src="https://github.com/oikmo/RBXL-Loader/assets/78755068/29814e11-c557-41cd-81d7-a0afbb9c8f2a" width="300">
 
-### Roblox Clone in LWJGL2
+### Java 8 Required
 
-## Java Version is 8
-
-Engine which aims to implement as much features as the original Roblox 2006-2010 client. (OPENGL)
+## Engine which aims to implement as much features as the Roblox 2006-2010 clients. (OpenGL)
 
 # CONTROLS
 ## Player:
