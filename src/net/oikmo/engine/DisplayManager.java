@@ -29,7 +29,7 @@ import net.oikmo.toolbox.Logger.LogLevel;
  * @author <i>Oikmo</i>
  */
 public class DisplayManager {
-	
+
 	private static int fps, literalfps;
 	private static long lastFrameTime, lastFPS;
 	private static float delta;
@@ -82,24 +82,27 @@ public class DisplayManager {
 		delta = (currentFrameTime - lastFrameTime)/1000f;
 		lastFrameTime = currentFrameTime;		
 	}
-	
+
+	/**
+	 * Toggles Fullscreen between [{@link Main#WIDTH} {@link Main#HEIGHT}] to current desktop width and height.
+	 */
 	public static void setFullscreen() {
 		try {
 			if(Display.isFullscreen()) {
 				GL11.glViewport(0, 0, Main.WIDTH, Main.HEIGHT);
 				Display.setDisplayMode(new DisplayMode(Main.WIDTH, Main.HEIGHT));
 				Display.setFullscreen(false);
-				
+
 			} else {
 				Display.setDisplayModeAndFullscreen(Display.getDesktopDisplayMode());
 				GL11.glViewport(0, 0, Display.getDesktopDisplayMode().getWidth(), Display.getDesktopDisplayMode().getHeight());
 			}
-			
+
 		} catch(LWJGLException e) {
 			Main.error("LWJGLException", e);
 		}
 	}
-	
+
 	/**
 	 * Destroys the display (not the program)
 	 */
@@ -157,6 +160,9 @@ public class DisplayManager {
 		}
 	}
 
+	/**
+	 * Updates FPS counter.
+	 */
 	static void updateFPS() {
 		if (getCurrentTime() - lastFPS > 1000)	{
 			literalfps = fps;
@@ -167,6 +173,10 @@ public class DisplayManager {
 		fps++;
 	}
 
+	/**
+	 * Gets frames per second
+	 * @return {@link Float}
+	 */
 	public static int getFPSCount() {
 		return (int)literalfps;
 	}
@@ -178,8 +188,8 @@ public class DisplayManager {
 	public static float getDelta() {
 		return delta + 1;
 	}
-	
-	
+
+
 	/**
 	 * Creates a buffered image from the OpenGL pixel buffer.
 	 *

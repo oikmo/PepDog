@@ -49,8 +49,8 @@ public class Main {
 	public static Player player;
 	public static GuiScreen currentScreen;
 
-	public static String gameName = "PEPDOG-BLOX";
-	public static String version = "a0.0.2";
+	public static String gameName = "PEPDOG";
+	public static String version = "a0.0.3";
 	public static String gameVersion = gameName + " " + version;
 	
 	static Frame frame;
@@ -227,20 +227,16 @@ public class Main {
 		}
 	}
 
-	private static long lastClick = 150;
-	private static long coolDownTime = 150;
+	private static boolean lockInGui = false;
 	/**
 	 * Switches GUI based on the current {@code Main.GameState} state 
 	 */
 	private static void handleGUI() {
 		if(currentScreen != null) { 
 			currentScreen.update();
-			if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
-				long timeNow = System.currentTimeMillis();
-				long time = timeNow - lastClick;
-				if (time < 0 || time > coolDownTime) {
-					lastClick = timeNow;
-
+			if (!lockInGui) {
+				
+				if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
 					if(gameState == GameState.game) {
 						currentScreen.prepareCleanUp();
 						Main.currentScreen = null;
@@ -261,10 +257,15 @@ public class Main {
 						break;
 					default:
 						break;
-					}
+					}	
+					lockInGui = true;
+				}
+			} else {
+				if(!Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
+					lockInGui = false;
 				}
 			}
-		}
+		} 
 	}
 	
 	/**
@@ -334,14 +335,14 @@ public class Main {
 	 * <li>Sunos (sunos, {@code {@link EnumOS#unknown})</li>
 	 * <li>If it can find one ({@code {@link EnumOS#unknown})</li>
 	 * </ul>
-	 * @return {@code EnumOS}
+	 * @return {@link EnumOS}
 	 */
 	private static EnumOS getOS() {
 		String rawOS = System.getProperty("os.name").toLowerCase();
 		return rawOS.contains("win") ? EnumOS.windows : (rawOS.contains("mac") ? EnumOS.linux : (rawOS.contains("solaris") ? EnumOS.solaris : (rawOS.contains("sunos") ? EnumOS.unknown : (rawOS.contains("linux") ? EnumOS.linux : (rawOS.contains("unix") ? EnumOS.linux : EnumOS.unknown)))));
 	}
-	static PanelCrashReport report;
 	
+	static PanelCrashReport report;
 	/**
 	 * Creates a frame with the error log embedded inside.
 	 * 

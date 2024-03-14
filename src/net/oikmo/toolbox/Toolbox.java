@@ -8,7 +8,7 @@ import org.lwjgl.util.vector.Vector3f;
 import net.oikmo.main.entity.Camera;
 
 /**
- * <i><b>Maths</b> class. Performs calculations for engine.<i>
+ * <b>Toolbox</b> class. Performs calculations for engine.
  * 
  * @author Oikmo
  */
@@ -19,19 +19,15 @@ public class Toolbox {
 	static Vector3f rzTable = new Vector3f(0,0,1);
 
 	/**
-	 * Creates and returns a transformation matrix so that 3d is real.<br><br>
+	 * Creates and returns a transformation matrix so that 3D is real.<br>
 	 * 
-	 * {@code public static Matrix4f createTransformationMatrix(Vector3f translation, float rx, float ry, float rz, float scale)}
+	 * @param translation - to be positioned. ({@link Vector3f})
+	 * @param rx - X Rotation. ({@link Float})
+	 * @param ry - Y Rotation. ({@link Float})
+	 * @param rz - Z Rotation. ({@link Float})
+	 * @param scale - to be scaled. ({@link Float})
 	 * 
-	 * @param translation - to be positioned. <i>[Vector3f]</i>
-	 * @param rx - X Rotation. <i>[float]</i>
-	 * @param ry - Y Rotation. <i>[float]</i>
-	 * @param rz - Z Rotation. <i>[float]</i>
-	 * @param scale - to be scaled. <i>[float]</i>
-	 * 
-	 * @return <b>matrix</b> <i>[Matrix4f]</i>
-	 * 
-	 * @author <i>Oikmo</i>
+	 * @return <b>matrix</b> - ({@link Matrix4f})
 	 */
 	public static Matrix4f createTransformationMatrix(Vector3f translation, float rx, float ry,
 			float rz, float scale) {
@@ -46,19 +42,13 @@ public class Toolbox {
 	}
 
 	/**
-	 * Creates and returns a transformation matrix so that 3d is real.<br><br>
+	 * Creates and returns a transformation matrix so that 3D is real.<br>
 	 * 
-	 * {@code public static Matrix4f createTransformationMatrix(Vector3f translation, float rx, float ry, float rz, float scale)}
+	 * @param translation - to be positioned. ({@link Vector3f})
+	 * @param rot - to rotate to. ({@link Vector3f})
+	 * @param scale - to be scaled. ({@link Vector3f})
 	 * 
-	 * @param translation - to be positioned. <i>[Vector3f]</i>
-	 * @param rx - X Rotation. <i>[float]</i>
-	 * @param ry - Y Rotation. <i>[float]</i>
-	 * @param rz - Z Rotation. <i>[float]</i>
-	 * @param scale - to be scaled. <i>[Vector3f]</i>
-	 * 
-	 * @return <b>matrix</b> <i>[Matrix4f]</i>
-	 * 
-	 * @author <i>Oikmo</i>
+	 * @return <b>matrix</b> - ({@link Matrix4f})
 	 */
 	public static Matrix4f createTransformationMatrix(Vector3f translation, Vector3f rot, Vector3f scale) {
 		Matrix4f matrix = new Matrix4f();
@@ -71,6 +61,14 @@ public class Toolbox {
 		return matrix;
 	}
 
+	/**
+	 * Creates and returns a transformation matrix so that 2D is real.<br>
+	 * 
+	 * @param translation - to be positioned. ({@link Vector2f})
+	 * @param scale - to be scaled. ({@link Vector2f})
+	 * 
+	 * @return <b>matrix</b> - ({@link Matrix4f})
+	 */
 	public static Matrix4f createTransformationMatrix(Vector2f translation, Vector2f scale) {
 		Matrix4f matrix = new Matrix4f();
 		matrix.setIdentity();
@@ -80,15 +78,11 @@ public class Toolbox {
 	}
 
 	/**
-	 * Creates and returns a view matrix using camera for perspective.<br><br>
+	 * Creates and returns a view matrix using camera for perspective.<br>
 	 * 
-	 * {@code public static Matrix4f createViewMatrix(Camera camera)}
+	 * @param camera - Main Camera ({@link Camera})
 	 * 
-	 * @param camera - Main Camera <i>[Camera]</i>
-	 * 
-	 * @return <b>viewMatrix</b> <i>[Matrix4f]</i>
-	 * 
-	 * @author <i>Oikmo</i>
+	 * @return <b>viewMatrix</b> - ({@link Matrix4f})
 	 */
 	public static Matrix4f createViewMatrix(Camera camera){
 		Matrix4f viewMatrix = new Matrix4f();
@@ -103,37 +97,33 @@ public class Toolbox {
 		return viewMatrix;
 	}
 	/**
-	 * Lerp, allows you to transition numbers<br><br>
+	 * Lerp, allows you to transition numbers<br>
 	 * 
-	 * {@code public static float lerp(float start, float end, float amount)} 
+	 * @param start - starting number to interpolate from  ({@link Float})
+	 * @param end - end number to interpolate to  ({@link Float})
+	 * @param amount - amount to interpolate to and from ({@link Float})
 	 * 
-	 * @param start - starting number to interpolate from <i>[float]</i>
-	 * @param end - end number to interpolate to <i>[float]</i>
-	 * @param amount - amount to interpolate to and from <i>[float]</i>
-	 * 
-	 * @return <b>result</b> <i>[float]</i>
-	 * 
-	 * @author <i>Oikmo</i>
-	 */
+	 * @return <b>result</b> - ({@link Float})
+	*/
 	public static float lerp(float start, float end, float amount) {
 		return start + (amount)* (end - start);
 	}
 
 	/**
 	 * Returns Window size as OpenGL coordinates.
-	 * @param position
-	 * @param scale
+	 * @param position - ({@link Vector2f})
+	 * @param scale - ({@link Vector2f})
 	 * @return {@link Vector3f}
 	 */
 	public static Vector2f getNormalizedDeviceCoords(Vector2f position, Vector2f scale) {
-		float x =  (((2f * position.x + scale.x) / Display.getWidth()) - 1f);
-		float y = ((((2f * position.y +  scale.y) /Display.getHeight()) - 1f) * -1f);
+		float x = (((2f * position.x + scale.x) / Display.getWidth()) - 1f);
+		float y = ((((2f * position.y +  scale.y) / Display.getHeight()) - 1f) * -1f);
 		return new Vector2f(x, y);
 	}
 
 	/**
 	 * Converts string to long via taking each character of the string and converting it into a number. Then that number is added to string to be parsed to {@link Long#valueOf(String)}
-	 * @param name
+	 * @param name - {@link String}
 	 * @return {@link Long}
 	 */
 	public static long getSeedFromName(String name) {
@@ -149,9 +139,9 @@ public class Toolbox {
 	
 	/**
 	 * Clamps given value to given range.
-	 * @param value
-	 * @param min
-	 * @param max
+	 * @param value - {@link Double}
+	 * @param min - {@link Double}
+	 * @param max- {@link Double}
 	 * @return {@link Double}
 	 */
 	public static double clamp(double value, double min, double max) {
@@ -160,7 +150,7 @@ public class Toolbox {
 
 	/**
 	 * fast sqaure root
-	 * @param d
+	 * @param d - {@link Double}
 	 * @return {@link Double}
 	 */
 	public static double sqrt(double d) {

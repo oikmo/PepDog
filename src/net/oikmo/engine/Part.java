@@ -85,7 +85,8 @@ public class Part {
 		this.scale = scale;
 		this.colour = new Vector3f(colour);
 		this.shape = shape;
-		this.rotation = Maths.test(rotation);
+		this.rotation = new Vector3f();
+		Maths.QuaternionToEulerAngles(rotation, this.rotation);
 		this.transparency = transparency;
 		
 		mass = scale.lengthSquared();
@@ -153,7 +154,7 @@ public class Part {
 		DefaultMotionState motionState = new DefaultMotionState(transform);
 		RigidBodyConstructionInfo rbInfo = new RigidBodyConstructionInfo(mass, motionState, colShape, localInertia);
 		this.body = new RigidBody(rbInfo);
-		body.setCcdMotionThreshold(0.1f);
+		body.setCcdMotionThreshold(0f);
 		PhysicsSystem.getWorld().addRigidBody(body);
 		loaded = true;
 		
@@ -230,10 +231,8 @@ public class Part {
 		if(loaded) {
 			body.getMotionState().getWorldTransform(transform);
 			transform.getRotation(quat);
-			position.x = transform.origin.x;
-			position.y = transform.origin.y;
-			position.z = transform.origin.z;
-			rotation = Maths.test(quat);
+			Maths.VMtoLWJGL(transform.origin, position);
+			Maths.QuaternionToEulerUsingMatrix(quat, rotation);
 		}
 		
 	}

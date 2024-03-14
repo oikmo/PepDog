@@ -8,6 +8,11 @@ import net.oikmo.main.Main;
 import net.oikmo.main.Main.GameState;
 import net.oikmo.main.entity.Camera;
 
+/**
+ * Handles scene management such as updating and loading.
+ * @author Oikmo
+ *
+ */
 public class SceneManager {
 	
 	private static enum SceneName {
@@ -19,6 +24,9 @@ public class SceneManager {
 	
 	private static Scene currentScene;
 	
+	/**
+	 * Initalises map to refer back to when loading Scenes.
+	 */
 	public static void init() {
 		scenes = new HashMap<>();
 		
@@ -55,6 +63,10 @@ public class SceneManager {
 		
 	}
 	
+	/**
+	 * Makes life easier by just passing arguments to {@link Scene#update(Camera)}
+	 * @param camera ({@link Camera})
+	 */
 	public static void update(Camera camera) {
 		getCurrentScene().update(camera);
 	}
