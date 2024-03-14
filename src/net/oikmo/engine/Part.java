@@ -19,6 +19,7 @@ import net.oikmo.engine.renderers.part.BrickColor;
 import net.oikmo.engine.renderers.part.PartRenderer;
 import net.oikmo.engine.textures.ModelTexture;
 import net.oikmo.main.PhysicsSystem;
+import net.oikmo.main.scene.SceneManager;
 import net.oikmo.toolbox.Maths;
 import net.oikmo.toolbox.rbxl.Item;
 import net.oikmo.toolbox.rbxl.PropertyContainer;
@@ -235,6 +236,12 @@ public class Part {
 			Maths.QuaternionToEulerUsingMatrix(quat, rotation);
 		}
 		
+		if(position.y < -75f) {
+			loaded = false;
+			PhysicsSystem.getWorld().removeRigidBody(body);
+			body = null;
+			SceneManager.getCurrentScene().getParts().remove(this);
+		}
 	}
 	
 	/**

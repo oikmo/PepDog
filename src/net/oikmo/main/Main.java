@@ -75,7 +75,7 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		try {
-			String mapToLoad = "2006Crossroads";
+			String mapToLoad = "2005StartPlace";
 			Logger.log(LogLevel.INFO, "Selected: " + mapToLoad);
 			
 			DisplayManager.createDisplay();
