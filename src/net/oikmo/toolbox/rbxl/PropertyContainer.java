@@ -41,8 +41,8 @@ import org.lwjgl.util.vector.Vector3f;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="PropertyContainer">
- *   &lt;complexContent>
+ * <complexType name="PropertyContainer">
+ *   < "complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence maxOccurs="unbounded" minOccurs="0">
  *         &lt;group ref="{}PropertyGroup"/>
@@ -95,7 +95,7 @@ public class PropertyContainer {
 	 * This accessor method returns a reference to the live list,
 	 * not a snapshot. Therefore any modification you make to the
 	 * returned list will be present inside the JAXB object.
-	 * This is why there is not a <CODE>set</CODE> method for the stringOrProtectedStringOrInt property.
+	 * This is why there is not a set method for the stringOrProtectedStringOrInt property.
 	 * 
 	 * <p>
 	 * For example, to add a new item, do as follows:

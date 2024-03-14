@@ -85,7 +85,7 @@ public class PartShader extends ShaderProgram {
 	}
 	
 	public void loadPartColour(Vector3f colour) {
-		super.load3DVector(location_partColour, new Vector3f(colour.x/256,colour.y/256,colour.z/256));
+		super.load3DVector(location_partColour, new Vector3f(colour.x,colour.y,colour.z));
 	}
 	
 	public void loadFakeLighting(boolean useFake) {
