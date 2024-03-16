@@ -1,11 +1,11 @@
 package net.oikmo.main.scene;
 
+import java.awt.Frame;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 import org.lwjgl.util.vector.Vector3f;
@@ -13,6 +13,7 @@ import org.lwjgl.util.vector.Vector3f;
 import net.oikmo.engine.Part;
 import net.oikmo.engine.renderers.MasterRenderer;
 import net.oikmo.engine.scene.Scene;
+import net.oikmo.main.Main;
 import net.oikmo.main.entity.Camera;
 import net.oikmo.main.entity.Light;
 import net.oikmo.toolbox.rbxl.Item;
@@ -30,13 +31,7 @@ public class RobloxScene extends Scene {
 	 */
 	public void loadRoblox(String thing) {
 		this.setLoaded(false);
-		boolean load = false;
-		for(String map : maps) {		
-			if(map.contentEquals(thing)) {
-				load = true;
-			}
-		}
-		if(!load) { return; }
+
 		this.getParts().clear();
 		createFrame();
 		Roblox roblox = Parser.loadRBXL(thing);
@@ -68,6 +63,7 @@ public class RobloxScene extends Scene {
 	public void processItem(Item item) {
 		if(text != null) {
 			text.setText("PARTS ADDED : "+this.getParts().size());
+			frame.paintAll(frame.getGraphics());
 		}
 	    if (item.getClazz().contentEquals("Part") || item.getClazz().contentEquals("SpawnLocation")) {
 	    	Part part = Part.createPartFromItem(item);
@@ -87,21 +83,12 @@ public class RobloxScene extends Scene {
 	    }
 	}
 	
-	JFrame frame = null;
+	Frame frame = Main.frame;
 	JLabel text = null;
-	public List<String> maps;
 	@Override
 	public void init() {
-		maps = new ArrayList<>();
 		spawns = new ArrayList<>();
 		transparent = new ArrayList<>();
-		maps.add("2005PirateShip");
-		maps.add("2005StartPlace");
-		maps.add("2006Crossroads");
-		maps.add("2008ROBLOXHQ");
-		maps.add("2008SwordFightonTheHeightsIV");
-		maps.add("TESTColours");
-		maps.add("TESTShapes");
 		
 		Light sun = new Light(new Vector3f(1,1000,1), new Vector3f(1.3f, 1.3f, 1.3f));
 		this.addLight(sun);
@@ -117,12 +104,12 @@ public class RobloxScene extends Scene {
 
 			@Override
 			public void run() {
-				frame = new JFrame();
+				frame.setLocation(10, 10);
 				frame.setSize(150, 150);
-				frame.setVisible(true);
 				text = new JLabel("PARTS ADDED : 0");
-				
 				frame.add(text);
+				frame.setVisible(true);
+				frame.paintAll(frame.getGraphics());
 			}
 			
 		}).start();

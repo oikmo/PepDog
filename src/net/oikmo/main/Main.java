@@ -1,13 +1,20 @@
 package net.oikmo.main;
 
 import java.awt.Frame;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JTextField;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -53,7 +60,7 @@ public class Main {
 	public static String version = "a0.0.3";
 	public static String gameVersion = gameName + " " + version;
 	
-	static Frame frame;
+	public static Frame frame;
 	
 	/**
 	 * Game state as to allow switching between paused or not paused
@@ -65,7 +72,9 @@ public class Main {
 		pausemenu
 	}
 	public static GameState gameState;
-
+	static String mapToLoad = "2008ROBLOXHQ";
+	static List<String> maps = new ArrayList<>();
+	
 	/**
 	 * Main method where the game starts.
 	 * Handles initialisation of renderers and scenes and main game loop.
@@ -74,8 +83,51 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		try {
-			String mapToLoad = "2005StartPlace";
+		maps.add("2005PirateShip");
+		maps.add("2005StartPlace");
+		maps.add("2006Crossroads");
+		maps.add("2008ROBLOXHQ");
+		maps.add("2008SwordFightonTheHeightsIV");
+		maps.add("TESTColours");
+		maps.add("TESTShapes");
+		
+		frame = new Frame();
+		Frame window = frame;
+		window.setSize(200, 100);
+		window.setLocationRelativeTo(null);
+		window.addWindowListener(new WindowAdapter(){  
+            public void windowClosing(WindowEvent e) {  
+                window.dispose(); 
+                System.exit(0);
+            }  
+        });
+		window.setName("PepDog Map Loader");
+		window.setTitle("PepDog Map loader");
+		
+		JComboBox<String> box = new JComboBox<>();
+		for(String map : maps) {		
+			box.addItem(map);
+		}
+		
+		JPanel inputWindow = new JPanel(new GridLayout(2, 1));
+		inputWindow.add(new JLabel("Choose the map you want!"));
+		inputWindow.add(box);
+		window.add(inputWindow);
+		window.setVisible(true);
+		box.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				frame.removeAll();
+				frame.setVisible(false);
+				mapToLoad = (String) box.getSelectedItem();
+				GameLoop();
+			}
+		});
+		window.validate();
+	}
+	
+	public static void GameLoop() {
+		try {	
 			Logger.log(LogLevel.INFO, "Selected: " + mapToLoad);
 			
 			DisplayManager.createDisplay();
@@ -88,8 +140,7 @@ public class Main {
 			AudioMaster.init();
 			
 			Loader loader = Loader.getInstance();		
-			@SuppressWarnings("unused")
-			MasterRenderer renderer = MasterRenderer.getInstance();
+			MasterRenderer.getInstance();
 			
 			SceneManager.init();
 			SceneManager.loadScene("empty");
@@ -124,20 +175,6 @@ public class Main {
 			useMem.setColour(1, 1, 1);
 			allocMem.setColour(1, 1, 1);
 			
-			JFrame inputWindow = new JFrame();
-			inputWindow.setLocation(0, 105);
-			inputWindow.setSize(200, 100);
-			JTextField input = new JTextField();
-			inputWindow.add(input);
-			
-			input.addActionListener(new ActionListener(){
-				public void actionPerformed(ActionEvent e){
-					RobloxScene scene = ((RobloxScene)SceneManager.getCurrentScene());
-					scene.loadRoblox(e.getActionCommand());
-					inputWindow.setVisible(false);
-				}
-			});
-			
 			SceneManager.loadScene("roblox");
 			RobloxScene scener = ((RobloxScene)SceneManager.getCurrentScene());
 			scener.loadRoblox(mapToLoad);
@@ -160,10 +197,6 @@ public class Main {
 				
 				switch(gameState) {
 				case game:
-					
-					if(Keyboard.isKeyDown(Keyboard.KEY_J)) {
-						inputWindow.setVisible(true);
-					}
 
 					AudioMaster.setListenerData(camera.getPosition().x,camera.getPosition().y,camera.getPosition().z, 0, 0, 0);
 					if(camera != player.getCamera()) {
@@ -171,7 +204,10 @@ public class Main {
 					} else {
 						player.update();
 					}
-					PhysicsSystem.update();
+					if(PhysicsSystem.getWorld() != null) {
+						PhysicsSystem.update();
+					}
+					
 					break;
 				case pausemenu:
 					Mouse.setGrabbed(false);
@@ -186,6 +222,16 @@ public class Main {
 		} catch (RuntimeException e) {
 			Main.error("Runtime Error", e);
 		}
+	}
+	
+	public static boolean isMapValid(String mapName) {
+		boolean load = false;
+		for(String map : maps) {		
+			if(map.contentEquals(mapName)) {
+				load = true;
+			}
+		}
+		return load;
 	}
 	
 	/**

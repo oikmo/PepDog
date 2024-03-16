@@ -28,7 +28,7 @@ public class PhysicsSystem {
 		CollisionDispatcher dispatcher = new CollisionDispatcher(collisionConfig);
 		Vector3f worldAabbMin = new Vector3f(-10000, -10000, -10000);
 		Vector3f worldAabbMax = new Vector3f(10000, 10000, 10000);
-		int maxProxies = 5124;
+		int maxProxies = 1024*10;
 		AxisSweep3 overlappingPairCache = new AxisSweep3(worldAabbMin, worldAabbMax, maxProxies);
 		SequentialImpulseConstraintSolver solver = new SequentialImpulseConstraintSolver();
 		world = new DiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfig);

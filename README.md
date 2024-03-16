@@ -23,7 +23,6 @@
 - E - Spawn bawls
 - Q - FlyCam
 - Left Shift - Sprint
-- J - Switch maps via input box (must match map name and also like limited use??)
 
 ## MAPS TO LOAD
 - 2005PirateShip
