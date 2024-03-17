@@ -18,16 +18,18 @@ public class Maths {
 	 * @param vector
 	 * @return
 	 */
-	public static javax.vecmath.Vector3f lwjglToVM(org.lwjgl.util.vector.Vector3f vector) {
-		return new javax.vecmath.Vector3f(vector.x,vector.y,vector.z);
+	public static void lwjglToVM(org.lwjgl.util.vector.Vector3f vector, javax.vecmath.Vector3f v) {
+		v.x = vector.x;
+		v.y = vector.y;
+		v.z = vector.z;
 	}
 	
 	/**
-	 * Converts {@link javax#vecmath#Vector3f} to {@link org.lwjgl.util.vector.Vector3f}
+	 * Converts {@link javax.vecmath.Vector3f} to {@link org.lwjgl.util.vector.Vector3f}
 	 * @param vector
 	 * @return
 	 */
-	public static void VMtoLWJGL( javax.vecmath.Vector3f vector, Vector3f v) {
+	public static void VMtoLWJGL(javax.vecmath.Vector3f vector, Vector3f v) {
 		v.x = vector.x;
 		v.y = vector.y;
 		v.z = vector.z;

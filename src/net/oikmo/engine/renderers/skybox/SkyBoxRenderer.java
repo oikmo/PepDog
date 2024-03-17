@@ -81,6 +81,9 @@ public class SkyBoxRenderer {
 		Logger.log(LogLevel.INFO, "Loaded!");
 	}
 	
+	public void updateProjectionMatrix(Matrix4f matrix) {	
+		shader.loadProjectionMatrix(matrix);
+	}
 	public void render(Camera camera,  Matrix4f projectionMatrix, float r, float g, float b) {
 		shader.start();
 		shader.loadViewMatrix(camera);

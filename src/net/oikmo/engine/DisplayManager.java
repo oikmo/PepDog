@@ -17,6 +17,7 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector2f;
 
+import net.oikmo.engine.renderers.MasterRenderer;
 import net.oikmo.main.Main;
 import net.oikmo.toolbox.CursorChanger;
 import net.oikmo.toolbox.IconUtils;
@@ -33,6 +34,9 @@ public class DisplayManager {
 	private static int fps, literalfps;
 	private static long lastFrameTime, lastFPS;
 	private static float delta;
+	
+	private static DisplayMode def;
+	private static DisplayMode full;
 	/**
 	 * Creates window by size (loads cursor and window icon) and sets OpenGL version.
 	 * 
@@ -40,24 +44,29 @@ public class DisplayManager {
 	 */
 	public static void createDisplay() {
 		//ContextAttribs attribs = new ContextAttribs(3,2).withForwardCompatible(true).withProfileCore(true);
-
+		DisplayMode main = Display.getDesktopDisplayMode();
+		System.out.println(main.getWidth());
+		def = new DisplayMode(Main.WIDTH, Main.HEIGHT);
+		full = new DisplayMode(1920,1080);
 		try {
 			//Display.create(new PixelFormat(), attribs);
 			Display.create();
 			Display.setTitle(Main.gameVersion);
 			Display.setIcon(IconUtils.getFavicon());
 
-			Display.setDisplayMode(new DisplayMode(Main.WIDTH, Main.HEIGHT));
+			Display.setDisplayMode(def);
 			CursorChanger.loadCursor("arrow");
 
 		} catch (LWJGLException e) {
 			Main.error("Failed to create display", e);
 		}
 
-		GL11.glViewport(0, 0, Display.getWidth(), Display.getHeight());
+		//GL11.glViewport(0, 0, Display.getWidth(), Display.getHeight());
 		lastFrameTime = getCurrentTime();
 		lastFPS = getCurrentTime();
 	}
+	
+	private static boolean lockInFullscreen = false;
 	/**
 	 * Updates the display to show a new frame and calculates the last frame time.
 	 * <br>
@@ -70,9 +79,17 @@ public class DisplayManager {
 		Display.update();
 		Display.sync(60);
 
-		if(Keyboard.isKeyDown(Keyboard.KEY_F11)) {
-			setFullscreen();
+		if(!lockInFullscreen) {
+			if(Keyboard.isKeyDown(Keyboard.KEY_F11)) {
+				setFullscreen();
+				lockInFullscreen = true;
+			}
+		} else {
+			if(!Keyboard.isKeyDown(Keyboard.KEY_F11)) {
+				lockInFullscreen = false;
+			}
 		}
+		
 
 		if(Keyboard.isKeyDown(Keyboard.KEY_F2)) {
 			saveScreenshot();
@@ -88,14 +105,14 @@ public class DisplayManager {
 	 */
 	public static void setFullscreen() {
 		try {
-			if(Display.isFullscreen()) {
-				GL11.glViewport(0, 0, Main.WIDTH, Main.HEIGHT);
-				Display.setDisplayMode(new DisplayMode(Main.WIDTH, Main.HEIGHT));
-				Display.setFullscreen(false);
-
-			} else {
-				Display.setDisplayModeAndFullscreen(Display.getDesktopDisplayMode());
+			if(!Display.isFullscreen()) {
+				MasterRenderer.getInstance().updateProjectionMatrix(Display.getDesktopDisplayMode().getWidth(), Display.getDesktopDisplayMode().getHeight());
 				GL11.glViewport(0, 0, Display.getDesktopDisplayMode().getWidth(), Display.getDesktopDisplayMode().getHeight());
+				Display.setDisplayModeAndFullscreen(Display.getDesktopDisplayMode());
+			} else {
+				GL11.glViewport(0, 0, Main.WIDTH, Main.HEIGHT);
+				Display.setDisplayMode(def);
+				Display.setFullscreen(false);
 			}
 
 		} catch(LWJGLException e) {

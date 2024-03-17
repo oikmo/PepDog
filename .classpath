@@ -26,6 +26,12 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/jar/PNGDecoder.jar"/>
-	<classpathentry kind="lib" path="lib/jar/javax.jar"/>
+	<classpathentry kind="lib" path="lib/jar/javax.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/PepDog/lib/jar/javadoc/javax.vecmath-javadoc.zip!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/jar/luaj-jme-3.0.2.jar"/>
+	<classpathentry kind="lib" path="lib/jar/luaj-jse-3.0.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

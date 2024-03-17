@@ -153,27 +153,43 @@ public class Main {
 			gameState = GameState.game;
 			currentScreen = new GuiInGame();
 
-			player = new Player(new Vector3f(0,0,0),new Vector3f(0,0,0), 1.75f);
+			//player = new Player(new Vector3f(0,0,0),new Vector3f(0,0,0), 1.75f);
 			
-			float balls = 0.1f;
-			GuiText version = new GuiText(gameVersion, 0.8f, font, new Vector2f(0, balls), 1, false, false);
-			balls += 0.0175f;
-			GuiText fps = new GuiText(Integer.toString(DisplayManager.getFPSCount()), 0.8f, font, new Vector2f(0, balls), 1, false, false);
-			balls += 0.0175f;
-			GuiText state = new GuiText(gameState.toString(), 0.8f, font, new Vector2f(0, balls), 1, false, false);
-			balls += 0.0175f;
-			GuiText scene = new GuiText(SceneManager.getCurrentScene().getClass().getSimpleName().replace("Scene",""), 0.8f, font, new Vector2f(0, balls), 1, false, false);
-			balls += 0.0175f;
-			GuiText useMem = new GuiText("Used memory:", 0.8f, font, new Vector2f(0, balls), 1, false, false);
-			balls += 0.0175f;
-			GuiText allocMem = new GuiText("Allocated memory:", 0.8f, font, new Vector2f(0, balls), 1, false, false);
-
+			float offsetX = 0.01f;
+			float offsetY = 0.05f;
+			
+			GuiText version = new GuiText(gameVersion, 0.8f, font, new Vector2f(offsetX, offsetY), 1, false, false);
+			offsetY += 0.0175f;
+			GuiText fps = new GuiText(Integer.toString(DisplayManager.getFPSCount()), 0.8f, font, new Vector2f(offsetX, offsetY), 1, false, false);
+			offsetY += 0.0175f;
+			GuiText state = new GuiText(gameState.toString(), 0.8f, font, new Vector2f(offsetX, offsetY), 1, false, false);
+			offsetY += 0.0175f;
+			GuiText useMem = new GuiText("Used memory:", 0.8f, font, new Vector2f(offsetX, offsetY), 1, false, false);
+			offsetY += 0.0175f;
+			GuiText allocMem = new GuiText("Allocated memory:", 0.8f, font, new Vector2f(offsetX, offsetY), 1, false, false);
+			offsetY += 0.0175f;
+			GuiText partsCount = new GuiText("parts:", 0.8f, font, new Vector2f(offsetX, offsetY), 1, false, false);
+			
 			version.setColour(1, 1, 1);
 			fps.setColour(1, 1, 1);
 			state.setColour(1, 1, 1);
-			scene.setColour(1, 1, 1);
 			useMem.setColour(1, 1, 1);
 			allocMem.setColour(1, 1, 1);
+			partsCount.setColour(1, 1, 1);
+			
+			version.setOutlineColour(0,0,0);
+			version.setEdge(0.3f);
+			fps.setOutlineColour(0,0,0);
+			fps.setEdge(0.3f);
+			state.setOutlineColour(0,0,0);
+			state.setEdge(0.3f);
+			useMem.setOutlineColour(0,0,0);
+			useMem.setEdge(0.3f);
+			allocMem.setOutlineColour(0,0,0);
+			allocMem.setEdge(0.3f);
+			partsCount.setOutlineColour(0,0,0);
+			partsCount.setEdge(0.3f);
+			
 			
 			SceneManager.loadScene("roblox");
 			RobloxScene scener = ((RobloxScene)SceneManager.getCurrentScene());
@@ -193,17 +209,17 @@ public class Main {
 
 				fps.setTextString("fps: " + Integer.toString(DisplayManager.getFPSCount()));
 				state.setTextString("gameState: " + gameState.toString());
-				scene.setTextString("scene: " + SceneManager.getCurrentScene().getClass().getSimpleName().replace("Scene","").toLowerCase());
 				
 				switch(gameState) {
 				case game:
-
+					partsCount.setTextString("parts: " + scener.getParts().size());
 					AudioMaster.setListenerData(camera.getPosition().x,camera.getPosition().y,camera.getPosition().z, 0, 0, 0);
-					if(camera != player.getCamera()) {
-						camera.flyCam();
+					camera.flyCam();
+					/*if(camera != player.getCamera()) {
+						
 					} else {
 						player.update();
-					}
+					}*/
 					if(PhysicsSystem.getWorld() != null) {
 						PhysicsSystem.update();
 					}
@@ -211,7 +227,7 @@ public class Main {
 					break;
 				case pausemenu:
 					Mouse.setGrabbed(false);
-					player.pause();
+					//player.pause();
 					break;
 				}
 				SceneManager.update(camera);
@@ -396,10 +412,8 @@ public class Main {
 	 * @param throwable (Throwable)
 	 */
 	public static void error(String id, Throwable throwable) {
-		//Main.destroyGameButNoClose();
-		if(frame == null) {
-			frame = new JFrame();
-		}
+		Main.destroyGameButNoClose();
+		frame.removeAll();
 		frame.setSize(Main.WIDTH, HEIGHT);
 		frame.setVisible(true);
 		UnexpectedThrowable unexpectedThrowable = new UnexpectedThrowable(id, throwable);

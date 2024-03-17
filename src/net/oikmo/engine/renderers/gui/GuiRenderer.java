@@ -24,6 +24,10 @@ public class GuiRenderer {
 		this.shader = shader;
 	}
 	
+	public void updateProjectionMatrix(Matrix4f projection) {
+		shader.loadTransformation(projection);
+	}
+	
 	
 	public void render(List<GuiTexture> guis) {
 		if(guis == null) { 

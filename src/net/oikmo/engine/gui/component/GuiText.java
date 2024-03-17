@@ -101,6 +101,56 @@ public class GuiText {
 		
 		TextMaster.loadText(this);
 	}
+	
+	public void setFontSize(float fontSize) {
+		this.fontSize = fontSize;
+	}
+
+	public void setColour(Vector3f colour) {
+		this.colour = colour;
+	}
+
+	public void setPosition(Vector2f position) {
+		this.position = position;
+	}
+
+	public void setLineMaxSize(float lineMaxSize) {
+		this.lineMaxSize = lineMaxSize;
+	}
+
+	public void setFont(FontType font) {
+		this.font = font;
+	}
+
+	public void setCenterText(boolean centerText) {
+		this.centerText = centerText;
+	}
+
+	public void setPosWidth(float posWidth) {
+		this.posWidth = posWidth;
+	}
+
+	public void setEdge(float edge) {
+		this.edge = edge;
+	}
+
+	public void setBorderWidth(float borderWidth) {
+		this.borderWidth = borderWidth;
+	}
+
+	public void setBorderEdge(float borderEdge) {
+		this.borderEdge = borderEdge;
+	}
+
+	public void setOutlineColour(Vector3f outlineColour) {
+		this.outlineColour = outlineColour;
+	}
+	
+	public void setOutlineColour(float x, float y, float z) {
+		this.outlineColour.x = x;
+		this.outlineColour.y = y;
+		this.outlineColour.z = z;
+	}
 
 	/**
 	 * Remove the text from the screen.

@@ -77,7 +77,7 @@ public class MasterRenderer {
 	public static final float NEAR_PLANE = 0.1f;
 	public static final float FAR_PLANE = 100000f;
 
-	private float aspectRatio = (float) Display.getWidth() / (float) Display.getHeight();
+	private float aspectRatio = 1920/1080;
 
 	private Map<TexturedModel, List<Entity>> entities = new HashMap<TexturedModel, List<Entity>>();
 	private Map<TexturedModel, List<Part>> parts = new HashMap<TexturedModel, List<Part>>();
@@ -254,7 +254,6 @@ public class MasterRenderer {
 		entityRenderer.render(entities);
 		entityShader.stop();
 
-		skyboxRenderer.render(camera, projectionMatrix, RED, GREEN, BLUE);
 		partShader.start();
 		partShader.loadClipPlane(clipPlane);
 		partShader.loadLights(lights);
@@ -262,13 +261,15 @@ public class MasterRenderer {
 		partShader.loadSkyColour(RED, GREEN, BLUE);
 		partsRenderer.render(parts);
 		partShader.stop();
-
+		
+		skyboxRenderer.render(camera, projectionMatrix, RED, GREEN, BLUE);
 		
 		entities.clear();
 		parts.clear();
 	}
 
 	public void processEntity(Entity entity) {
+		if(entity == null) {return;}
 		TexturedModel model = entity.getModel();
 		List<Entity> batch = entities.get(model);
 		if(batch != null) {
@@ -281,6 +282,7 @@ public class MasterRenderer {
 	}
 
 	public void processParts(Part part) {
+		if(part == null) {return;}
 		TexturedModel model = part.getModel();
 		List<Part> batch = parts.get(model);
 		if(batch != null) {
@@ -310,13 +312,13 @@ public class MasterRenderer {
 
 	public void cleanUp() {
 		entityShader.cleanUp();
-//		/PostProcessing.cleanUp();
+		//PostProcessing.cleanUp();
 		Loader.getInstance().cleanUp();
 		ParticleMaster.cleanUp();
 		TextMaster.cleanUp();
 	}
 
-	private void createProjectionMatrix() {
+	public void createProjectionMatrix() {
 		aspectRatio = (float) Display.getWidth() / (float) Display.getHeight();
 		float y_scale = (float) ((1f / Math.tan(Math.toRadians(FOV / 2f))));
 		float x_scale = y_scale / aspectRatio;
@@ -343,6 +345,7 @@ public class MasterRenderer {
 		float y_scale = (float) ((1f / Math.tan(Math.toRadians(FOV / 2f))));
 		float x_scale = y_scale / aspectRatio;
 
+		projectionMatrix = new Matrix4f();
 		projectionMatrix.m00 = x_scale;
 		projectionMatrix.m11 = y_scale;
 		projectionMatrix.m22 = -((FAR_PLANE + NEAR_PLANE) / (FAR_PLANE - NEAR_PLANE));
@@ -351,6 +354,24 @@ public class MasterRenderer {
 		projectionMatrix.m33 = 0;
 
 		entityRenderer.updateProjectionMatrix(projectionMatrix);
+		guiRenderer.updateProjectionMatrix(projectionMatrix);
+	}
+	
+	public void updateProjectionMatrix(int width, int height) {
+		aspectRatio = width / height;
+		float y_scale = (float) ((1f / Math.tan(Math.toRadians(FOV / 2f))));
+		float x_scale = y_scale / aspectRatio;
+
+		projectionMatrix.m00 = x_scale;
+		projectionMatrix.m11 = y_scale;
+		projectionMatrix.m22 = -((FAR_PLANE + NEAR_PLANE) / (FAR_PLANE - NEAR_PLANE));
+		projectionMatrix.m23 = -1;
+		projectionMatrix.m32 = -((2 * NEAR_PLANE * FAR_PLANE) / (FAR_PLANE - NEAR_PLANE));
+		projectionMatrix.m33 = 0;
+
+		entityRenderer.updateProjectionMatrix(projectionMatrix);
+		skyboxRenderer.updateProjectionMatrix(projectionMatrix);
+		partsRenderer.updateProjectionMatrix(projectionMatrix);
 	}
 
 	public Matrix4f getProjectionMatrix() {
