@@ -8,7 +8,7 @@ import org.lwjgl.util.vector.Vector3f;
 import net.oikmo.engine.models.TexturedModel;
 import net.oikmo.engine.textures.ModelTexture;
 import net.oikmo.toolbox.Toolbox;
-import net.oikmo.toolbox.obj.OBJFileLoader;
+import net.oikmo.toolbox.obj.OBJLoader;
 
 public class Entity {
 	public TexturedModel model;
@@ -23,7 +23,7 @@ public class Entity {
 	}
 	
 	public Entity(String model, Vector3f position, Vector3f rotation) {
-		this.model = new TexturedModel(OBJFileLoader.loadOBJ(model), new ModelTexture(Loader.getInstance().loadTexture("models/"+model)));
+		this.model = new TexturedModel(OBJLoader.loadOBJ(model), new ModelTexture(Loader.loadGameTexture("models/"+model)));
 		init(position, rotation, 1);
 	}
 	
@@ -34,13 +34,13 @@ public class Entity {
 	}
 
 	public Entity(String model, Vector3f position, Vector3f rotation, float scale) {
-		this.model = new TexturedModel(OBJFileLoader.loadOBJ(model), new ModelTexture(Loader.getInstance().loadTexture("models/"+model)));
+		this.model = new TexturedModel(OBJLoader.loadOBJ(model), new ModelTexture(Loader.loadGameTexture("models/"+model)));
 		this.init(position, rotation, scale);
 	}
 	
 	public Entity(String model, Vector3f position, Vector3f rotation, float scale, int index) {
 		this.textureIndex = index;
-		this.model = new TexturedModel(OBJFileLoader.loadOBJ(model), new ModelTexture(Loader.getInstance().loadTexture("models/"+model)));
+		this.model = new TexturedModel(OBJLoader.loadOBJ(model), new ModelTexture(Loader.loadGameTexture("models/"+model)));
 		this.init(position, rotation, scale);
 	}
 	

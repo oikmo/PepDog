@@ -2,7 +2,7 @@ package net.oikmo.engine.models;
 
 import net.oikmo.engine.Loader;
 import net.oikmo.engine.textures.ModelTexture;
-import net.oikmo.toolbox.obj.OBJFileLoader;
+import net.oikmo.toolbox.obj.OBJLoader;
 
 public class TexturedModel {
 	
@@ -15,13 +15,13 @@ public class TexturedModel {
 	}
 	
 	public TexturedModel(String model) {
-		this.rawModel = OBJFileLoader.loadOBJ(model);
-		this.texture = new ModelTexture(Loader.getInstance().loadTexture("models/"+model));
+		this.rawModel = OBJLoader.loadOBJ(model);
+		this.texture = new ModelTexture(Loader.loadGameTexture("models/"+model));
 	}
 	
 	public TexturedModel(String model, String texture) {
-		this.rawModel = OBJFileLoader.loadOBJ(model);
-		this.texture = new ModelTexture(Loader.getInstance().loadTexture("models/"+texture));
+		this.rawModel = OBJLoader.loadOBJ(model);
+		this.texture = new ModelTexture(Loader.loadGameTexture("models/"+texture));
 	}
 
 	public void setRawModel(RawModel model) {

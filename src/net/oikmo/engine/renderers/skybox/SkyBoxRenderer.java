@@ -67,12 +67,12 @@ public class SkyBoxRenderer {
 	private SkyBoxShader shader;
 	
 	public SkyBoxRenderer(String skyboxDayName, String skyboxNightName, Matrix4f projectionMatrix) {
-		cube = Loader.getInstance().loadToVAO(VERTICES, 3);
+		cube = Loader.loadToVAO(VERTICES, 3);
 		for(int i = 0; i < TEXTURE_FILES.length; i++) {
 			DAY_TEXTURE_FILES[i] = skyboxDayName + "_" +TEXTURE_FILES[i];
 		}
 		
-		dayTexture = Loader.getInstance().loadCubeMap(DAY_TEXTURE_FILES);
+		dayTexture = Loader.loadCubeMap(DAY_TEXTURE_FILES);
 		shader = new SkyBoxShader();
 		shader.start();
 		shader.connectTextureUnits();

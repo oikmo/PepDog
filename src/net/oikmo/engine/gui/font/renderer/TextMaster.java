@@ -12,14 +12,11 @@ import net.oikmo.engine.gui.font.meshcreator.TextMeshData;
 import net.oikmo.engine.renderers.gui.font.FontRenderer;
 
 public class TextMaster {
-	
-	private static Loader loader;
 	private static Map<FontType, List<GuiText>> texts = new HashMap<FontType, List<GuiText>>();
 	private static FontRenderer renderer;
 	
 	public static void init(){
 		renderer = new FontRenderer();
-		loader = Loader.getInstance();
 	}
 	
 	public static void render(){
@@ -29,7 +26,7 @@ public class TextMaster {
 	public static void loadText(GuiText text){
 		FontType font = text.getFont();
 		TextMeshData data = font.loadText(text);
-		int vao = loader.loadToVAO(data.getVertexPositions(), data.getTextureCoords());
+		int vao = Loader.loadToVAO(data.getVertexPositions(), data.getTextureCoords());
 		text.setMeshInfo(vao, data.getVertexCount());
 		List<GuiText> textBatch = texts.get(font);
 		if(textBatch == null){

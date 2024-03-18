@@ -25,11 +25,12 @@ import org.lwjgl.util.vector.Vector3f;
 
 import net.oikmo.engine.DisplayManager;
 import net.oikmo.engine.Entity;
-import net.oikmo.engine.Loader;
 import net.oikmo.engine.audio.AudioMaster;
+import net.oikmo.engine.audio.Source;
 import net.oikmo.engine.gui.GuiScreen;
 import net.oikmo.engine.gui.component.GuiText;
 import net.oikmo.engine.gui.font.meshcreator.FontType;
+import net.oikmo.engine.lua.DataModel;
 import net.oikmo.engine.models.RawModel;
 import net.oikmo.engine.models.TexturedModel;
 import net.oikmo.engine.renderers.MasterRenderer;
@@ -44,7 +45,7 @@ import net.oikmo.toolbox.Logger;
 import net.oikmo.toolbox.Logger.LogLevel;
 import net.oikmo.toolbox.error.PanelCrashReport;
 import net.oikmo.toolbox.error.UnexpectedThrowable;
-import net.oikmo.toolbox.obj.OBJFileLoader;
+import net.oikmo.toolbox.obj.OBJLoader;
 import net.oikmo.toolbox.os.EnumOS;
 import net.oikmo.toolbox.os.EnumOSMappingHelper;
 
@@ -147,7 +148,6 @@ public class Main {
 			}
 			AudioMaster.init();
 			
-			Loader loader = Loader.getInstance();		
 			MasterRenderer.getInstance();
 			
 			SceneManager.init();
@@ -157,7 +157,7 @@ public class Main {
 			Camera camera = new Camera(new Vector3f(), new Vector3f());
 			
 			String fontType = "comic-sans";
-			font = new FontType(loader.loadFontTexture(fontType),fontType);
+			font = new FontType(fontType);
 			gameState = GameState.game;
 			currentScreen = new GuiInGame();
 
@@ -199,15 +199,22 @@ public class Main {
 			partsCount.setEdge(0.3f);
 			
 			
+			DataModel dm = new DataModel();
+			
 			SceneManager.loadScene("roblox");
 			RobloxScene scener = ((RobloxScene)SceneManager.getCurrentScene());
 			scener.loadRoblox(mapToLoad);
 			camera.setPosition(scener.getRandomSpawn());
 			
-			RawModel model = OBJFileLoader.loadOBJ("cube");
-			TexturedModel texturedModel = new TexturedModel(model, new ModelTexture(Loader.getInstance().loadTexture("models/base")));
+			RawModel model = OBJLoader.loadOBJ("cube");
+			TexturedModel texturedModel = new TexturedModel(model, new ModelTexture(dm.load("rbxassetid://textures/face.png")));
 			Entity entity = new Entity(texturedModel, new Vector3f(0,10,0), new Vector3f(), 1f);
 			scener.addEntity(entity);
+			
+			Source source = new Source();
+			
+			source.play(dm.load("rbxassetid://sounds/bass.wav"));
+			
 			while(!Display.isCloseRequested()) {
 				handleGUI();
 				

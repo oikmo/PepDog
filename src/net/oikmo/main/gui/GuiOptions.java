@@ -20,7 +20,7 @@ public class GuiOptions extends GuiScreen {
 	private GameState state;
 	
 	public GuiOptions(GameState state) {
-		super(Loader.getInstance().loadTexture("ui/ui_background"), "Options");
+		super(Loader.loadGameTexture("ui/ui_background"), "Options");
 		this.setLockInput();
 		this.state = state;
 		Main.gameState = this.state;

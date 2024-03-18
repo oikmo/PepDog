@@ -14,7 +14,7 @@ public class PostProcessing {
 	private static PixelatorEffect pixelEffect;
 
 	public static void init(){
-		quad = Loader.getInstance().loadToVAO(POSITIONS, 2);
+		quad = Loader.loadToVAO(POSITIONS, 2);
 		pixelEffect = new PixelatorEffect();
 	}
 	

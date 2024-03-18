@@ -106,14 +106,13 @@ public class MasterRenderer {
 		guiRenderer = new GuiRenderer(guiShader);
 		skyboxRenderer = new SkyBoxRenderer("plainsky", "shiverfrost", projectionMatrix);
 		partsRenderer = new PartRenderer(partShader, projectionMatrix);
+		
+		ui_nuhuh = Loader.loadGameTexture("ui/ui_nuhuh");
+		ui_button = Loader.loadGameTexture("ui/normal/ui_button");
+		ui_hover = Loader.loadGameTexture("ui/normal/ui_button_hover");
 
-		Loader loader = Loader.getInstance();
-		ui_nuhuh = loader.loadTexture("ui/ui_nuhuh");
-		ui_button = loader.loadTexture("ui/normal/ui_button");
-		ui_hover = loader.loadTexture("ui/normal/ui_button_hover");
-
-		ui_smallbutton = loader.loadTexture("ui/small/ui_button");
-		ui_smallhover = loader.loadTexture("ui/small/ui_button_hover");
+		ui_smallbutton = Loader.loadGameTexture("ui/small/ui_button");
+		ui_smallhover = Loader.loadGameTexture("ui/small/ui_button_hover");
 		waterFBO = new WaterFrameBuffers();
 
 		ParticleMaster.init(projectionMatrix);
@@ -313,7 +312,7 @@ public class MasterRenderer {
 	public void cleanUp() {
 		entityShader.cleanUp();
 		//PostProcessing.cleanUp();
-		Loader.getInstance().cleanUp();
+		Loader.cleanUp();
 		ParticleMaster.cleanUp();
 		TextMaster.cleanUp();
 	}

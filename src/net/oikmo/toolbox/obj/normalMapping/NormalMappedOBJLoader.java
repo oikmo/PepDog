@@ -11,11 +11,11 @@ import org.lwjgl.util.vector.Vector3f;
 
 import net.oikmo.engine.Loader;
 import net.oikmo.engine.models.RawModel;
-import net.oikmo.toolbox.obj.OBJFileLoader;
+import net.oikmo.toolbox.obj.OBJLoader;
 
 public class NormalMappedOBJLoader {
 	public static RawModel loadOBJ(String objFileName) {
-		InputStreamReader isr = new InputStreamReader(OBJFileLoader.class.getResourceAsStream("/assets/models/" + objFileName + ".obj"));
+		InputStreamReader isr = new InputStreamReader(OBJLoader.class.getResourceAsStream("/assets/models/" + objFileName + ".obj"));
 		BufferedReader reader = new BufferedReader(isr);
 		String line;
 		List<VertexNM> vertices = new ArrayList<VertexNM>();
@@ -73,7 +73,7 @@ public class NormalMappedOBJLoader {
 				texturesArray, normalsArray, tangentsArray);
 		int[] indicesArray = convertIndicesListToArray(indices);
 
-		return Loader.getInstance().loadToVAO(verticesArray, texturesArray, normalsArray, tangentsArray, indicesArray);
+		return Loader.loadToVAO(verticesArray, texturesArray, normalsArray, tangentsArray, indicesArray);
 	}
 
 	//NEW 

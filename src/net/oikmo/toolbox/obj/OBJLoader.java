@@ -16,7 +16,7 @@ import net.oikmo.engine.models.RawModel;
  * Loads OBJ Files.
  * @author Oikmo
  */
-public class OBJFileLoader {
+public class OBJLoader {
 	
 	/**
 	 * Loads obj file to RawModel for GPU readability sakes
@@ -33,7 +33,7 @@ public class OBJFileLoader {
 	 * @return RawModel
 	 */
 	public static RawModel loadOBJ(String objFileName) {
-		InputStreamReader isr = new InputStreamReader(OBJFileLoader.class.getResourceAsStream("/assets/models/" + objFileName + ".obj"));
+		InputStreamReader isr = new InputStreamReader(OBJLoader.class.getResourceAsStream("/assets/models/" + objFileName + ".obj"));
 		BufferedReader reader = new BufferedReader(isr);
 		String line;
 		List<Vertex> vertices = new ArrayList<Vertex>();
@@ -90,7 +90,7 @@ public class OBJFileLoader {
 		int[] indicesArray = convertIndicesListToArray(indices);
 		
 		// ModelData data = new ModelData(verticesArray, texturesArray, normalsArray, tangentsArray, indicesArray, furthest);
-		RawModel model =  Loader.getInstance().loadToVAO(verticesArray, texturesArray, normalsArray, indicesArray);
+		RawModel model =  Loader.loadToVAO(verticesArray, texturesArray, normalsArray, indicesArray);
 		return model;
 	}
 	

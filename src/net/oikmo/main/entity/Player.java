@@ -23,7 +23,7 @@ public class Player extends Entity {
 
 	private Camera camera;
 	
-	private int visibleTexture, invisibleTexture = Loader.getInstance().loadTexture("models/playerTrans");
+	private int visibleTexture, invisibleTexture = Loader.loadGameTexture("models/playerTrans");
 
 	private final int FORWARD_KEY = Keyboard.KEY_W;
 	private final int BACKWARD_KEY = Keyboard.KEY_S;

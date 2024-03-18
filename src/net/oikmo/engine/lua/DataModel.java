@@ -4,6 +4,9 @@ import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.TwoArgFunction;
 import org.luaj.vm2.lib.ZeroArgFunction;
 
+import net.oikmo.engine.Loader;
+import net.oikmo.engine.audio.AudioMaster;
+
 public class DataModel extends TwoArgFunction {
 	
 	/* Bitch i have to implement this shit and now I want to hang myshelf.
@@ -31,6 +34,25 @@ public class DataModel extends TwoArgFunction {
      *		//guiRoot->initFont();
 	 * }
 	 */
+	
+	public int load(String url) {
+		String asset = new String(url);
+		int result = 0;
+		if(asset.contains("rbxassetid://")) {
+			asset = asset.replace("rbxassetid://", "content/");
+		}
+		
+		if(asset.substring(Math.max(asset.length() - 4, 0)).contentEquals(".png")) {
+			result = Loader.loadTexture("/" + asset.replace(".png", ""));
+		} 
+		else if(asset.substring(Math.max(asset.length() - 4, 0)).contentEquals(".wav")) {
+			System.out.println(asset.replace(".wav", ""));
+			
+			result = AudioMaster.getSound(asset.replace(".wav", ""));
+		}
+		
+		return result;
+	}
 	
 	public LuaValue call(LuaValue modname, LuaValue env) {
 		LuaValue game = tableOf();

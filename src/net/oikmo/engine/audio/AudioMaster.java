@@ -83,7 +83,7 @@ public class AudioMaster {
 		int buffer = AL10.alGenBuffers();
 		buffers.add(buffer);
 		ClassLoader load = AudioMaster.class.getClassLoader();
-		String path = "assets/audio/" + audioName + ".wav";
+		String path = audioName + ".wav";
 		byte[] stream = null;
 		try {
 			stream = IOUtils.toByteArray(load.getResourceAsStream(path));

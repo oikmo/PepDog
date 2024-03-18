@@ -18,7 +18,7 @@ public class GuiYesNo extends GuiScreen {
 	String titleText;
 	
 	public GuiYesNo(String text, GameState state) {
-		super(Loader.getInstance().loadTexture("ui/ui_background2"),"Yes No");
+		super(Loader.loadGameTexture("ui/ui_background2"),"Yes No");
 		title = new GuiText(text, 2, Main.font, new Vector2f(0,0.05f), 1, true, false);
 		title.setColour(1, 1, 1);
 		Main.gameState = state;

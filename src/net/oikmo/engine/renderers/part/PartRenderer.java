@@ -16,14 +16,14 @@ import net.oikmo.engine.models.TexturedModel;
 import net.oikmo.engine.renderers.MasterRenderer;
 import net.oikmo.engine.textures.ModelTexture;
 import net.oikmo.toolbox.Toolbox;
-import net.oikmo.toolbox.obj.OBJFileLoader;
+import net.oikmo.toolbox.obj.OBJLoader;
 
 public class PartRenderer {	
 	private PartShader shader;
 	
-	public static RawModel cylinder = OBJFileLoader.loadOBJ("cylinder");
-	public static RawModel block =  OBJFileLoader.loadOBJ("cube");
-	public static RawModel sphere = OBJFileLoader.loadOBJ("sphere");
+	public static RawModel cylinder = OBJLoader.loadOBJ("cylinder");
+	public static RawModel block =  OBJLoader.loadOBJ("cube");
+	public static RawModel sphere = OBJLoader.loadOBJ("sphere");
 	
 	public static int texture;
 	
@@ -33,7 +33,7 @@ public class PartRenderer {
 	 */
 	public PartRenderer(PartShader shader, Matrix4f projectionMatrix){
 		this.shader = shader;
-		texture = Loader.getInstance().loadTexture("models/base");
+		texture = Loader.loadGameTexture("models/base");
 		shader.start();
 		shader.loadProjectionMatrix(projectionMatrix);
 		shader.stop();

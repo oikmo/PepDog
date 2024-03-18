@@ -1,5 +1,6 @@
 package net.oikmo.engine.gui.font.meshcreator;
 
+import net.oikmo.engine.Loader;
 import net.oikmo.engine.gui.component.GuiText;
 
 /**
@@ -28,6 +29,19 @@ public class FontType {
 		this.textureAtlas = textureAtlas;
 		this.loader = new TextMeshCreator(fontFile);
 	}
+	
+	/**
+	 * Creates a new font and loads up the data about each character from the
+	 * font file.
+	 * 
+	 * @param name 
+	 * 			- Inputted string will pass on to {@link Loader#loadFontTexture(String)}
+	 */
+	public FontType(String name) {
+		this.textureAtlas = Loader.loadFontTexture(name);
+		this.loader = new TextMeshCreator(name);
+	}
+	
 
 	/**
 	 * @return The font texture atlas.

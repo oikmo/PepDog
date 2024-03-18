@@ -25,7 +25,7 @@ public class GuiInGame extends GuiScreen {
 	}
 
 	public void initGui() {
-		headerBack = new GuiTexture(Loader.getInstance().loadTexture("ui/ui_backshots"), new Vector2f(0,0), new Vector2f(1.50f,0.1f));
+		headerBack = new GuiTexture(Loader.loadGameTexture("ui/ui_backshots"), new Vector2f(0,0), new Vector2f(1.50f,0.1f));
 		headerBack.setPosition(new Vector2f(-1+headerBack.getScale().x,1-headerBack.getScale().y));
 		uiList.add(headerBack);
 		b1 = new GuiButton(0, new Vector2f(-1+0.1f,1-0.05f), new Vector2f(0.3f,0.1f), "Fullscreen", 0.75f);

@@ -15,7 +15,7 @@ public class GuiPauseMenu extends GuiScreen {
 	private GuiText title;
 
 	public GuiPauseMenu() {
-		super(Loader.getInstance().loadTexture("ui/ui_background"), "Pause Menu");
+		super(Loader.loadGameTexture("ui/ui_background"), "Pause Menu");
 		this.setLockInput();
 	}
 	
