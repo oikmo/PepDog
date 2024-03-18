@@ -1,6 +1,7 @@
 package net.oikmo.engine.audio;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -85,8 +86,12 @@ public class AudioMaster {
 		ClassLoader load = AudioMaster.class.getClassLoader();
 		String path = audioName + ".wav";
 		byte[] stream = null;
+		InputStream res = load.getResourceAsStream(path);
+		if(res == null) {
+			res = load.getResourceAsStream("content/sounds/Kid saying Ouch.wav");
+		}
 		try {
-			stream = IOUtils.toByteArray(load.getResourceAsStream(path));
+			stream = IOUtils.toByteArray(res);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
