@@ -8,11 +8,12 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -23,12 +24,16 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import net.oikmo.engine.DisplayManager;
+import net.oikmo.engine.Entity;
 import net.oikmo.engine.Loader;
 import net.oikmo.engine.audio.AudioMaster;
 import net.oikmo.engine.gui.GuiScreen;
 import net.oikmo.engine.gui.component.GuiText;
 import net.oikmo.engine.gui.font.meshcreator.FontType;
+import net.oikmo.engine.models.RawModel;
+import net.oikmo.engine.models.TexturedModel;
 import net.oikmo.engine.renderers.MasterRenderer;
+import net.oikmo.engine.textures.ModelTexture;
 import net.oikmo.main.entity.Camera;
 import net.oikmo.main.entity.Player;
 import net.oikmo.main.gui.GuiInGame;
@@ -39,6 +44,7 @@ import net.oikmo.toolbox.Logger;
 import net.oikmo.toolbox.Logger.LogLevel;
 import net.oikmo.toolbox.error.PanelCrashReport;
 import net.oikmo.toolbox.error.UnexpectedThrowable;
+import net.oikmo.toolbox.obj.OBJFileLoader;
 import net.oikmo.toolbox.os.EnumOS;
 import net.oikmo.toolbox.os.EnumOSMappingHelper;
 
@@ -92,17 +98,19 @@ public class Main {
 		maps.add("TESTShapes");
 		
 		frame = new Frame();
-		Frame window = frame;
-		window.setSize(200, 100);
-		window.setLocationRelativeTo(null);
-		window.addWindowListener(new WindowAdapter(){  
+		frame.setSize(200, 100);
+		frame.setLocationRelativeTo(null);
+		frame.addWindowListener(new WindowAdapter(){  
             public void windowClosing(WindowEvent e) {  
-                window.dispose(); 
+            	frame.dispose(); 
                 System.exit(0);
             }  
         });
-		window.setName("PepDog Map Loader");
-		window.setTitle("PepDog Map loader");
+		URL iconURL = Main.class.getResource("/assets/icon.png");
+		ImageIcon icon = new ImageIcon(iconURL);
+		frame.setIconImage(icon.getImage());
+		frame.setName("PepDog Map Loader");
+		frame.setTitle("PepDog Map loader");
 		
 		JComboBox<String> box = new JComboBox<>();
 		for(String map : maps) {		
@@ -112,8 +120,8 @@ public class Main {
 		JPanel inputWindow = new JPanel(new GridLayout(2, 1));
 		inputWindow.add(new JLabel("Choose the map you want!"));
 		inputWindow.add(box);
-		window.add(inputWindow);
-		window.setVisible(true);
+		frame.add(inputWindow);
+		frame.setVisible(true);
 		box.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -123,7 +131,7 @@ public class Main {
 				GameLoop();
 			}
 		});
-		window.validate();
+		frame.validate();
 	}
 	
 	public static void GameLoop() {
@@ -196,6 +204,10 @@ public class Main {
 			scener.loadRoblox(mapToLoad);
 			camera.setPosition(scener.getRandomSpawn());
 			
+			RawModel model = OBJFileLoader.loadOBJ("cube");
+			TexturedModel texturedModel = new TexturedModel(model, new ModelTexture(Loader.getInstance().loadTexture("models/base")));
+			Entity entity = new Entity(texturedModel, new Vector3f(0,10,0), new Vector3f(), 1f);
+			scener.addEntity(entity);
 			while(!Display.isCloseRequested()) {
 				handleGUI();
 				

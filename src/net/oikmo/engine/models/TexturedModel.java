@@ -24,6 +24,10 @@ public class TexturedModel {
 		this.texture = new ModelTexture(Loader.getInstance().loadTexture("models/"+texture));
 	}
 
+	public void setRawModel(RawModel model) {
+		this.rawModel = model;
+	}
+	
 	public RawModel getRawModel() {
 		return rawModel;
 	}

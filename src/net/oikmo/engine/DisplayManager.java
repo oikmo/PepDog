@@ -36,7 +36,6 @@ public class DisplayManager {
 	private static float delta;
 	
 	private static DisplayMode def;
-	private static DisplayMode full;
 	/**
 	 * Creates window by size (loads cursor and window icon) and sets OpenGL version.
 	 * 
@@ -45,9 +44,7 @@ public class DisplayManager {
 	public static void createDisplay() {
 		//ContextAttribs attribs = new ContextAttribs(3,2).withForwardCompatible(true).withProfileCore(true);
 		DisplayMode main = Display.getDesktopDisplayMode();
-		System.out.println(main.getWidth());
 		def = new DisplayMode(Main.WIDTH, Main.HEIGHT);
-		full = new DisplayMode(1920,1080);
 		try {
 			//Display.create(new PixelFormat(), attribs);
 			Display.create();
