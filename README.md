@@ -6,6 +6,8 @@
 
 ## Engine which aims to implement as much features as the Roblox 2006-2010 clients. (OpenGL)
 
+You can find the maps in the dropdown menu!
+
 # CONTROLS
 ## Player:
 - WASD - move
@@ -23,15 +25,6 @@
 - E - Spawn bawls
 - Q - FlyCam
 - Left Shift - Sprint
-
-## MAPS TO LOAD
-- 2005PirateShip
-- 2005StartPlace
-- 2006Crossroads
-- 2008ROBLOXHQ
-- 2008SwordFightonTheHeightsIV
-- TESTColours
-- TESTShapes
 
 TODO : 
 - ~~set player to spawn location~~
