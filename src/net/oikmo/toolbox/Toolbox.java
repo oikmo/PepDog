@@ -1,5 +1,12 @@
 package net.oikmo.toolbox;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
@@ -158,5 +165,32 @@ public class Toolbox {
 		double better = (sqrt + d/sqrt)/2.0;
 		double evenbetter = (better + d/better)/2.0;
 		return evenbetter;
+	}
+	
+	public static List<String> getResourceFiles(String path) throws IOException {
+	    List<String> filenames = new ArrayList<>();
+
+	    try (
+	            InputStream in = getResourceAsStream(path);
+	            BufferedReader br = new BufferedReader(new InputStreamReader(in))) {
+	        String resource;
+
+	        while ((resource = br.readLine()) != null) {
+	            filenames.add(resource);
+	        }
+	    }
+
+	    return filenames;
+	}
+
+	private static InputStream getResourceAsStream(String resource) {
+	    final InputStream in
+	            = getContextClassLoader().getResourceAsStream(resource);
+
+	    return in == null ? Toolbox.class.getResourceAsStream(resource) : in;
+	}
+
+	private static ClassLoader getContextClassLoader() {
+	    return Thread.currentThread().getContextClassLoader();
 	}
 }

@@ -42,6 +42,7 @@ import net.oikmo.main.gui.GuiPauseMenu;
 import net.oikmo.main.scene.RobloxScene;
 import net.oikmo.main.scene.SceneManager;
 import net.oikmo.toolbox.Logger;
+import net.oikmo.toolbox.Toolbox;
 import net.oikmo.toolbox.Logger.LogLevel;
 import net.oikmo.toolbox.error.PanelCrashReport;
 import net.oikmo.toolbox.error.UnexpectedThrowable;
@@ -88,15 +89,10 @@ public class Main {
 	 * 
 	 * @author Oikmo
 	 * @param args
+	 * @throws IOException 
 	 */
-	public static void main(String[] args) {
-		maps.add("2005PirateShip");
-		maps.add("2005StartPlace");
-		maps.add("2006Crossroads");
-		maps.add("2008ROBLOXHQ");
-		maps.add("2008SwordFightonTheHeightsIV");
-		maps.add("TESTColours");
-		maps.add("TESTShapes");
+	public static void main(String[] args) throws IOException {
+		maps = new ArrayList<>(Toolbox.getResourceFiles("/assets/rbxl/"));
 		
 		frame = new Frame();
 		frame.setSize(200, 100);
@@ -114,7 +110,8 @@ public class Main {
 		frame.setTitle("PepDog Map loader");
 		
 		JComboBox<String> box = new JComboBox<>();
-		for(String map : maps) {		
+		for(String map : maps) {
+			map = map.substring(0,map.length() - 5);
 			box.addItem(map);
 		}
 		
@@ -424,6 +421,7 @@ public class Main {
 	}
 	
 	static PanelCrashReport report;
+	static boolean balls = false;
 	/**
 	 * Creates a frame with the error log embedded inside.
 	 * 
@@ -431,18 +429,21 @@ public class Main {
 	 * @param throwable (Throwable)
 	 */
 	public static void error(String id, Throwable throwable) {
-		Main.destroyGameButNoClose();
-		frame.removeAll();
-		frame.setSize(Main.WIDTH, HEIGHT);
-		frame.setVisible(true);
-		UnexpectedThrowable unexpectedThrowable = new UnexpectedThrowable(id, throwable);
-		if(report == null) {
-			report = new PanelCrashReport(unexpectedThrowable);
-		} else {
-			report.set(unexpectedThrowable);
+		if(!balls) {
+			frame.removeAll();
+			frame.setSize(Main.WIDTH, HEIGHT);
+			frame.setVisible(true);
+			UnexpectedThrowable unexpectedThrowable = new UnexpectedThrowable(id, throwable);
+			if(report == null) {
+				report = new PanelCrashReport(unexpectedThrowable);
+			} else {
+				report.set(unexpectedThrowable);
+			}
+			frame.add(report, "Center");
+			frame.validate();
+			balls = true;
 		}
-		frame.add(report, "Center");
-		frame.validate();
+		
 		
 	}
 }

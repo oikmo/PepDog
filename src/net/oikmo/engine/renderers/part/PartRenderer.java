@@ -23,7 +23,7 @@ public class PartRenderer {
 	
 	public static RawModel cylinder = OBJLoader.loadOBJ("cylinder");
 	public static RawModel block =  OBJLoader.loadOBJ("cube");
-	public static RawModel sphere = OBJLoader.loadOBJ("sphere");
+	public static RawModel sphere = OBJLoader.loadOBJ("sphere2");
 	
 	public static int texture;
 	

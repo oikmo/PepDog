@@ -93,6 +93,7 @@ public class PanelCrashReport extends Panel {
 		add(new CanvasCrashReport(80), "West");
 		add(new CanvasLogo("SHUTUP", 1, (byte)85), "South");
 		add(textarea, "Center");
+		System.out.println(textarea.getText());
 	}
 	
 	void log(int report, String wantToApply) {
