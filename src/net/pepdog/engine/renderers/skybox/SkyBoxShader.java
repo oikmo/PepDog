@@ -9,8 +9,8 @@ import net.pepdog.toolbox.Toolbox;
 
 public class SkyBoxShader extends ShaderProgram {
 
-	private static final String VERTEX_FILE = "/net/oikmo/engine/renderers/skybox/skyboxVertex.glsl";
-	private static final String FRAGMENT_FILE = "/net/oikmo/engine/renderers/skybox/skyboxFragment.glsl";
+	private static final String VERTEX_FILE = "/net/pepdog/engine/renderers/skybox/skyboxVertex.glsl";
+	private static final String FRAGMENT_FILE = "/net/pepdog/engine/renderers/skybox/skyboxFragment.glsl";
 	
 	private int location_projectionMatrix;
 	private int location_viewMatrix;

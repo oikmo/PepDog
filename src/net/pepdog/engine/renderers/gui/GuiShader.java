@@ -6,8 +6,8 @@ import net.pepdog.engine.renderers.ShaderProgram;
 
 public class GuiShader extends ShaderProgram {
 	
-	private static final String VERTEX_FILE = "/net/oikmo/engine/renderers/gui/guiVertex.glsl";
-	private static final String FRAGMENT_FILE = "/net/oikmo/engine/renderers/gui/guiFragment.glsl";
+	private static final String VERTEX_FILE = "/net/pepdog/engine/renderers/gui/guiVertex.glsl";
+	private static final String FRAGMENT_FILE = "/net/pepdog/engine/renderers/gui/guiFragment.glsl";
 	
 	private int location_transformationMatrix;
 	private int location_tilingSize;

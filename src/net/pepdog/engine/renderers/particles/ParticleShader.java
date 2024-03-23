@@ -6,8 +6,8 @@ import net.pepdog.engine.renderers.ShaderProgram;
 
 public class ParticleShader extends ShaderProgram {
 
-	private static final String VERTEX_FILE = "/net/oikmo/engine/renderers/particles/particleVertex.glsl";
-	private static final String FRAGMENT_FILE = "/net/oikmo/engine/renderers/particles/particleFragment.glsl";
+	private static final String VERTEX_FILE = "/net/pepdog/engine/renderers/particles/particleVertex.glsl";
+	private static final String FRAGMENT_FILE = "/net/pepdog/engine/renderers/particles/particleFragment.glsl";
 
 	private int location_numberOfRows;
 	private int location_projectionMatrix;

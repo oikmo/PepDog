@@ -6,8 +6,8 @@ import net.pepdog.engine.renderers.ShaderProgram;
 
 public class ShadowShader extends ShaderProgram {
 	
-	private static final String VERTEX_FILE = "/net/oikmo/engine/renderers/shadows/shadowVertex.glsl";
-	private static final String FRAGMENT_FILE = "/net/oikmo/engine/renderers/shadows/shadowFragment.glsl";
+	private static final String VERTEX_FILE = "/net/pepdog/engine/renderers/shadows/shadowVertex.glsl";
+	private static final String FRAGMENT_FILE = "/net/pepdog/engine/renderers/shadows/shadowFragment.glsl";
 	
 	private int location_mvpMatrix;
 

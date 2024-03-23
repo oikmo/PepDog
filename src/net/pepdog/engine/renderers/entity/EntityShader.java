@@ -21,8 +21,8 @@ public class EntityShader extends ShaderProgram {
 	
 	private static int MAX_LIGHTS = 4;
 	
-	private static final String VERTEX_FILE = "/net/oikmo/engine/renderers/entity/entityVertex.glsl";
-	private static final String FRAGMENT_FILE = "/net/oikmo/engine/renderers/entity/entityFragment.glsl";
+	private static final String VERTEX_FILE = "/net/pepdog/engine/renderers/entity/entityVertex.glsl";
+	private static final String FRAGMENT_FILE = "/net/pepdog/engine/renderers/entity/entityFragment.glsl";
 
 	private int location_transformationMatrix;
 	private int location_projectionMatrix;

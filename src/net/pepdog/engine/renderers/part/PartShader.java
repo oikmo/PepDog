@@ -18,8 +18,8 @@ import net.pepdog.toolbox.Toolbox;
  * @author <i>Oikmo</i>
  */
 public class PartShader extends ShaderProgram {
-	private static final String VERTEX_FILE = "/net/oikmo/engine/renderers/part/partVertex.glsl";
-	private static final String FRAGMENT_FILE = "/net/oikmo/engine/renderers/part/partFragment.glsl";
+	private static final String VERTEX_FILE = "/net/pepdog/engine/renderers/part/partVertex.glsl";
+	private static final String FRAGMENT_FILE = "/net/pepdog/engine/renderers/part/partFragment.glsl";
 
 	private int location_transformationMatrix;
 	private int location_projectionMatrix;

@@ -4,8 +4,8 @@ import net.pepdog.engine.renderers.ShaderProgram;
 
 public class PostProcessingShader extends ShaderProgram {
 
-	private static final String VERTEX_FILE = "/net/oikmo/engine/renderers/postProcessing/postProcessingVertex.glsl";
-	private static final String FRAGMENT_FILE = "/net/oikmo/engine/renderers/postProcessing/postProcessingFragment.glsl";
+	private static final String VERTEX_FILE = "/net/pepdog/engine/renderers/postProcessing/postProcessingVertex.glsl";
+	private static final String FRAGMENT_FILE = "/net/pepdog/engine/renderers/postProcessing/postProcessingFragment.glsl";
 	
 	public PostProcessingShader() {
 		super(VERTEX_FILE, FRAGMENT_FILE);

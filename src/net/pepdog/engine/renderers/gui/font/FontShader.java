@@ -8,8 +8,8 @@ import net.pepdog.engine.renderers.ShaderProgram;
 
 public class FontShader extends ShaderProgram{
 
-	private static final String VERTEX_FILE = "/net/oikmo/engine/renderers/gui/font/fontVertex.glsl";
-	private static final String FRAGMENT_FILE = "/net/oikmo/engine/renderers/gui/font/fontFragment.glsl";
+	private static final String VERTEX_FILE = "/net/pepdog/engine/renderers/gui/font/fontVertex.glsl";
+	private static final String FRAGMENT_FILE = "/net/pepdog/engine/renderers/gui/font/fontFragment.glsl";
 	
 	
 	private int location_colour;

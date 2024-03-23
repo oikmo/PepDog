@@ -9,8 +9,8 @@ import net.pepdog.toolbox.Toolbox;
 
 public class WaterShader extends ShaderProgram {
 
-	private final static String VERTEX_FILE = "/net/oikmo/engine/renderers/water/waterVertex.glsl";
-	private final static String FRAGMENT_FILE = "/net/oikmo/engine/renderers/water/waterFragment.glsl";
+	private final static String VERTEX_FILE = "/net/pepdog/engine/renderers/water/waterVertex.glsl";
+	private final static String FRAGMENT_FILE = "/net/pepdog/engine/renderers/water/waterFragment.glsl";
 
 	private int location_modelMatrix;
 	private int location_viewMatrix;
