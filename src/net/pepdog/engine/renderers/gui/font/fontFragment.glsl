@@ -14,7 +14,7 @@ uniform float borderWidth = 0.5;
 uniform float borderEdge = 0.1;
 
 uniform vec3 outlineColour = vec3(1.0,0.0,0.0);
-uniform vec2 offset = vec2(0.006,0.006);
+uniform vec2 offset;
 
 float smoothStep(float edge0, float edge1, float x){
     float t = clamp((x - edge0) / (edge1 - edge0), 0.0, 1.0);

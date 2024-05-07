@@ -25,6 +25,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 import net.pepdog.engine.DisplayManager;
 import net.pepdog.engine.Entity;
+import net.pepdog.engine.PhysicsSystem;
 import net.pepdog.engine.audio.AudioMaster;
 import net.pepdog.engine.audio.Source;
 import net.pepdog.engine.gui.GuiScreen;
@@ -81,7 +82,6 @@ public class Main {
 	}
 	public static GameState gameState;
 	static String mapToLoad = "2008ROBLOXHQ";
-	static List<String> maps = new ArrayList<>();
 	
 	/**
 	 * Main method where the game starts.
@@ -92,7 +92,6 @@ public class Main {
 	 * @throws IOException 
 	 */
 	public static void main(String[] args) throws IOException {
-		maps = new ArrayList<>(Toolbox.getResourceFiles("/assets/rbxl/"));
 		
 		frame = new Frame();
 		frame.setSize(200, 100);
@@ -108,28 +107,6 @@ public class Main {
 		frame.setIconImage(icon.getImage());
 		frame.setName("PepDog Map Loader");
 		frame.setTitle("PepDog Map loader");
-		
-		JComboBox<String> box = new JComboBox<>();
-		for(String map : maps) {
-			map = map.substring(0,map.length() - 5);
-			box.addItem(map);
-		}
-		
-		JPanel inputWindow = new JPanel(new GridLayout(2, 1));
-		inputWindow.add(new JLabel("Choose the map you want!"));
-		inputWindow.add(box);
-		frame.add(inputWindow);
-		frame.setVisible(true);
-		box.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				frame.removeAll();
-				frame.setVisible(false);
-				mapToLoad = (String) box.getSelectedItem();
-				GameLoop();
-			}
-		});
-		frame.validate();
 	}
 	
 	public static void GameLoop() {
