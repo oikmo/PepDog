@@ -56,6 +56,33 @@ public class RobloxScene extends Scene {
 		this.setLoaded();
 	}
 	
+	public void loadRobloxFromContent(String content) {
+		this.setLoaded(false);
+
+		this.getParts().clear();
+		createFrame();
+		Roblox roblox = Parser.loadRBXLFromContent(content);
+
+		List<Object> services = roblox.getItemOrExternalOrDeleteItem();
+		for(Object obj : services) {
+			if(obj instanceof Item) {
+				Item service = (Item) obj;
+
+				if(service.getClazz().contentEquals("Workspace")) {	
+					for (Item item : service.getItem()) {
+					    processItem(item);
+					}
+				}
+			}
+		}
+		frame.setVisible(false);
+		if(transparent.size() != 0) {
+			this.getParts().addAll(transparent.size()+1, transparent);
+		}
+		
+		this.setLoaded();
+	}
+	
 	/**
 	 * Recursion loop to skim through each part (and spawnlocation that is nested in a model or not.
 	 * @param item
@@ -132,4 +159,6 @@ public class RobloxScene extends Scene {
 	public void update(Camera camera) {	
 		MasterRenderer.getInstance().renderScene(camera);
 	}
+
+	
 }

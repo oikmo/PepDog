@@ -1,26 +1,19 @@
 package net.pepdog.main;
 
 import java.awt.Frame;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
+import java.net.URLConnection;
+import java.util.Scanner;
 
 import javax.swing.ImageIcon;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
-import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import net.pepdog.engine.DisplayManager;
@@ -29,8 +22,6 @@ import net.pepdog.engine.PhysicsSystem;
 import net.pepdog.engine.audio.AudioMaster;
 import net.pepdog.engine.audio.Source;
 import net.pepdog.engine.gui.GuiScreen;
-import net.pepdog.engine.gui.component.GuiText;
-import net.pepdog.engine.gui.font.meshcreator.FontType;
 import net.pepdog.engine.lua.DataModel;
 import net.pepdog.engine.models.RawModel;
 import net.pepdog.engine.models.TexturedModel;
@@ -43,7 +34,6 @@ import net.pepdog.main.gui.GuiPauseMenu;
 import net.pepdog.main.scene.RobloxScene;
 import net.pepdog.main.scene.SceneManager;
 import net.pepdog.toolbox.Logger;
-import net.pepdog.toolbox.Toolbox;
 import net.pepdog.toolbox.Logger.LogLevel;
 import net.pepdog.toolbox.error.PanelCrashReport;
 import net.pepdog.toolbox.error.UnexpectedThrowable;
@@ -59,10 +49,9 @@ import net.pepdog.toolbox.os.EnumOSMappingHelper;
 public class Main {
 	public static int WIDTH = 800; //854
 	public static int HEIGHT = 600; //480
-
-	public static FontType font;
 	
 	public static Player player;
+	public static Camera camera;
 	public static GuiScreen currentScreen;
 
 	public static String gameName = "PEPDOG";
@@ -107,9 +96,30 @@ public class Main {
 		frame.setIconImage(icon.getImage());
 		frame.setName("PepDog Map Loader");
 		frame.setTitle("PepDog Map loader");
+		
+		System.setProperty("http.agent", "Chrome");
+		String content = null;
+		URLConnection connection = null;
+		try {
+			connection =  new URL("http://localhost/places/2005StartPlace.rbxl").openConnection();
+			connection.addRequestProperty("User-Agent", "Mozilla");
+			
+			if(connection != null) {
+				//System.out.println(connection.getRequestProperty("User-Agent"));
+				Scanner scanner = new Scanner(connection.getInputStream());
+				scanner.useDelimiter("\\Z");
+				content = scanner.next();
+				scanner.close();
+			}
+			
+		} catch ( Exception ex ) {
+			ex.printStackTrace();
+		}
+		
+		GameLoop(content);
 	}
 	
-	public static void GameLoop() {
+	public static void GameLoop(String rbxl) {
 		try {	
 			Logger.log(LogLevel.INFO, "Selected: " + mapToLoad);
 			
@@ -128,56 +138,19 @@ public class Main {
 			SceneManager.loadScene("empty");
 			
 			PhysicsSystem.init();
-			Camera camera = new Camera(new Vector3f(), new Vector3f());
+			camera = new Camera(new Vector3f(), new Vector3f());
 			
 			String fontType = "comic-sans";
-			font = new FontType(fontType);
+			
 			gameState = GameState.game;
 			currentScreen = new GuiInGame();
-
-			//player = new Player(new Vector3f(0,0,0),new Vector3f(0,0,0), 1.75f);
-			
-			float offsetX = 0.01f;
-			float offsetY = 0.05f;
-			
-			GuiText version = new GuiText(gameVersion, 0.8f, font, new Vector2f(offsetX, offsetY), 1, false, false);
-			offsetY += 0.0175f;
-			GuiText fps = new GuiText(Integer.toString(DisplayManager.getFPSCount()), 0.8f, font, new Vector2f(offsetX, offsetY), 1, false, false);
-			offsetY += 0.0175f;
-			GuiText state = new GuiText(gameState.toString(), 0.8f, font, new Vector2f(offsetX, offsetY), 1, false, false);
-			offsetY += 0.0175f;
-			GuiText useMem = new GuiText("Used memory:", 0.8f, font, new Vector2f(offsetX, offsetY), 1, false, false);
-			offsetY += 0.0175f;
-			GuiText allocMem = new GuiText("Allocated memory:", 0.8f, font, new Vector2f(offsetX, offsetY), 1, false, false);
-			offsetY += 0.0175f;
-			GuiText partsCount = new GuiText("parts:", 0.8f, font, new Vector2f(offsetX, offsetY), 1, false, false);
-			
-			version.setColour(1, 1, 1);
-			fps.setColour(1, 1, 1);
-			state.setColour(1, 1, 1);
-			useMem.setColour(1, 1, 1);
-			allocMem.setColour(1, 1, 1);
-			partsCount.setColour(1, 1, 1);
-			
-			version.setOutlineColour(0,0,0);
-			version.setEdge(0.3f);
-			fps.setOutlineColour(0,0,0);
-			fps.setEdge(0.3f);
-			state.setOutlineColour(0,0,0);
-			state.setEdge(0.3f);
-			useMem.setOutlineColour(0,0,0);
-			useMem.setEdge(0.3f);
-			allocMem.setOutlineColour(0,0,0);
-			allocMem.setEdge(0.3f);
-			partsCount.setOutlineColour(0,0,0);
-			partsCount.setEdge(0.3f);
 			
 			
 			DataModel dm = new DataModel();
 			
 			SceneManager.loadScene("roblox");
 			RobloxScene scener = ((RobloxScene)SceneManager.getCurrentScene());
-			scener.loadRoblox(mapToLoad);
+			scener.loadRobloxFromContent(rbxl);
 			camera.setPosition(scener.getRandomSpawn());
 			
 			RawModel model = OBJLoader.loadOBJ("cube");
@@ -197,15 +170,19 @@ public class Main {
 				long freeMem = Runtime.getRuntime().freeMemory();
 				long usedMem = totalMem - freeMem;
 
-				useMem.setTextString("Used memory: " + (usedMem * 100L) / maxMem +"% (" + usedMem / 1024L / 1024L + "MB) of " + maxMem / 1024L / 1024L + "MB");
+				/*useMem.setTextString("Used memory: " + (usedMem * 100L) / maxMem +"% (" + usedMem / 1024L / 1024L + "MB) of " + maxMem / 1024L / 1024L + "MB");
 				allocMem.setTextString("Allocated memory: " + (totalMem * 100L) / maxMem +"% (" + totalMem / 1024L / 1024L + "MB)");
 
 				fps.setTextString("fps: " + Integer.toString(DisplayManager.getFPSCount()));
-				state.setTextString("gameState: " + gameState.toString());
+				state.setTextString("gameState: " + gameState.toString());*/
+				
+				if(currentScreen != null) {
+					Mouse.setGrabbed(currentScreen.isLockInput());
+				}
 				
 				switch(gameState) {
 				case game:
-					partsCount.setTextString("parts: " + scener.getParts().size());
+					//partsCount.setTextString("parts: " + scener.getParts().size());
 					AudioMaster.setListenerData(camera.getPosition().x,camera.getPosition().y,camera.getPosition().z, 0, 0, 0);
 					camera.flyCam();
 					/*if(camera != player.getCamera()) {
@@ -231,16 +208,6 @@ public class Main {
 		} catch (RuntimeException e) {
 			Main.error("Runtime Error", e);
 		}
-	}
-	
-	public static boolean isMapValid(String mapName) {
-		boolean load = false;
-		for(String map : maps) {		
-			if(map.contentEquals(mapName)) {
-				load = true;
-			}
-		}
-		return load;
 	}
 	
 	/**
