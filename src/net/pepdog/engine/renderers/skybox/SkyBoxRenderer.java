@@ -7,8 +7,8 @@ import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 
 import net.pepdog.engine.Loader;
+import net.pepdog.engine.entity.Camera;
 import net.pepdog.engine.models.RawModel;
-import net.pepdog.main.entity.Camera;
 import net.pepdog.toolbox.Logger;
 import net.pepdog.toolbox.Logger.LogLevel;
 

@@ -21,20 +21,20 @@ import net.pepdog.engine.Entity;
 import net.pepdog.engine.PhysicsSystem;
 import net.pepdog.engine.audio.AudioMaster;
 import net.pepdog.engine.audio.Source;
+import net.pepdog.engine.entity.Camera;
+import net.pepdog.engine.entity.Player;
 import net.pepdog.engine.gui.GuiScreen;
 import net.pepdog.engine.lua.DataModel;
 import net.pepdog.engine.models.RawModel;
 import net.pepdog.engine.models.TexturedModel;
 import net.pepdog.engine.renderers.MasterRenderer;
 import net.pepdog.engine.textures.ModelTexture;
-import net.pepdog.main.entity.Camera;
-import net.pepdog.main.entity.Player;
+import net.pepdog.main.gui.GuiDebug;
 import net.pepdog.main.gui.GuiInGame;
 import net.pepdog.main.gui.GuiPauseMenu;
 import net.pepdog.main.scene.RobloxScene;
 import net.pepdog.main.scene.SceneManager;
 import net.pepdog.toolbox.Logger;
-import net.pepdog.toolbox.Logger.LogLevel;
 import net.pepdog.toolbox.error.PanelCrashReport;
 import net.pepdog.toolbox.error.UnexpectedThrowable;
 import net.pepdog.toolbox.obj.OBJLoader;
@@ -70,7 +70,6 @@ public class Main {
 		pausemenu
 	}
 	public static GameState gameState;
-	static String mapToLoad = "2008ROBLOXHQ";
 	
 	/**
 	 * Main method where the game starts.
@@ -105,24 +104,20 @@ public class Main {
 			connection.addRequestProperty("User-Agent", "Mozilla");
 			
 			if(connection != null) {
-				//System.out.println(connection.getRequestProperty("User-Agent"));
 				Scanner scanner = new Scanner(connection.getInputStream());
 				scanner.useDelimiter("\\Z");
 				content = scanner.next();
 				scanner.close();
 			}
 			
-		} catch ( Exception ex ) {
+		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-		
 		GameLoop(content);
 	}
 	
 	public static void GameLoop(String rbxl) {
-		try {	
-			Logger.log(LogLevel.INFO, "Selected: " + mapToLoad);
-			
+		try {
 			DisplayManager.createDisplay();
 			removeHSPIDERR();
 			try {
@@ -139,12 +134,8 @@ public class Main {
 			
 			PhysicsSystem.init();
 			camera = new Camera(new Vector3f(), new Vector3f());
-			
-			String fontType = "comic-sans";
-			
 			gameState = GameState.game;
 			currentScreen = new GuiInGame();
-			
 			
 			DataModel dm = new DataModel();
 			
@@ -153,7 +144,7 @@ public class Main {
 			scener.loadRobloxFromContent(rbxl);
 			camera.setPosition(scener.getRandomSpawn());
 			
-			RawModel model = OBJLoader.loadOBJ("cube");
+			RawModel model = OBJLoader.loadOBJ("head");
 			TexturedModel texturedModel = new TexturedModel(model, new ModelTexture(dm.load("rbxassetid://textures/face.png")));
 			Entity entity = new Entity(texturedModel, new Vector3f(0,10,0), new Vector3f(), 1f);
 			scener.addEntity(entity);
@@ -162,27 +153,11 @@ public class Main {
 			
 			source.play(dm.load("rbxassetid://sounds/bass.wav"));
 			
+			GuiDebug debugScreen = new GuiDebug();
+			
 			while(!Display.isCloseRequested()) {
-				handleGUI();
-				
-				long maxMem = Runtime.getRuntime().maxMemory();
-				long totalMem = Runtime.getRuntime().totalMemory();
-				long freeMem = Runtime.getRuntime().freeMemory();
-				long usedMem = totalMem - freeMem;
-
-				/*useMem.setTextString("Used memory: " + (usedMem * 100L) / maxMem +"% (" + usedMem / 1024L / 1024L + "MB) of " + maxMem / 1024L / 1024L + "MB");
-				allocMem.setTextString("Allocated memory: " + (totalMem * 100L) / maxMem +"% (" + totalMem / 1024L / 1024L + "MB)");
-
-				fps.setTextString("fps: " + Integer.toString(DisplayManager.getFPSCount()));
-				state.setTextString("gameState: " + gameState.toString());*/
-				
-				if(currentScreen != null) {
-					Mouse.setGrabbed(currentScreen.isLockInput());
-				}
-				
 				switch(gameState) {
 				case game:
-					//partsCount.setTextString("parts: " + scener.getParts().size());
 					AudioMaster.setListenerData(camera.getPosition().x,camera.getPosition().y,camera.getPosition().z, 0, 0, 0);
 					camera.flyCam();
 					/*if(camera != player.getCamera()) {
@@ -201,7 +176,8 @@ public class Main {
 					break;
 				}
 				SceneManager.update(camera);
-
+				//debugScreen.update();
+				handleGUI();
 				DisplayManager.updateDisplay();
 			}
 			destroyGame();

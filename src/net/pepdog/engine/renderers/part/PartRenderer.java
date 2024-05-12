@@ -9,8 +9,8 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 
-import net.pepdog.engine.Loader;
 import net.pepdog.engine.Part;
+import net.pepdog.engine.ResourceLoader;
 import net.pepdog.engine.models.RawModel;
 import net.pepdog.engine.models.TexturedModel;
 import net.pepdog.engine.renderers.MasterRenderer;
@@ -33,7 +33,7 @@ public class PartRenderer {
 	 */
 	public PartRenderer(PartShader shader, Matrix4f projectionMatrix){
 		this.shader = shader;
-		texture = Loader.loadGameTexture("models/base");
+		texture = ResourceLoader.loadTexture("models/base");
 		shader.start();
 		shader.loadProjectionMatrix(projectionMatrix);
 		shader.stop();

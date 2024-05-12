@@ -5,9 +5,9 @@ import java.util.List;
 
 import net.pepdog.engine.Entity;
 import net.pepdog.engine.Part;
+import net.pepdog.engine.entity.Camera;
+import net.pepdog.engine.entity.Light;
 import net.pepdog.engine.renderers.water.WaterTile;
-import net.pepdog.main.entity.Camera;
-import net.pepdog.main.entity.Light;
 
 /**
  * Abstract class for scene management.

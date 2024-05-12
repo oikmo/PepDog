@@ -7,7 +7,7 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
-import net.pepdog.main.entity.Camera;
+import net.pepdog.engine.entity.Camera;
 
 public class MousePicker {
 	

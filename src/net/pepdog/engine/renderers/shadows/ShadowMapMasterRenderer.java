@@ -9,9 +9,9 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import net.pepdog.engine.Entity;
+import net.pepdog.engine.entity.Camera;
+import net.pepdog.engine.entity.Light;
 import net.pepdog.engine.models.TexturedModel;
-import net.pepdog.main.entity.Camera;
-import net.pepdog.main.entity.Light;
 
 
 /**

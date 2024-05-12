@@ -5,8 +5,8 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
+import net.pepdog.engine.entity.Camera;
 import net.pepdog.engine.renderers.MasterRenderer;
-import net.pepdog.main.entity.Camera;
 
 /**
  * Represents the 3D cuboidal area of the world in which objects will cast

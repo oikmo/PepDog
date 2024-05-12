@@ -11,11 +11,12 @@ import org.lwjgl.util.vector.Vector3f;
 
 import net.pepdog.engine.DisplayManager;
 import net.pepdog.engine.Loader;
+import net.pepdog.engine.ResourceLoader;
+import net.pepdog.engine.entity.Camera;
+import net.pepdog.engine.entity.Light;
 import net.pepdog.engine.models.RawModel;
 import net.pepdog.main.Main;
 import net.pepdog.main.Main.GameState;
-import net.pepdog.main.entity.Camera;
-import net.pepdog.main.entity.Light;
 import net.pepdog.toolbox.Toolbox;
 
 public class WaterRenderer {
@@ -36,8 +37,8 @@ public class WaterRenderer {
 	public WaterRenderer(Matrix4f projectionMatrix, WaterFrameBuffers fbos) {
 		this.shader = new WaterShader();
 		this.fbos = fbos;
-		dudvTexture = Loader.loadGameTexture("water/"+DUDV_MAP);
-		normalMapTexture = Loader.loadGameTexture("water/"+NORMAL_MAP);
+		dudvTexture = ResourceLoader.loadTexture("water/"+DUDV_MAP);
+		normalMapTexture = ResourceLoader.loadTexture("water/"+NORMAL_MAP);
 		shader.start();
 		shader.connectTextureUnits();
 		shader.loadProjectionMatrix(projectionMatrix);

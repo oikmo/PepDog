@@ -11,11 +11,11 @@ import javax.swing.JLabel;
 import org.lwjgl.util.vector.Vector3f;
 
 import net.pepdog.engine.Part;
+import net.pepdog.engine.entity.Camera;
+import net.pepdog.engine.entity.Light;
 import net.pepdog.engine.renderers.MasterRenderer;
 import net.pepdog.engine.scene.Scene;
 import net.pepdog.main.Main;
-import net.pepdog.main.entity.Camera;
-import net.pepdog.main.entity.Light;
 import net.pepdog.toolbox.rbxl.Item;
 import net.pepdog.toolbox.rbxl.Parser;
 import net.pepdog.toolbox.rbxl.Roblox;

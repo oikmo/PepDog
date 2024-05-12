@@ -23,8 +23,7 @@ public class Entity {
 	}
 	
 	public Entity(String model, Vector3f position, Vector3f rotation) {
-		this.model = new TexturedModel(OBJLoader.loadOBJ(model), new ModelTexture(Loader.loadGameTexture("models/"+model)));
-		init(position, rotation, 1);
+		init(model, position, rotation, 1);
 	}
 	
 	public Entity(TexturedModel model, Vector3f position, Vector3f rotation, float scale, int index) {
@@ -34,14 +33,13 @@ public class Entity {
 	}
 
 	public Entity(String model, Vector3f position, Vector3f rotation, float scale) {
-		this.model = new TexturedModel(OBJLoader.loadOBJ(model), new ModelTexture(Loader.loadGameTexture("models/"+model)));
-		this.init(position, rotation, scale);
+		this.init(model, position, rotation, scale);
 	}
 	
 	public Entity(String model, Vector3f position, Vector3f rotation, float scale, int index) {
 		this.textureIndex = index;
-		this.model = new TexturedModel(OBJLoader.loadOBJ(model), new ModelTexture(Loader.loadGameTexture("models/"+model)));
-		this.init(position, rotation, scale);
+		
+		this.init(model, position, rotation, scale);
 	}
 	
 	public void setTextureIndex(int index) {
@@ -49,6 +47,13 @@ public class Entity {
 	}
 	
 	private void init(Vector3f position, Vector3f rotation, float scale) {
+		this.position = position;
+		this.rotation = rotation;
+		this.scale = scale/2;
+	}
+	
+	private void init(String model, Vector3f position, Vector3f rotation, float scale) {
+		this.model = new TexturedModel(OBJLoader.loadOBJ(model), new ModelTexture(ResourceLoader.loadTexture("models/"+model)));
 		this.position = position;
 		this.rotation = rotation;
 		this.scale = scale/2;

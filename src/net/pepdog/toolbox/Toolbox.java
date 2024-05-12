@@ -12,7 +12,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
-import net.pepdog.main.entity.Camera;
+import net.pepdog.engine.entity.Camera;
 
 /**
  * <b>Toolbox</b> class. Performs calculations for engine.

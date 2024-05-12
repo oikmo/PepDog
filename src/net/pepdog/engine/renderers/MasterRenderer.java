@@ -1,39 +1,39 @@
 package net.pepdog.engine.renderers;
 
+import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
 import net.pepdog.engine.Entity;
 import net.pepdog.engine.Loader;
 import net.pepdog.engine.Part;
-import net.pepdog.engine.gui.font.meshcreator.FontType;
-import net.pepdog.engine.gui.font.renderer.TextMaster;
+import net.pepdog.engine.entity.Camera;
+import net.pepdog.engine.entity.Light;
+import net.pepdog.engine.gui.Gui;
 import net.pepdog.engine.models.TexturedModel;
 import net.pepdog.engine.renderers.entity.EntityRenderer;
 import net.pepdog.engine.renderers.entity.EntityShader;
-import net.pepdog.engine.renderers.gui.GuiRenderer;
-import net.pepdog.engine.renderers.gui.GuiShader;
 import net.pepdog.engine.renderers.part.PartRenderer;
 import net.pepdog.engine.renderers.part.PartShader;
-import net.pepdog.engine.renderers.particles.ParticleMaster;
 import net.pepdog.engine.renderers.shadows.ShadowMapMasterRenderer;
 import net.pepdog.engine.renderers.skybox.SkyBoxRenderer;
 import net.pepdog.engine.renderers.water.WaterFrameBuffers;
 import net.pepdog.engine.renderers.water.WaterRenderer;
 import net.pepdog.engine.renderers.water.WaterTile;
 import net.pepdog.engine.scene.Scene;
-import net.pepdog.engine.textures.GuiTexture;
-import net.pepdog.main.entity.Camera;
-import net.pepdog.main.entity.Light;
+import net.pepdog.main.Main;
 import net.pepdog.main.scene.SceneManager;
+import net.pepdog.toolbox.Maths;
 
 /**
  * Handles all of the rendering.
@@ -47,9 +47,6 @@ public class MasterRenderer {
 	private EntityRenderer entityRenderer;
 	private EntityShader entityShader = new EntityShader();
 
-	private GuiRenderer guiRenderer;
-	private GuiShader guiShader = new GuiShader();
-
 	private SkyBoxRenderer skyboxRenderer;
 
 	private WaterRenderer waterRenderer;
@@ -58,13 +55,6 @@ public class MasterRenderer {
 	private PartShader partShader = new PartShader();
 
 	private ShadowMapMasterRenderer shadowMapRenderer;
-
-	public static FontType font;
-	public int ui_nuhuh;
-	public int ui_button;
-	public int ui_smallbutton;
-	public int ui_hover;
-	public int ui_smallhover;
 
 	//sky values
 	public static float DAYRED = 0.4f, DAYGREEN = 0.7f, DAYBLUE = 1.0f;
@@ -81,7 +71,6 @@ public class MasterRenderer {
 
 	private Map<TexturedModel, List<Entity>> entities = new HashMap<TexturedModel, List<Entity>>();
 	private Map<TexturedModel, List<Part>> parts = new HashMap<TexturedModel, List<Part>>();
-	private List<GuiTexture> guis = new ArrayList<GuiTexture>();
 
 	private WaterFrameBuffers waterFBO;
 
@@ -103,20 +92,11 @@ public class MasterRenderer {
 		enableCulling();
 		createProjectionMatrix();
 		entityRenderer = new EntityRenderer(entityShader, projectionMatrix);
-		guiRenderer = new GuiRenderer(guiShader);
 		skyboxRenderer = new SkyBoxRenderer("plainsky", "shiverfrost", projectionMatrix);
 		partsRenderer = new PartRenderer(partShader, projectionMatrix);
-		
-		ui_nuhuh = Loader.loadGameTexture("ui/ui_nuhuh");
-		ui_button = Loader.loadGameTexture("ui/normal/ui_button");
-		ui_hover = Loader.loadGameTexture("ui/normal/ui_button_hover");
-
-		ui_smallbutton = Loader.loadGameTexture("ui/small/ui_button");
-		ui_smallhover = Loader.loadGameTexture("ui/small/ui_button_hover");
 		waterFBO = new WaterFrameBuffers();
-
-		ParticleMaster.init(projectionMatrix);
-		TextMaster.init();
+		
+		Gui.initFont();
 	}
 
 	public void createShadowMap(Camera camera) {
@@ -223,21 +203,13 @@ public class MasterRenderer {
 		renderScene(scene.getLights(), camera, scene.getEntities(), scene.getParts(), new Vector4f(0,0,0,0));
 		//this.renderShadowMap(scene.getEntities(), scene.getLights().get(0));
 		renderWater(scene.getLights(), camera, scene.getEntities(), scene.getParts(), scene.getWaters(), waterFBO, scene.getWaters().get(0));
-		ParticleMaster.update(camera);
-		ParticleMaster.renderParticles(camera);
-		guiRenderer.render(guis);
-		TextMaster.render();
 	}
 
-	public void renderScene( Camera camera) {
+	public void renderScene(Camera camera) {
 		Scene scene = SceneManager.getCurrentScene();
 		if(!scene.isLoaded()) { return; }
 		renderScene(scene.getLights(), camera, scene.getEntities(), scene.getParts(), new Vector4f(0,0,0,0));
-		//this.renderShadowMap(scene.getEntities(), scene.getLights().get(0));
-		ParticleMaster.update(camera);
-		ParticleMaster.renderParticles(camera);
-		guiRenderer.render(guis);
-		TextMaster.render();
+		//this.renderShadowMap(scene.getEntities(), scene.getLights().get(0));;
 	}
 
 	public void render(List<Light> lights, Camera camera, Vector4f clipPlane) {
@@ -245,6 +217,8 @@ public class MasterRenderer {
 
 		prepare();
 
+		skyboxRenderer.render(camera, projectionMatrix, RED, GREEN, BLUE);
+		
 		entityShader.start();
 		entityShader.loadClipPlane(clipPlane);
 		entityShader.loadLights(lights);
@@ -261,11 +235,36 @@ public class MasterRenderer {
 		partsRenderer.render(parts);
 		partShader.stop();
 		
-		skyboxRenderer.render(camera, projectionMatrix, RED, GREEN, BLUE);
+		
+		if(Main.camera != null) {
+			initGL();
+			GL11.glBegin(GL11.GL_POINTS);
+			GL11.glVertex2f(0,0);
+			GL11.glEnd();
+		}
+		
 		
 		entities.clear();
 		parts.clear();
 	}
+	
+	FloatBuffer projectionBuffer = BufferUtils.createFloatBuffer(16);
+	
+	public void initGL() {
+		GL11.glMatrixMode(GL11.GL_PROJECTION);
+		GL11.glLoadMatrix(projectionBuffer);
+		glPerspective3(Main.camera.getPosition(), Main.camera.getRotation());
+		GL11.glMatrixMode(GL11.GL_MODELVIEW);
+		GL11.glLoadIdentity();
+	}
+	
+	public void glPerspective3(Vector3f position, Vector3f rotation) {
+		GL11.glRotatef(rotation.x, 1, 0, 0);
+		GL11.glRotatef(rotation.y, 0, 1, 0);
+		GL11.glRotatef(rotation.z, 0, 0, 1);
+		GL11.glTranslatef(-position.x, -position.y, -position.z);
+	}
+	
 
 	public void processEntity(Entity entity) {
 		if(entity == null) {return;}
@@ -293,10 +292,6 @@ public class MasterRenderer {
 		}
 	}
 
-	public void processGUI(GuiTexture texture) {
-		guis.add(texture);
-	}
-
 	public void renderShadowMap(List<Entity> entityList, Light sun) {
 		for(Entity entity : entityList) {
 			processEntity(entity);
@@ -313,8 +308,6 @@ public class MasterRenderer {
 		entityShader.cleanUp();
 		//PostProcessing.cleanUp();
 		Loader.cleanUp();
-		ParticleMaster.cleanUp();
-		TextMaster.cleanUp();
 	}
 
 	public void createProjectionMatrix() {
@@ -353,7 +346,7 @@ public class MasterRenderer {
 		projectionMatrix.m33 = 0;
 
 		entityRenderer.updateProjectionMatrix(projectionMatrix);
-		guiRenderer.updateProjectionMatrix(projectionMatrix);
+		Maths.matrixToBuffer(projectionMatrix, projectionBuffer);
 	}
 	
 	public void updateProjectionMatrix(int width, int height) {
@@ -371,19 +364,10 @@ public class MasterRenderer {
 		entityRenderer.updateProjectionMatrix(projectionMatrix);
 		skyboxRenderer.updateProjectionMatrix(projectionMatrix);
 		partsRenderer.updateProjectionMatrix(projectionMatrix);
+		Maths.matrixToBuffer(projectionMatrix, projectionBuffer);
 	}
 
 	public Matrix4f getProjectionMatrix() {
 		return projectionMatrix;
-	}
-
-	public List<GuiTexture> getGUIList() {
-		return guis;
-	}
-	public void addToGUIs(GuiTexture gui) {
-		guis.add(gui);
-	}
-	public void removeFromGUIs(GuiTexture gui) {
-		guis.remove(gui);
 	}
 }

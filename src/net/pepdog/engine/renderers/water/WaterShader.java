@@ -2,9 +2,9 @@ package net.pepdog.engine.renderers.water;
 
 import org.lwjgl.util.vector.Matrix4f;
 
+import net.pepdog.engine.entity.Camera;
+import net.pepdog.engine.entity.Light;
 import net.pepdog.engine.renderers.ShaderProgram;
-import net.pepdog.main.entity.Camera;
-import net.pepdog.main.entity.Light;
 import net.pepdog.toolbox.Toolbox;
 
 public class WaterShader extends ShaderProgram {

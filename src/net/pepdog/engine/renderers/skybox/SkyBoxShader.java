@@ -3,8 +3,8 @@ package net.pepdog.engine.renderers.skybox;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
+import net.pepdog.engine.entity.Camera;
 import net.pepdog.engine.renderers.ShaderProgram;
-import net.pepdog.main.entity.Camera;
 import net.pepdog.toolbox.Toolbox;
 
 public class SkyBoxShader extends ShaderProgram {

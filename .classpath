@@ -11,7 +11,6 @@
 	<classpathentry kind="lib" path="lib/jar/lwjgl.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:platform:/resource/PepDog/lib/jar/javadoc/lwjgl-2.9.3-javadoc.jar!/"/>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="PepDog/lib/native/windows"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/jar/commons-io-2.15.0.jar">
@@ -33,5 +32,6 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/jar/luaj-jme-3.0.2.jar"/>
 	<classpathentry kind="lib" path="lib/jar/luaj-jse-3.0.2.jar"/>
+	<classpathentry kind="lib" path="lib/jar/slick.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

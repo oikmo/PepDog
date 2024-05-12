@@ -11,12 +11,12 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
 
 import net.pepdog.engine.Entity;
+import net.pepdog.engine.entity.Camera;
+import net.pepdog.engine.entity.Light;
 import net.pepdog.engine.models.RawModel;
 import net.pepdog.engine.models.TexturedModel;
 import net.pepdog.engine.renderers.MasterRenderer;
 import net.pepdog.engine.textures.ModelTexture;
-import net.pepdog.main.entity.Camera;
-import net.pepdog.main.entity.Light;
 import net.pepdog.toolbox.Toolbox;
 
 public class NormalMappingRenderer {

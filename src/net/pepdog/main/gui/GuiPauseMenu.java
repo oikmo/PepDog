@@ -1,34 +1,28 @@
 package net.pepdog.main.gui;
 
-import org.lwjgl.util.vector.Vector2f;
+import org.lwjgl.opengl.Display;
 
-import net.pepdog.engine.Loader;
 import net.pepdog.engine.gui.GuiScreen;
-import net.pepdog.engine.gui.component.GuiText;
-import net.pepdog.engine.gui.component.button.GuiButton;
-import net.pepdog.engine.gui.font.renderer.TextMaster;
-import net.pepdog.main.Main;
-import net.pepdog.main.Main.GameState;
+import net.pepdog.engine.gui.component.slick.button.GuiButton;
 
 public class GuiPauseMenu extends GuiScreen {
-
-	private GuiText title;
-
+	
 	public GuiPauseMenu() {
-		super(Loader.loadGameTexture("ui/ui_background"), "Pause Menu");
+		super("Pause Menu");
 		this.setLockInput();
 	}
 	
+	private GuiButton backToGame;
 	
-	public void initGui() {
-		title = new GuiText("Paused...", 1.5f, Main.font, new Vector2f(0,0.05f), 1, true, false);
+	public void onInit() {
+		/*title = new GuiText("Paused...", 1.5f, Main.font, new Vector2f(0,0.05f), 1, true, false);
 		title.setColour(1, 1, 1);
 		buttonList.add(new GuiButton(0, new Vector2f(0f, 0.2f), new Vector2f(0.65f,0.15f), "Back to game"));
-		buttonList.add(new GuiButton(1, new Vector2f(0f,    0f), new Vector2f(0.7f,0.15f),   "Options"));
-		buttonList.add(new GuiButton(2, new Vector2f(0f,-0.2f), new Vector2f(0.7f,0.15f),  "Quit game"));
+		buttonList.add(new GuiButton(1, new Vector2f(0f,   0f),  new Vector2f(0.7f,0.15f),   "Options"));
+		buttonList.add(new GuiButton(2, new Vector2f(0f,-0.2f),  new Vector2f(0.7f,0.15f),  "Quit game"));*/
 	}
 
-	public void actionPerformed(GuiButton button) {
+	/*public void actionPerformed(GuiButton button) {
 		int id = button.getControlID();
 		if(id == 0) {
 			this.prepareCleanUp();
@@ -44,19 +38,9 @@ public class GuiPauseMenu extends GuiScreen {
 			Main.destroyGame();
 		}
 
-	}
+	}*/
 
-	public void updateScreen() {
-		
+	public void onUpdate() {
+		this.drawShadowStringCentered(Display.getWidth()/2, 0 + fontSize*2, "Paused...");
 	}
-	
-	public void restoreGUI() {
-		TextMaster.loadText(title);
-	}
-	
-	public void onGUIClosed() {
-		TextMaster.removeText(title);
-	}
-
-	
 }

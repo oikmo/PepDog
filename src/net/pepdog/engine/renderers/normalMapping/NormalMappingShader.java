@@ -7,8 +7,8 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
+import net.pepdog.engine.entity.Light;
 import net.pepdog.engine.renderers.ShaderProgram;
-import net.pepdog.main.entity.Light;
 
 public class NormalMappingShader extends ShaderProgram {
 	

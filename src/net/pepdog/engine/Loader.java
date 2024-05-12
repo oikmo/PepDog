@@ -13,7 +13,6 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.EXTTextureFilterAnisotropic;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL13;
@@ -22,7 +21,6 @@ import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GL33;
-import org.lwjgl.opengl.GLContext;
 
 import de.matthiasmann.twl.utils.PNGDecoder;
 import de.matthiasmann.twl.utils.PNGDecoder.Format;
@@ -125,28 +123,13 @@ public class Loader {
 		return new RawModel(vaoID, indices.length);
 	}
 	
-	/**
-	 * Loads textures based on input
-	 * @param name
-	 * @return texture (int)
-	 */
-	public static int loadGameTexture(String name) {
-		return loadTexture("/assets/textures/" + name);
-	}
-	
-	/**
-	 * Loads font textures based on input
-	 * @param name
-	 * @return texture (int)
-	 */
-	public static int loadFontTexture(String name) {
-		return loadTexture("/assets/fonts/" + name);
+	public static int loadContentTexture(String name) {
+		return loadTexture("/content/"+name);
 	}
 	
 	/**
 	 * 
 	 * @param name
-	 * @param stoopid <- literally does nothing just put 0
 	 * @return texture (int)
 	 */
 	public static int loadTexture(String name) {

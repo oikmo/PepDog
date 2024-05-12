@@ -3,10 +3,10 @@ package net.pepdog.main.scene;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.pepdog.engine.entity.Camera;
 import net.pepdog.engine.scene.Scene;
 import net.pepdog.main.Main;
 import net.pepdog.main.Main.GameState;
-import net.pepdog.main.entity.Camera;
 
 /**
  * Handles scene management such as updating and loading.

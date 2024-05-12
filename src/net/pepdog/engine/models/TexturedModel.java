@@ -1,6 +1,6 @@
 package net.pepdog.engine.models;
 
-import net.pepdog.engine.Loader;
+import net.pepdog.engine.ResourceLoader;
 import net.pepdog.engine.textures.ModelTexture;
 import net.pepdog.toolbox.obj.OBJLoader;
 
@@ -16,12 +16,12 @@ public class TexturedModel {
 	
 	public TexturedModel(String model) {
 		this.rawModel = OBJLoader.loadOBJ(model);
-		this.texture = new ModelTexture(Loader.loadGameTexture("models/"+model));
+		this.texture = new ModelTexture(ResourceLoader.loadTexture("models/"+model));
 	}
 	
 	public TexturedModel(String model, String texture) {
 		this.rawModel = OBJLoader.loadOBJ(model);
-		this.texture = new ModelTexture(Loader.loadGameTexture("models/"+texture));
+		this.texture = new ModelTexture(ResourceLoader.loadTexture("models/"+texture));
 	}
 
 	public void setRawModel(RawModel model) {
