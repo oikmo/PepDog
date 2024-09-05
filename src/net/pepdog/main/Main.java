@@ -82,7 +82,7 @@ public class Main {
 	}
 	public static GameState gameState;
 	static String mapToLoad = "2008ROBLOXHQ";
-	static List<String> maps = new ArrayList<>();
+	static List<String> maps;
 	
 	/**
 	 * Main method where the game starts.
@@ -94,7 +94,7 @@ public class Main {
 	 */
 	public static void main(String[] args) throws IOException {
 		maps = new ArrayList<>(Toolbox.getResourceFiles("/assets/rbxl/"));
-
+		
 		frame = new Frame();
 		frame.setSize(200, 100);
 		frame.setLocationRelativeTo(null);
