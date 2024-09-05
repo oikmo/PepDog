@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.lwjgl.util.vector.Vector2f;
+import org.newdawn.slick.Color;
 
 import net.pepdog.engine.Loader;
 import net.pepdog.engine.gui.GuiScreen;
@@ -17,7 +18,6 @@ public class GuiInGame extends GuiScreen {
 	public List<GuiScreen> innerScreens;
 	
 	private GuiButton button;
-	private GuiTexture headerBack;
 
 	public GuiInGame() {
 		super("In Game");
@@ -25,10 +25,7 @@ public class GuiInGame extends GuiScreen {
 	}
 
 	public void onInit() {
-		headerBack = new GuiTexture(Loader.loadGameTexture("ui/ui_backshots"), new Vector2f(0,0), new Vector2f(1.50f,0.1f));
-		headerBack.setPosition(new Vector2f(-1+headerBack.getScale().x,1-headerBack.getScale().y));
-		//uiList.add(headerBack);
-		button = new GuiButton(0, 0, 50, 50, "HELP", new GuiCommand() {
+		button = new GuiButton(new Color(194,194,194, 100), new Color(178,178,178, 100), 100, 50, 100, 20, "x Tools", new GuiCommand() {
 			
 		});
 	}

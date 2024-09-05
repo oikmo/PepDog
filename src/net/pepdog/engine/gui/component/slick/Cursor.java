@@ -16,15 +16,14 @@ public class Cursor extends Gui implements GuiComponent {
 	public void tick() {
 		x = Mouse.getX() + 10;
 		y= Math.abs(Display.getHeight()-Mouse.getY());
+		drawSquare(x, y, 10, 10);
 	}
 	
 	@Override
 	public void updateComponent() {}
 	
 	@Override
-	public void onCleanUp() {
-		
-	}
+	public void onCleanUp() {}
 	
 	public List<String> splitEqually(String text, int size) {
 	    // Give the list the right capacity to start with. You could use an array

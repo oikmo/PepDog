@@ -216,7 +216,7 @@ public class Main {
 			source.play(dm.load("rbxassetid://sounds/bass.wav"));
 			
 			while(!Display.isCloseRequested()) {
-				handleGUI();
+				
 				
 				long maxMem = Runtime.getRuntime().maxMemory();
 				long totalMem = Runtime.getRuntime().totalMemory();
@@ -250,8 +250,9 @@ public class Main {
 					break;
 				}
 				SceneManager.update(camera);
-
+				handleGUI();
 				DisplayManager.updateDisplay();
+				
 			}
 			destroyGame();
 		} catch (RuntimeException e) {
@@ -315,37 +316,6 @@ public class Main {
 	private static void handleGUI() {
 		if(currentScreen != null) { 
 			currentScreen.update();
-			if (!lockInGui) {
-				
-				if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
-					if(gameState == GameState.game) {
-						currentScreen.prepareCleanUp();
-						Main.currentScreen = null;
-						gameState = GameState.pausemenu;
-					} else if(gameState == GameState.pausemenu){
-						if(!currentScreen.isUnableToExit()) {
-							currentScreen.prepareCleanUp();
-							gameState = GameState.game;
-						}
-
-					}
-					switch(gameState) {
-					case game:
-						currentScreen = new GuiInGame();
-						break;
-					case pausemenu:
-						//currentScreen = new GuiPauseMenu();
-						break;
-					default:
-						break;
-					}	
-					lockInGui = true;
-				}
-			} else {
-				if(!Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
-					lockInGui = false;
-				}
-			}
 		} 
 	}
 	

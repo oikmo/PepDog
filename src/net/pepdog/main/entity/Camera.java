@@ -230,11 +230,10 @@ public class Camera {
 		}
 		
 		if(flyCam) {
-			if(!Mouse.isGrabbed()) {
-				if(Main.gameState == GameState.game) {
-					Mouse.setGrabbed(true);
-				} 
+			if(Mouse.isGrabbed() != Mouse.isButtonDown(1)) {
+				Mouse.setGrabbed(Mouse.isButtonDown(1));
 			}
+			
 			
 			if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 				speeds = 6;

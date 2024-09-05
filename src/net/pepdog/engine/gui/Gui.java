@@ -42,7 +42,7 @@ public class Gui {
 	@SuppressWarnings("unchecked")
 	public static void initFont() {
 		try {
-			awtFont = Font.createFont(Font.TRUETYPE_FONT, Main.class.getResourceAsStream("/assets/fonts/minecraft.ttf"));
+			awtFont = Font.createFont(Font.TRUETYPE_FONT, Main.class.getResourceAsStream("/assets/fonts/comic.ttf"));
 		} catch (FontFormatException | IOException e) {}
 		font = new UnicodeFont(awtFont.deriveFont(Font.PLAIN, fontSize));
 		font.getEffects().add(new ColorEffect());
@@ -213,7 +213,9 @@ public class Gui {
 		setupGL();
 		g.setColor(c);
 		g.setLineWidth(lineWidth);
+		g.fillRect(x, y, width, height);
 		g.draw(new Rectangle(x, y, width, height));
+		
 		g.setLineWidth(0);
 		dropGL();
 	}
@@ -225,7 +227,9 @@ public class Gui {
 	protected void drawSquareFilled(Color c, float x, float y, float width, float height) {
 		setupGL();
 		g.setColor(c);
-		g.fill(new Rectangle(x, y, width, height));
+		g.draw(new Rectangle(x, y, width, height));
+		g.fillRect(x, y, width, height);
+		g.fillRoundRect(x, y, width, height, 1);
 		dropGL();
 	}
 

@@ -19,6 +19,7 @@ public class GuiButton extends Gui implements GuiComponent {
 
 	private String text;
 	private GuiCommand command;
+	private Color normalColor, hoveredColor;
 
 	private float x, y, width, height;
 	private boolean lockButton = false;
@@ -39,6 +40,19 @@ public class GuiButton extends Gui implements GuiComponent {
 			
 		}
 		
+	}
+	
+	public GuiButton(Color normal, Color hovered, float x, float y, float width, float height, String text, GuiCommand command) {
+		onInit();
+		this.text = text;
+		this.command = command;
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
+		components.add(this);
+		this.normalColor = normal;
+		this.hoveredColor = hovered;
 	}
 
 	public GuiButton(float x, float y, float width, float height, String text, GuiCommand command) {
@@ -112,11 +126,16 @@ public class GuiButton extends Gui implements GuiComponent {
 			}
 		}
 		
-		
-		drawImage(texture, x, y, width, height);
-		
-		Color c = isHovering ? new Color(0.9f,0.9f,0.1f,1f) : Color.white;
-		drawShadowStringCentered(c, x, y, text);
+		if(normalColor == null) {
+			drawImage(texture, x, y, width, height);
+			Color c = isHovering ? new Color(0.9f,0.9f,0.1f,1f) : Color.white;
+			drawShadowStringCentered(c, x, y, text);
+		} else {
+			drawSquare(Color.white, 2f, x, y, width, height);
+			drawSquareFilled(0, 0, Display.getWidth(),  Display.getHeight());
+			
+			drawStringCentered(Color.white, x, y, text);
+		}
 	}
 
 	public void tick(boolean shouldClicky) {
