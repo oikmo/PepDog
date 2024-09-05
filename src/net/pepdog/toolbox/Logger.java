@@ -15,7 +15,7 @@ public class Logger {
 	
 	public enum LogLevel {
 		INFO,
-		WARNING,
+		WARN,
 		ERROR
 	}
 	

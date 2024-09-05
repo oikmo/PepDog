@@ -1,4 +1,4 @@
-package net.pepdog.engine.gui.component;
+package net.pepdog.engine.gui.component.old;
 
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;

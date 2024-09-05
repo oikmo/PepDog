@@ -1,7 +1,7 @@
 package net.pepdog.engine.gui.font.meshcreator;
 
 import net.pepdog.engine.Loader;
-import net.pepdog.engine.gui.component.GuiText;
+import net.pepdog.engine.gui.component.old.GuiText;
 
 /**
  * Represents a font. It holds the font's texture atlas as well as having the

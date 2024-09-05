@@ -3,7 +3,7 @@ package net.pepdog.engine.gui.font.meshcreator;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.pepdog.engine.gui.component.GuiText;
+import net.pepdog.engine.gui.component.old.GuiText;
 
 public class TextMeshCreator {
 

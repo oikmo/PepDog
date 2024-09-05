@@ -1,4 +1,4 @@
-package net.pepdog.engine.gui.component.button;
+package net.pepdog.engine.gui.component.old.button;
 
 public interface IButton {
 	void onStartHover(IButton button);

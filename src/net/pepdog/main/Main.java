@@ -25,10 +25,12 @@ import org.lwjgl.util.vector.Vector3f;
 
 import net.pepdog.engine.DisplayManager;
 import net.pepdog.engine.Entity;
+import net.pepdog.engine.PhysicsSystem;
 import net.pepdog.engine.audio.AudioMaster;
 import net.pepdog.engine.audio.Source;
+import net.pepdog.engine.gui.Gui;
 import net.pepdog.engine.gui.GuiScreen;
-import net.pepdog.engine.gui.component.GuiText;
+import net.pepdog.engine.gui.component.old.GuiText;
 import net.pepdog.engine.gui.font.meshcreator.FontType;
 import net.pepdog.engine.lua.DataModel;
 import net.pepdog.engine.models.RawModel;
@@ -38,12 +40,11 @@ import net.pepdog.engine.textures.ModelTexture;
 import net.pepdog.main.entity.Camera;
 import net.pepdog.main.entity.Player;
 import net.pepdog.main.gui.GuiInGame;
-import net.pepdog.main.gui.GuiPauseMenu;
 import net.pepdog.main.scene.RobloxScene;
 import net.pepdog.main.scene.SceneManager;
 import net.pepdog.toolbox.Logger;
-import net.pepdog.toolbox.Toolbox;
 import net.pepdog.toolbox.Logger.LogLevel;
+import net.pepdog.toolbox.Toolbox;
 import net.pepdog.toolbox.error.PanelCrashReport;
 import net.pepdog.toolbox.error.UnexpectedThrowable;
 import net.pepdog.toolbox.obj.OBJLoader;
@@ -93,7 +94,7 @@ public class Main {
 	 */
 	public static void main(String[] args) throws IOException {
 		maps = new ArrayList<>(Toolbox.getResourceFiles("/assets/rbxl/"));
-		
+
 		frame = new Frame();
 		frame.setSize(200, 100);
 		frame.setLocationRelativeTo(null);
@@ -114,7 +115,7 @@ public class Main {
 			map = map.substring(0,map.length() - 5);
 			box.addItem(map);
 		}
-		
+
 		JPanel inputWindow = new JPanel(new GridLayout(2, 1));
 		inputWindow.add(new JLabel("Choose the map you want!"));
 		inputWindow.add(box);
@@ -149,6 +150,8 @@ public class Main {
 			
 			SceneManager.init();
 			SceneManager.loadScene("empty");
+			
+			Gui.initFont();
 			
 			PhysicsSystem.init();
 			Camera camera = new Camera(new Vector3f(), new Vector3f());
@@ -331,7 +334,7 @@ public class Main {
 						currentScreen = new GuiInGame();
 						break;
 					case pausemenu:
-						currentScreen = new GuiPauseMenu();
+						//currentScreen = new GuiPauseMenu();
 						break;
 					default:
 						break;
@@ -445,5 +448,9 @@ public class Main {
 		}
 		
 		
+	}
+
+	public static File getResources() {
+		return getPEPDOGDir();
 	}
 }

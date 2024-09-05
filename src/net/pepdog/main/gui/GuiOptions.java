@@ -3,16 +3,16 @@ package net.pepdog.main.gui;
 import org.lwjgl.util.vector.Vector2f;
 
 import net.pepdog.engine.Loader;
-import net.pepdog.engine.gui.GuiScreen;
-import net.pepdog.engine.gui.component.GuiSlider;
-import net.pepdog.engine.gui.component.GuiText;
-import net.pepdog.engine.gui.component.button.GuiButton;
+import net.pepdog.engine.gui.GuiScreenOld;
+import net.pepdog.engine.gui.component.old.GuiSlider;
+import net.pepdog.engine.gui.component.old.GuiText;
+import net.pepdog.engine.gui.component.old.button.GuiButton;
 import net.pepdog.engine.gui.font.renderer.TextMaster;
 import net.pepdog.main.GameSettings;
 import net.pepdog.main.Main;
 import net.pepdog.main.Main.GameState;
 
-public class GuiOptions extends GuiScreen {
+public class GuiOptions extends GuiScreenOld {
 	
 	private GuiText title;
 	private GuiSlider volume;

@@ -33,5 +33,6 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/jar/luaj-jme-3.0.2.jar"/>
 	<classpathentry kind="lib" path="lib/jar/luaj-jse-3.0.2.jar"/>
+	<classpathentry kind="lib" path="lib/jar/slick.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

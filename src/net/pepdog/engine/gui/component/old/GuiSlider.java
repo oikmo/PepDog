@@ -1,8 +1,8 @@
-package net.pepdog.engine.gui.component;
+package net.pepdog.engine.gui.component.old;
 
 import org.lwjgl.util.vector.Vector2f;
 
-import net.pepdog.engine.gui.component.button.IButton;
+import net.pepdog.engine.gui.component.old.button.IButton;
 import net.pepdog.engine.gui.font.renderer.TextMaster;
 import net.pepdog.main.Main;
 

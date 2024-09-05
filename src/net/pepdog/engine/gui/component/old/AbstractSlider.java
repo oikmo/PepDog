@@ -1,10 +1,10 @@
-package net.pepdog.engine.gui.component;
+package net.pepdog.engine.gui.component.old;
 
 import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector2f;
 
 import net.pepdog.engine.DisplayManager;
-import net.pepdog.engine.gui.component.button.IButton;
+import net.pepdog.engine.gui.component.old.button.IButton;
 import net.pepdog.engine.renderers.MasterRenderer;
 import net.pepdog.engine.textures.GuiTexture;
 

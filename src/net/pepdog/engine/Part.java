@@ -18,7 +18,6 @@ import net.pepdog.engine.models.TexturedModel;
 import net.pepdog.engine.renderers.part.BrickColor;
 import net.pepdog.engine.renderers.part.PartRenderer;
 import net.pepdog.engine.textures.ModelTexture;
-import net.pepdog.main.PhysicsSystem;
 import net.pepdog.main.scene.SceneManager;
 import net.pepdog.toolbox.Maths;
 import net.pepdog.toolbox.rbxl.Item;

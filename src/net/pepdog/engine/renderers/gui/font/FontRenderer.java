@@ -8,7 +8,7 @@ import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
-import net.pepdog.engine.gui.component.GuiText;
+import net.pepdog.engine.gui.component.old.GuiText;
 import net.pepdog.engine.gui.font.meshcreator.FontType;
 
 public class FontRenderer {

@@ -5,18 +5,18 @@ import java.util.List;
 
 import org.lwjgl.util.vector.Vector2f;
 
-import net.pepdog.engine.DisplayManager;
 import net.pepdog.engine.Loader;
 import net.pepdog.engine.gui.GuiScreen;
-import net.pepdog.engine.gui.component.button.GuiButton;
+import net.pepdog.engine.gui.component.slick.GuiCommand;
+import net.pepdog.engine.gui.component.slick.button.GuiButton;
 import net.pepdog.engine.textures.GuiTexture;
 
 public class GuiInGame extends GuiScreen {
 
 	boolean toggle = false;
 	public List<GuiScreen> innerScreens;
-	GuiButton b1;
 	
+	private GuiButton button;
 	private GuiTexture headerBack;
 
 	public GuiInGame() {
@@ -24,27 +24,23 @@ public class GuiInGame extends GuiScreen {
 		innerScreens = new ArrayList<>();
 	}
 
-	public void initGui() {
+	public void onInit() {
 		headerBack = new GuiTexture(Loader.loadGameTexture("ui/ui_backshots"), new Vector2f(0,0), new Vector2f(1.50f,0.1f));
 		headerBack.setPosition(new Vector2f(-1+headerBack.getScale().x,1-headerBack.getScale().y));
-		uiList.add(headerBack);
-		b1 = new GuiButton(0, new Vector2f(-1+0.1f,1-0.05f), new Vector2f(0.3f,0.1f), "Fullscreen", 0.75f);
-		buttonList.add(b1);
+		//uiList.add(headerBack);
+		button = new GuiButton(0, 0, 50, 50, "HELP", new GuiCommand() {
+			
+		});
 	}
 
-	public void actionPerformed(GuiButton button) {
-		switch(button.getControlID()) {
-		case 0:
-			DisplayManager.setFullscreen();
-			break;
-		}
+	public void onUpdate() {
+		button.tick();
 	}
-
+	
 	public void updateScreen() {
 		for(GuiScreen screen : innerScreens) {
 			if(screen != null) {
 				screen.update();
-				screen.updateScreen();
 			}
 		}
 	}

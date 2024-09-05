@@ -1,4 +1,4 @@
-package net.pepdog.main;
+package net.pepdog.engine;
 
 import javax.vecmath.Vector3f;
 
@@ -8,8 +8,6 @@ import com.bulletphysics.collision.dispatch.CollisionDispatcher;
 import com.bulletphysics.collision.dispatch.DefaultCollisionConfiguration;
 import com.bulletphysics.dynamics.DiscreteDynamicsWorld;
 import com.bulletphysics.dynamics.constraintsolver.SequentialImpulseConstraintSolver;
-
-import net.pepdog.engine.DisplayManager;
 
 /**
  * Handles physics (bullet)

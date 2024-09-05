@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.pepdog.engine.Loader;
-import net.pepdog.engine.gui.component.GuiText;
+import net.pepdog.engine.gui.component.old.GuiText;
 import net.pepdog.engine.gui.font.meshcreator.FontType;
 import net.pepdog.engine.gui.font.meshcreator.TextMeshData;
 import net.pepdog.engine.renderers.gui.font.FontRenderer;
